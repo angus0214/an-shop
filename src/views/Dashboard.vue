@@ -62,7 +62,11 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    
+    <v-main>
+     <v-container>
+        <router-view></router-view>
+     </v-container>
+    </v-main>
   </v-app>
 </template>
 <script>
@@ -71,8 +75,8 @@ export default {
     return {
       drawer: 'true',
       navItems: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/' },
-        { title: 'Products', icon: 'mdi-folder-multiple', link: '/product' },
+        { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard' },
+        { title: 'Products', icon: 'mdi-folder-multiple', link: '/dashboard/products' },
         { title: 'Coupons', icon: 'mdi-ticket', link: '/coupons' },
         { title: 'Orders', icon: 'mdi-clipboard-list', link: '/orders' },
       ],
