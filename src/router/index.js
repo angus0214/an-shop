@@ -2,12 +2,12 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
-import Products from '../views/Products.vue';
+// import Products from '../views/Products.vue';
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
     component: Login,
   },
@@ -24,13 +24,13 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    children: [
-      {
-        path: 'products',
-        name: 'Products',
-        component: Products,
-      },
-    ],
+    // children: [
+    //   {
+    //     path: 'products',
+    //     name: 'Products',
+    //     component: Products,
+    //   },
+    // ],
   },
 ];
 
