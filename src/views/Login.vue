@@ -96,7 +96,7 @@ export default {
           if (vm.selectTab === 0) {
             vm.$router.push('/shop');
           } else {
-            vm.$router.push('/dashboard/products');
+            vm.$router.push('/dashboard');
           }
         } else {
           console.log(response.data);

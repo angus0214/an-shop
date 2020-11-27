@@ -7,6 +7,10 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path:'*',
+    redirect:'login'
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login,
@@ -24,6 +28,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true }
     // children: [
     //   {
     //     path: 'products',
