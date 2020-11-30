@@ -18,17 +18,120 @@
               hide-details
               class="pt-0 mt-0 mr-12"
             ></v-text-field>
-
-            <v-btn color="primary" @click="addProduct()">新增商品</v-btn>
+            <!-- edit dialog -->
+            <v-dialog v-model="editDialog" persistent max-width="600px">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                  新增產品
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">新增產品</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col cols="12" sm="3">
+                        <v-row>
+                          <v-col cols="12">
+                            <v-img
+                              lazy-src="https://picsum.photos/id/11/10/6"
+                              max-height="150"
+                              max-width="250"
+                              src="https://picsum.photos/id/11/500/300"
+                            >
+                            </v-img>
+                            <v-btn block depressed color="primary" class="mt-3"
+                              >上傳圖片</v-btn
+                            >
+                            <p class="text-center my-2">OR</p>
+                            <v-text-field
+                              dense
+                              outlined
+                              label="圖片連結"
+                              class="mt-0"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-col>
+                      <v-col cols="12" sm="9">
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field label="產品名稱"></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field label="分類"></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field label="單位"></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6">
+                            <v-text-field label="原價"></v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6">
+                            <v-text-field label="售價"></v-text-field>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-autocomplete
+                              :items="['Man', 'Lady', 'Fashion', 'Outdoor']"
+                              label="Hashtag"
+                              multiple
+                            ></v-autocomplete>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-textarea
+                              no-resize
+                              label="產品描述"
+                              hint="An-Shop"
+                            ></v-textarea>
+                          </v-col>
+                          <v-col cols="12">
+                            <v-checkbox label="啟用"></v-checkbox
+                          ></v-col>
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeEditDialog">
+                    Close
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="dialog = false">
+                    Save
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <!-- del dialog -->
+            <v-dialog v-model="deleteDialog" max-width="500px">
+              <v-card>
+                <v-card-title class="headline"
+                  >Are you sure you want to delete this item?</v-card-title
+                >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete"
+                    >Cancel</v-btn
+                  >
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                    >OK</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card-title>
         </template>
-        <template v-slot:item.edit="{ item }">          
-            <v-icon color="success" @click="editProduct(item)">
-              mdi-pencil
-            </v-icon>      
-            <v-icon color="danger" @click="delProduct(item)">
-              mdi-delete
-            </v-icon>   
+        <template v-slot:item.edit="{ item }">
+          <v-icon color="success" @click="editProduct(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon color="danger" @click="delProduct(item)">
+            mdi-delete
+          </v-icon>
         </template>
         <template v-slot:item.is_enabled="{ item }">
           <p v-if="item.is_enabled === 1" class="mb-0 success--text">Yes</p>
@@ -56,10 +159,12 @@ export default {
           { text: '編輯', value: 'edit', filterable: false },
         ],
         data: [],
+        tempProduct: {},
       },
       pagination: {},
       search: '',
       editDialog: false,
+      deleteDialog: false,
     };
   },
   methods: {
@@ -84,9 +189,17 @@ export default {
     },
     editProduct(item) {
       console.log(item);
+      const vm = this;
+      vm.editDialog = true;
     },
     delProduct(item) {
       console.log(item);
+      const vm = this;
+      vm.deleteDialog = true
+    },
+    closeEditDialog() {
+      const vm = this;
+      vm.editDialog = false;
     },
   },
   created() {
