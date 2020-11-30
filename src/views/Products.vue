@@ -58,24 +58,40 @@
                       <v-col cols="12" sm="9">
                         <v-row>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="產品名稱"></v-text-field>
+                            <v-text-field
+                              label="產品名稱"
+                              v-model="products.tempProduct.title"
+                            ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="分類"></v-text-field>
+                            <v-text-field
+                              label="分類"
+                              v-model="products.tempProduct.category"
+                            ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
-                            <v-text-field label="單位"></v-text-field>
+                            <v-text-field
+                              label="單位"
+                              v-model="products.tempProduct.unit"
+                            ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6">
-                            <v-text-field label="原價"></v-text-field>
+                            <v-text-field
+                              label="原價"
+                              v-model="products.tempProduct.origin_price"
+                            ></v-text-field>
                           </v-col>
                           <v-col cols="12" sm="6">
-                            <v-text-field label="售價"></v-text-field>
+                            <v-text-field
+                              label="售價"
+                              v-model="products.tempProduct.price"
+                            ></v-text-field>
                           </v-col>
                           <v-col cols="12">
                             <v-autocomplete
                               :items="['Man', 'Lady', 'Fashion', 'Outdoor']"
                               label="Hashtag"
+                              v-model="products.tempProduct.description"
                               multiple
                             ></v-autocomplete>
                           </v-col>
@@ -84,10 +100,16 @@
                               no-resize
                               label="產品描述"
                               hint="An-Shop"
+                              v-model="products.tempProduct.content"
                             ></v-textarea>
                           </v-col>
                           <v-col cols="12">
-                            <v-checkbox label="啟用"></v-checkbox
+                            <v-checkbox
+                              v-model="products.tempProduct.is_enabled"
+                              true-value="1"
+                              false-value="0"
+                              label="啟用"
+                            ></v-checkbox
                           ></v-col>
                         </v-row>
                       </v-col>
@@ -99,7 +121,7 @@
                   <v-btn color="blue darken-1" text @click="closeEditDialog">
                     Close
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="dialog = false">
+                  <v-btn color="blue darken-1" text @click="addProduct">
                     Save
                   </v-btn>
                 </v-card-actions>
@@ -113,10 +135,10 @@
                 >
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete"
+                  <v-btn color="blue darken-1" text 
                     >Cancel</v-btn
                   >
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  <v-btn color="blue darken-1" text 
                     >OK</v-btn
                   >
                   <v-spacer></v-spacer>
@@ -126,7 +148,7 @@
           </v-card-title>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon color="success" @click="editProduct(item)">
+          <v-icon color="success" @click="openEditDialog(item)">
             mdi-pencil
           </v-icon>
           <v-icon color="danger" @click="delProduct(item)">
@@ -174,8 +196,8 @@ export default {
         process.env.VUE_APP_CUSTOM_PATH
       );
     },
-    getProducts(page = 1) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products?page=${page}`;
+    getProducts() {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products`;
       const vm = this;
       //   console.log(api);
       this.$http.get(api).then((response) => {
@@ -185,20 +207,34 @@ export default {
       });
     },
     addProduct() {
-      console.log('add');
-    },
-    editProduct(item) {
-      console.log(item);
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
+      let httpMethod = 'post';
       const vm = this;
+      this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
+        (response) => {
+          if (response.data.success) {
+            console.log('新增成功' + response.data);
+          } else {
+            console.log('新增失敗' + response.data);
+          }
+          vm.closeEditDialog();
+          vm.getProducts();
+        }
+      );
+    },
+    openEditDialog(item) {
+      const vm = this;
+      vm.products.tempProduct = Object.assign({}, item);
       vm.editDialog = true;
     },
     delProduct(item) {
       console.log(item);
       const vm = this;
-      vm.deleteDialog = true
+      vm.deleteDialog = true;
     },
     closeEditDialog() {
       const vm = this;
+      vm.products.tempProduct = {};
       vm.editDialog = false;
     },
   },
