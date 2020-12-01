@@ -183,7 +183,6 @@ export default {
         data: [],
         tempProduct: {},
       },
-      pagination: {},
       search: '',
       editDialog: false,
       deleteDialog: false,
@@ -196,8 +195,14 @@ export default {
         process.env.VUE_APP_CUSTOM_PATH
       );
     },
+    checkLogin(){
+      const api = `${process.env.VUE_APP_API_PATH}/api/user/check`;
+      this.$http.post(api).then((response) => {
+        console.log(response.data);
+      });
+    },
     getProducts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products`;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
       const vm = this;
       //   console.log(api);
       this.$http.get(api).then((response) => {
@@ -208,14 +213,15 @@ export default {
     },
     addProduct() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
-      let httpMethod = 'post';
+      // let httpMethod = 'post';
       const vm = this;
-      this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
+      this.$http.post(api, { 'data': vm.products.tempProduct }).then(
         (response) => {
+          console.log({data:vm.products.tempProduct},api)
           if (response.data.success) {
-            console.log('新增成功' + response.data);
+            console.log(response.data);
           } else {
-            console.log('新增失敗' + response.data);
+            console.log(response.data);
           }
           vm.closeEditDialog();
           vm.getProducts();
@@ -240,6 +246,7 @@ export default {
   },
   created() {
     this.getProducts();
+    this.checkLogin();
   },
 };
 </script>
