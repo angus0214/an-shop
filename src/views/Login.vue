@@ -93,10 +93,14 @@ export default {
       this.$http.post(api, vm.user).then((response) => {
         // console.log(response.data);
         if (response.data.success === true) {
+          const token = response.data.token;
+          const expired = response.data.expired;
+          console.log(token,expired)
+          document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
           if (vm.selectTab === 0) {
             vm.$router.push('/shop');
           } else {
-            vm.$router.push('/dashboard');
+            vm.$router.push('/dashboard/products');
           }
         } else {
           console.log(response.data);

@@ -82,5 +82,10 @@ export default {
       ],
     };
   },
+  created() {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log('my cookie',token)
+    this.$http.defaults.headers.common.Authorization = `${token}`;
+  },
 };
 </script>
