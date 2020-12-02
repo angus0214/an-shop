@@ -45,18 +45,27 @@
                               lazy-src="https://picsum.photos/id/11/10/6"
                               max-height="150"
                               max-width="250"
-                              src="https://picsum.photos/id/11/500/300"
+                              :src="products.tempProduct.imageUrl"
                             >
                             </v-img>
-                            <v-btn block depressed color="primary" class="mt-3"
-                              >上傳圖片</v-btn
-                            >
-                            <p class="text-center my-2">OR</p>
+                            <label for="btn-file" class="d-block text-center primary white--text py-2 my-2 rounded-lg" style="cursor: pointer;">
+                              上傳圖片
+                            </label>
+                            <input
+                              type="file"
+                              ref="files"
+                              @change="uploadFile"
+                              placeholder=""
+                              id="btn-file"
+                              class="d-none"
+                            />
+                            <p class="text-center mb-2">OR</p>
                             <v-text-field
                               dense
                               outlined
                               label="圖片連結"
                               class="mt-0"
+                              v-model="products.tempProduct.imageUrl"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -156,7 +165,7 @@
           </v-card-title>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon 
+          <v-icon
             color="success"
             @click="
               openEditDialog(item);
@@ -234,9 +243,9 @@ export default {
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
       let httpMethod = 'post';
       const vm = this;
-      if(!vm.products.isNew){
-        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`
-        httpMethod = "put";
+      if (!vm.products.isNew) {
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`;
+        httpMethod = 'put';
       }
       this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
@@ -250,6 +259,31 @@ export default {
           vm.closeEditDialog();
         }
       );
+    },
+    uploadFile() {
+      const uploadedFile = this.$refs.files.files[0];
+      console.log(this);
+      const vm = this;
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadedFile);
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`;
+      this.$http
+        .post(api, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          if (response.data.success) {
+            vm.$set(
+              vm.products.tempProduct,
+              'imageUrl',
+              response.data.imageUrl
+            );
+          } else {
+            console.log(response);
+          }
+        });
     },
     openEditDialog(item) {
       const vm = this;
