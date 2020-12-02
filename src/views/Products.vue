@@ -21,7 +21,13 @@
             <!-- edit dialog -->
             <v-dialog v-model="editDialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="products.isNew = true"
+                >
                   新增產品
                 </v-btn>
               </template>
@@ -39,18 +45,27 @@
                               lazy-src="https://picsum.photos/id/11/10/6"
                               max-height="150"
                               max-width="250"
-                              src="https://picsum.photos/id/11/500/300"
+                              :src="products.tempProduct.imageUrl"
                             >
                             </v-img>
-                            <v-btn block depressed color="primary" class="mt-3"
-                              >上傳圖片</v-btn
-                            >
-                            <p class="text-center my-2">OR</p>
+                            <label for="btn-file" class="d-block text-center primary white--text py-2 my-2 rounded-lg" style="cursor: pointer;">
+                              上傳圖片
+                            </label>
+                            <input
+                              type="file"
+                              ref="files"
+                              @change="uploadFile"
+                              placeholder=""
+                              id="btn-file"
+                              class="d-none"
+                            />
+                            <p class="text-center mb-2">OR</p>
                             <v-text-field
                               dense
                               outlined
                               label="圖片連結"
                               class="mt-0"
+                              v-model="products.tempProduct.imageUrl"
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -65,7 +80,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              label="分類"
+                              label="品牌"
                               v-model="products.tempProduct.category"
                             ></v-text-field>
                           </v-col>
@@ -121,26 +136,28 @@
                   <v-btn color="blue darken-1" text @click="closeEditDialog">
                     Close
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="addProduct">
+                  <v-btn color="blue darken-1" text @click="updateProduct">
                     Save
                   </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
             <!-- del dialog -->
-            <v-dialog v-model="deleteDialog" max-width="500px">
+            <v-dialog v-model="delDialog" max-width="500px">
               <v-card>
-                <v-card-title class="headline"
-                  >Are you sure you want to delete this item?</v-card-title
+                <v-card-title class="headline text-center white--text danger"
+                  >是否刪除以下商品</v-card-title
+                >
+                <v-card-title
+                  >{{ products.delItem.category }} -
+                  {{ products.delItem.title }}</v-card-title
                 >
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text 
+                  <v-btn color="blue darken-1" text @click="closeDelDialog"
                     >Cancel</v-btn
                   >
-                  <v-btn color="blue darken-1" text 
-                    >OK</v-btn
-                  >
+                  <v-btn color="danger" text @click="delProduct">Delete</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -148,10 +165,16 @@
           </v-card-title>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon color="success" @click="openEditDialog(item)">
+          <v-icon
+            color="success"
+            @click="
+              openEditDialog(item);
+              products.isNew = false;
+            "
+          >
             mdi-pencil
           </v-icon>
-          <v-icon color="danger" @click="delProduct(item)">
+          <v-icon color="danger" @click="openDelDialog(item)">
             mdi-delete
           </v-icon>
         </template>
@@ -182,10 +205,15 @@ export default {
         ],
         data: [],
         tempProduct: {},
+        delItem: {},
+        isNew: false,
+      },
+      loading: {
+        dataTable: false,
       },
       search: '',
       editDialog: false,
-      deleteDialog: false,
+      delDialog: false,
     };
   },
   methods: {
@@ -195,7 +223,7 @@ export default {
         process.env.VUE_APP_CUSTOM_PATH
       );
     },
-    checkLogin(){
+    checkLogin() {
       const api = `${process.env.VUE_APP_API_PATH}/api/user/check`;
       this.$http.post(api).then((response) => {
         console.log(response.data);
@@ -211,42 +239,85 @@ export default {
         vm.pagination = response.data.pagination;
       });
     },
-    addProduct() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
-      // let httpMethod = 'post';
+    updateProduct() {
+      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
+      let httpMethod = 'post';
       const vm = this;
-      this.$http.post(api, { 'data': vm.products.tempProduct }).then(
+      if (!vm.products.isNew) {
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`;
+        httpMethod = 'put';
+      }
+      this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
-          console.log({data:vm.products.tempProduct},api)
+          console.log({ data: vm.products.tempProduct }, api);
           if (response.data.success) {
             console.log(response.data);
           } else {
             console.log(response.data);
           }
-          vm.closeEditDialog();
           vm.getProducts();
+          vm.closeEditDialog();
         }
       );
+    },
+    uploadFile() {
+      const uploadedFile = this.$refs.files.files[0];
+      console.log(this);
+      const vm = this;
+      const formData = new FormData();
+      formData.append('file-to-upload', uploadedFile);
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`;
+      this.$http
+        .post(api, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          if (response.data.success) {
+            vm.$set(
+              vm.products.tempProduct,
+              'imageUrl',
+              response.data.imageUrl
+            );
+          } else {
+            console.log(response);
+          }
+        });
     },
     openEditDialog(item) {
       const vm = this;
       vm.products.tempProduct = Object.assign({}, item);
       vm.editDialog = true;
     },
-    delProduct(item) {
-      console.log(item);
-      const vm = this;
-      vm.deleteDialog = true;
-    },
     closeEditDialog() {
       const vm = this;
       vm.products.tempProduct = {};
       vm.editDialog = false;
     },
+    openDelDialog(item) {
+      console.log(item);
+      const vm = this;
+      vm.products.delItem = Object.assign({}, item);
+      vm.delDialog = true;
+    },
+    closeDelDialog() {
+      const vm = this;
+      vm.products.delItem = {};
+      vm.delDialog = false;
+    },
+    delProduct() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
+      this.$http.delete(api).then((response) => {
+        console.log(response.data);
+      });
+      vm.getProducts();
+      vm.closeDelDialog();
+    },
   },
   created() {
     this.getProducts();
-    this.checkLogin();
   },
 };
 </script>
