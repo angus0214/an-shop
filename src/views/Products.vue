@@ -21,7 +21,13 @@
             <!-- edit dialog -->
             <v-dialog v-model="editDialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="products.isNew = true"
+                >
                   新增產品
                 </v-btn>
               </template>
@@ -121,7 +127,7 @@
                   <v-btn color="blue darken-1" text @click="closeEditDialog">
                     Close
                   </v-btn>
-                  <v-btn color="blue darken-1" text @click="addProduct">
+                  <v-btn color="blue darken-1" text @click="updateProduct">
                     Save
                   </v-btn>
                 </v-card-actions>
@@ -150,7 +156,13 @@
           </v-card-title>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon color="success" @click="openEditDialog(item)">
+          <v-icon 
+            color="success"
+            @click="
+              openEditDialog(item);
+              products.isNew = false;
+            "
+          >
             mdi-pencil
           </v-icon>
           <v-icon color="danger" @click="openDelDialog(item)">
@@ -185,6 +197,10 @@ export default {
         data: [],
         tempProduct: {},
         delItem: {},
+        isNew: false,
+      },
+      loading: {
+        dataTable: false,
       },
       search: '',
       editDialog: false,
@@ -214,13 +230,16 @@ export default {
         vm.pagination = response.data.pagination;
       });
     },
-    addProduct() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
-      // let httpMethod = 'post';
+    updateProduct() {
+      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
+      let httpMethod = 'post';
       const vm = this;
-      this.$http
-        .post(api, { data: vm.products.tempProduct })
-        .then((response) => {
+      if(!vm.products.isNew){
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`
+        httpMethod = "put";
+      }
+      this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
+        (response) => {
           console.log({ data: vm.products.tempProduct }, api);
           if (response.data.success) {
             console.log(response.data);
@@ -229,7 +248,8 @@ export default {
           }
           vm.getProducts();
           vm.closeEditDialog();
-        });
+        }
+      );
     },
     openEditDialog(item) {
       const vm = this;
