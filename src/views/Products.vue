@@ -65,7 +65,7 @@
                           </v-col>
                           <v-col cols="12" sm="6" md="4">
                             <v-text-field
-                              label="分類"
+                              label="品牌"
                               v-model="products.tempProduct.category"
                             ></v-text-field>
                           </v-col>
@@ -128,19 +128,21 @@
               </v-card>
             </v-dialog>
             <!-- del dialog -->
-            <v-dialog v-model="deleteDialog" max-width="500px">
+            <v-dialog v-model="delDialog" max-width="500px">
               <v-card>
-                <v-card-title class="headline"
-                  >Are you sure you want to delete this item?</v-card-title
+                <v-card-title class="headline text-center white--text danger"
+                  >是否刪除以下商品</v-card-title
+                >
+                <v-card-title
+                  >{{ products.delItem.category }} -
+                  {{ products.delItem.title }}</v-card-title
                 >
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text 
+                  <v-btn color="blue darken-1" text @click="closeDelDialog"
                     >Cancel</v-btn
                   >
-                  <v-btn color="blue darken-1" text 
-                    >OK</v-btn
-                  >
+                  <v-btn color="danger" text @click="delProduct">Delete</v-btn>
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -151,7 +153,7 @@
           <v-icon color="success" @click="openEditDialog(item)">
             mdi-pencil
           </v-icon>
-          <v-icon color="danger" @click="delProduct(item)">
+          <v-icon color="danger" @click="openDelDialog(item)">
             mdi-delete
           </v-icon>
         </template>
@@ -182,10 +184,11 @@ export default {
         ],
         data: [],
         tempProduct: {},
+        delItem: {},
       },
       search: '',
       editDialog: false,
-      deleteDialog: false,
+      delDialog: false,
     };
   },
   methods: {
@@ -195,7 +198,7 @@ export default {
         process.env.VUE_APP_CUSTOM_PATH
       );
     },
-    checkLogin(){
+    checkLogin() {
       const api = `${process.env.VUE_APP_API_PATH}/api/user/check`;
       this.$http.post(api).then((response) => {
         console.log(response.data);
@@ -215,38 +218,52 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
       // let httpMethod = 'post';
       const vm = this;
-      this.$http.post(api, { 'data': vm.products.tempProduct }).then(
-        (response) => {
-          console.log({data:vm.products.tempProduct},api)
+      this.$http
+        .post(api, { data: vm.products.tempProduct })
+        .then((response) => {
+          console.log({ data: vm.products.tempProduct }, api);
           if (response.data.success) {
             console.log(response.data);
           } else {
             console.log(response.data);
           }
-          vm.closeEditDialog();
           vm.getProducts();
-        }
-      );
+          vm.closeEditDialog();
+        });
     },
     openEditDialog(item) {
       const vm = this;
       vm.products.tempProduct = Object.assign({}, item);
       vm.editDialog = true;
     },
-    delProduct(item) {
-      console.log(item);
-      const vm = this;
-      vm.deleteDialog = true;
-    },
     closeEditDialog() {
       const vm = this;
       vm.products.tempProduct = {};
       vm.editDialog = false;
     },
+    openDelDialog(item) {
+      console.log(item);
+      const vm = this;
+      vm.products.delItem = Object.assign({}, item);
+      vm.delDialog = true;
+    },
+    closeDelDialog() {
+      const vm = this;
+      vm.products.delItem = {};
+      vm.delDialog = false;
+    },
+    delProduct() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
+      this.$http.delete(api).then((response) => {
+        console.log(response.data);
+      });
+      vm.getProducts();
+      vm.closeDelDialog();
+    },
   },
   created() {
     this.getProducts();
-    this.checkLogin();
   },
 };
 </script>
