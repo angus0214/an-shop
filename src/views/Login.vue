@@ -95,7 +95,7 @@ export default {
         if (response.data.success === true) {
           const token = response.data.token;
           const expired = response.data.expired;
-          console.log(token,expired)
+          // console.log(token,expired)
           document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
           if (vm.selectTab === 0) {
             vm.$router.push('/shop');
@@ -103,7 +103,7 @@ export default {
             vm.$router.push('/dashboard/products');
           }
         } else {
-          console.log(response.data);
+          // console.log(response.data);
           vm.loginError = true;
         }
         vm.loading = false;
