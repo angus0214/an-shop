@@ -5,6 +5,8 @@
         :headers="products.dataHeaders"
         :items="products.data"
         :search="search"
+        :loading="loading.dataTable"
+        loading-text="資料載入中... 請稍等"
       >
         <template v-slot:top>
           <v-card-title class="mb-4 font-weight-bold">
@@ -31,7 +33,16 @@
                   新增產品
                 </v-btn>
               </template>
-              <v-card>
+              <v-card :loading="loading.card" :disabled="loading.card">
+                <template slot="progress">
+                  <v-progress-linear
+                    color="primary"
+                    height="6"
+                    indeterminate
+                    absolute
+                    bottom
+                  ></v-progress-linear>
+                </template>
                 <v-card-title>
                   <span class="headline">新增產品</span>
                 </v-card-title>
@@ -48,7 +59,11 @@
                               :src="products.tempProduct.imageUrl"
                             >
                             </v-img>
-                            <label for="btn-file" class="d-block text-center primary white--text py-2 my-2 rounded-lg" style="cursor: pointer;">
+                            <label
+                              for="btn-file"
+                              class="d-block text-center primary white--text py-2 my-2 rounded-lg"
+                              style="cursor: pointer;"
+                            >
                               上傳圖片
                             </label>
                             <input
@@ -144,7 +159,16 @@
             </v-dialog>
             <!-- del dialog -->
             <v-dialog v-model="delDialog" max-width="500px">
-              <v-card>
+              <v-card :loading="loading.delete" :disabled="loading.delete">
+                <template slot="progress">
+                  <v-progress-linear
+                    color="danger"
+                    height="6"
+                    indeterminate
+                    absolute
+                    bottom
+                  ></v-progress-linear>
+                </template>
                 <v-card-title class="headline text-center white--text danger"
                   >是否刪除以下商品</v-card-title
                 >
@@ -210,6 +234,8 @@ export default {
       },
       loading: {
         dataTable: false,
+        card: false,
+        delete: false,
       },
       search: '',
       editDialog: false,
@@ -232,17 +258,20 @@ export default {
     getProducts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
       const vm = this;
+      vm.loading.dataTable = true;
       //   console.log(api);
       this.$http.get(api).then((response) => {
         // console.log(response.data);
         vm.products.data = response.data.products;
         vm.pagination = response.data.pagination;
+        vm.loading.dataTable = false;
       });
     },
     updateProduct() {
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
       let httpMethod = 'post';
       const vm = this;
+      vm.loading.card = true;
       if (!vm.products.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`;
         httpMethod = 'put';
@@ -257,6 +286,7 @@ export default {
           }
           vm.getProducts();
           vm.closeEditDialog();
+          vm.loading.card = false;
         }
       );
     },
@@ -308,12 +338,14 @@ export default {
     },
     delProduct() {
       const vm = this;
+      vm.loading.delete = true;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
       this.$http.delete(api).then((response) => {
         console.log(response.data);
+        vm.getProducts();
+        vm.closeDelDialog();
+        vm.loading.delete = false;
       });
-      vm.getProducts();
-      vm.closeDelDialog();
     },
   },
   created() {
