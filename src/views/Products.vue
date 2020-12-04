@@ -341,7 +341,7 @@ export default {
       const vm = this;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
       this.$http.delete(api).then((response) => {
-        if (!response.data.success) {
+        if (response.data.success) {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
