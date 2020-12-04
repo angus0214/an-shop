@@ -203,7 +203,7 @@
           </v-icon>
         </template>
         <template v-slot:item.is_enabled="{ item }">
-          <p v-if="item.is_enabled === 1" class="mb-0 success--text">Yes</p>
+          <p v-if="item.is_enabled == 1" class="mb-0 success--text">Yes</p>
           <p v-else class="mb-0 danger--text">No</p>
         </template>
       </v-data-table>
