@@ -243,6 +243,7 @@ export default {
     };
   },
   methods: {
+    // dev test
     consoleApi() {
       console.log(
         process.env.VUE_APP_API_PATH,
@@ -255,6 +256,10 @@ export default {
         console.log(response.data);
       });
     },
+    callEventBus() {
+      this.$bus.$emit();
+    },
+    // 向 Sever 取得產品資料
     getProducts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
       const vm = this;
@@ -267,22 +272,37 @@ export default {
         vm.loading.dataTable = false;
       });
     },
+    // 新增編輯產品
     updateProduct() {
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
       let httpMethod = 'post';
+      let alertMessage = '新增';
       const vm = this;
       vm.loading.card = true;
       if (!vm.products.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`;
         httpMethod = 'put';
+        alertMessage = '編輯';
       }
       this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
           console.log({ data: vm.products.tempProduct }, api);
           if (response.data.success) {
-            console.log(response.data);
+            // console.log(response.data);
+            vm.$bus.$emit(
+              'messsage:push',
+              `產品${alertMessage}成功`,
+              'success',
+              'mdi-check-circle'
+            );
           } else {
-            console.log(response.data);
+            // console.log(response.data);
+            vm.$bus.$emit(
+              'messsage:push',
+              `產品${alertMessage}失敗`,
+              'danger',
+              'mdi-alert-outline'
+            );
           }
           vm.getProducts();
           vm.closeEditDialog();
@@ -290,6 +310,7 @@ export default {
         }
       );
     },
+    // 圖片上傳
     uploadFile() {
       const uploadedFile = this.$refs.files.files[0];
       console.log(this);
@@ -315,6 +336,32 @@ export default {
           }
         });
     },
+    // 刪除產品
+    delProduct() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
+      this.$http.delete(api).then((response) => {
+        if (!response.data.success) {
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'success',
+            'mdi-check-circle'
+          );
+        }
+        else{
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'danger',
+            'mdi-alert-outline'
+          );
+        }
+        vm.getProducts();
+        vm.closeDelDialog();
+      });
+    },
+    // 編輯 Modal
     openEditDialog(item) {
       const vm = this;
       vm.products.tempProduct = Object.assign({}, item);
@@ -325,6 +372,7 @@ export default {
       vm.products.tempProduct = {};
       vm.editDialog = false;
     },
+    // 刪除 Modal
     openDelDialog(item) {
       console.log(item);
       const vm = this;
@@ -336,20 +384,10 @@ export default {
       vm.products.delItem = {};
       vm.delDialog = false;
     },
-    delProduct() {
-      const vm = this;
-      vm.loading.delete = true;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
-      this.$http.delete(api).then((response) => {
-        console.log(response.data);
-        vm.getProducts();
-        vm.closeDelDialog();
-        vm.loading.delete = false;
-      });
-    },
   },
   created() {
     this.getProducts();
+    // this.$bus.$emit('messsage:push','產品成功新增', 'success','mdi-check-circle');
   },
 };
 </script>

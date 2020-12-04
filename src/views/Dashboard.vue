@@ -63,28 +63,41 @@
       </v-menu>
     </v-app-bar>
     <v-main>
-     <v-container>
+      <v-container>
+        <Alert></Alert>
         <router-view></router-view>
-     </v-container>
+      </v-container>
     </v-main>
   </v-app>
 </template>
 <script>
+import Alert from '../components/AlertMessages';
+
 export default {
+  components: {
+    Alert,
+  },
   data() {
     return {
       drawer: 'true',
       navItems: [
         { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/dashboard' },
-        { title: 'Products', icon: 'mdi-folder-multiple', link: '/dashboard/products' },
+        {
+          title: 'Products',
+          icon: 'mdi-folder-multiple',
+          link: '/dashboard/products',
+        },
         { title: 'Coupons', icon: 'mdi-ticket', link: '/coupons' },
         { title: 'Orders', icon: 'mdi-clipboard-list', link: '/orders' },
       ],
     };
   },
   created() {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
-    console.log('my cookie',token)
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    );
+    console.log('my cookie', token);
     this.$http.defaults.headers.common.Authorization = `${token}`;
   },
 };

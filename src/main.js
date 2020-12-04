@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
+// vuetify
 import vuetify from './plugins/vuetify';
+// vue-router
 import router from './router'
+// vue axios for ajax
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
-Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+// event bus
+import './bus'
+Vue.config.productionTip = false
+
 new Vue({
   vuetify,
   router,
