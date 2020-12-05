@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Products from '../views/Products.vue';
+import Coupons from '../views/Coupons.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -35,6 +36,11 @@ const routes = [
         name: 'Products',
         component: Products,
       },
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: Coupons,
+      }
     ],
   },
 ];

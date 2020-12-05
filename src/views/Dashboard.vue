@@ -87,7 +87,7 @@ export default {
           icon: 'mdi-folder-multiple',
           link: '/dashboard/products',
         },
-        { title: 'Coupons', icon: 'mdi-ticket', link: '/coupons' },
+        { title: 'Coupons', icon: 'mdi-ticket', link: '/dashboard/coupons' },
         { title: 'Orders', icon: 'mdi-clipboard-list', link: '/orders' },
       ],
     };
