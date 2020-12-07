@@ -74,7 +74,11 @@
                                 v-on="on"
                               ></v-text-field>
                             </template>
-                            <v-date-picker v-model="coupons.tempCoupon.due_date" no-title scrollable>
+                            <v-date-picker
+                              v-model="coupons.tempCoupon.due_date"
+                              no-title
+                              scrollable
+                            >
                               <v-spacer></v-spacer>
                               <v-btn text color="primary" @click="menu = false">
                                 Cancel
@@ -82,7 +86,9 @@
                               <v-btn
                                 text
                                 color="primary"
-                                @click="$refs.menu.save(coupons.tempCoupon.due_date)"
+                                @click="
+                                  $refs.menu.save(coupons.tempCoupon.due_date)
+                                "
                               >
                                 OK
                               </v-btn>
@@ -112,7 +118,7 @@
                   <v-btn color="blue darken-1" text @click="closeEditDialog">
                     Close
                   </v-btn>
-                  <v-btn color="blue darken-1" text>
+                  <v-btn color="blue darken-1" text @click="updateCoupon">
                     Save
                   </v-btn>
                 </v-card-actions>
@@ -146,8 +152,11 @@
             </v-dialog>
           </v-card-title>
         </template>
+        <template v-slot:item.percent="{ item }">
+          {{ item.percent }}%
+        </template>
         <template v-slot:item.due_date="{ item }">
-          {{item.due_date | date}}
+          {{ item.due_date | date }}
         </template>
         <template v-slot:item.edit="{ item }">
           <v-icon color="success" @click="openEditDialog(item)">
@@ -174,16 +183,17 @@ export default {
             value: 'title',
           },
           { text: '折扣代碼', value: 'code' },
-          { text: '折扣百分比', value: 'percent' },
-          { text: '到期日', value: 'due_date',},
+          { text: '折扣百分比(%)', value: 'percent' },
+          { text: '到期日', value: 'due_date' },
           { text: '編輯', value: 'edit', filterable: false, sortable: false },
         ],
         data: [],
         tempCoupon: {},
+        postCoupon: {},
       },
       search: '',
       date: new Date().toISOString().substr(0, 10),
-      datePicker:false,
+      datePicker: false,
       dialog: {
         editDialog: false,
         delDialog: false,
@@ -197,32 +207,38 @@ export default {
       //   vm.loading.dataTable = true;
       //   console.log(api);
       this.$http.get(api).then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         vm.coupons.data = response.data.coupons;
         // vm.loading.dataTable = false;
       });
     },
     updateCoupon() {
-
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
+      const vm = this;
+      vm.coupons.postCoupon = Object.assign({}, vm.coupons.tempCoupon);
+      vm.coupons.postCoupon.due_date = new Date(this.coupons.postCoupon.due_date).getTime() / 1000;
+      this.$http.post(api, { data: vm.coupons.postCoupon }).then((response) => {
+        console.log(response.data);
+        this.getCoupons();
+      });
     },
-    openEditDialog(item){
-      console.log(item)
+    openEditDialog() {
       const vm = this;
       vm.dialog.editDialog = true;
     },
-    closeEditDialog(){
+    closeEditDialog() {
       const vm = this;
       vm.dialog.editDialog = false;
     },
-    openDelDialog(item){
-      console.log(item)
+    openDelDialog(item) {
+      console.log(item);
       const vm = this;
       vm.dialog.delDialog = true;
     },
-    closeDelDialog(){
+    closeDelDialog() {
       const vm = this;
       vm.dialog.delDialog = false;
-    }
+    },
   },
   created() {
     this.getCoupons();
