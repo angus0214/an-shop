@@ -146,6 +146,9 @@
             </v-dialog>
           </v-card-title>
         </template>
+        <template v-slot:item.due_date="{ item }">
+          {{item.due_date | date}}
+        </template>
         <template v-slot:item.edit="{ item }">
           <v-icon color="success" @click="openEditDialog(item)">
             mdi-pencil
@@ -172,7 +175,7 @@ export default {
           },
           { text: '折扣代碼', value: 'code' },
           { text: '折扣百分比', value: 'percent' },
-          { text: '到期日', value: 'due_date' },
+          { text: '到期日', value: 'due_date',},
           { text: '編輯', value: 'edit', filterable: false, sortable: false },
         ],
         data: [],

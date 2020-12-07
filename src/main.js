@@ -10,6 +10,9 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 // event bus
 import './bus'
+// filter
+import dateFilter from './filters/date'
+Vue.filter('date', dateFilter);
 Vue.config.productionTip = false
 
 new Vue({
