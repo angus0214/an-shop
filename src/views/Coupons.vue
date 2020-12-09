@@ -21,7 +21,12 @@
             <!-- edit dialog -->
             <v-dialog v-model="dialog.editDialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  @click="openEditDialog({}, true)"
+                >
                   新增優惠券
                 </v-btn>
               </template>
@@ -66,7 +71,7 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="coupons.tempCoupon.due_date"
+                                v-model="coupons.due_date"
                                 label="到期日"
                                 prepend-icon="mdi-calendar"
                                 readonly
@@ -75,7 +80,7 @@
                               ></v-text-field>
                             </template>
                             <v-date-picker
-                              v-model="coupons.tempCoupon.due_date"
+                              v-model="coupons.due_date"
                               no-title
                               scrollable
                             >
@@ -159,10 +164,16 @@
           {{ item.due_date | date }}
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon color="success" @click="openEditDialog(item)">
+          <v-icon
+            color="success"
+            @click="
+              openEditDialog(item);
+              coupons.isNew = false;
+            "
+          >
             mdi-pencil
           </v-icon>
-          <v-icon color="danger" @click="openDelDialog(item)">
+          <v-icon color="danger" @click="openDelDialog(item, false)">
             mdi-delete
           </v-icon>
         </template>
@@ -188,8 +199,9 @@ export default {
           { text: '編輯', value: 'edit', filterable: false, sortable: false },
         ],
         data: [],
+        due_date: '',
         tempCoupon: {},
-        postCoupon: {},
+        isNew: false,
       },
       search: '',
       date: new Date().toISOString().substr(0, 10),
@@ -199,6 +211,13 @@ export default {
         delDialog: false,
       },
     };
+  },
+  watch: {
+    'coupons.due_date': function() {
+      const vm = this;
+      const timestamp = new Date(vm.coupons.due_date).getTime() / 1000;
+      vm.coupons.tempCoupon.due_date = timestamp;
+    },
   },
   methods: {
     getCoupons() {
@@ -213,17 +232,39 @@ export default {
       });
     },
     updateCoupon() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
+      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
+      let httpMethod = 'post';
       const vm = this;
-      vm.coupons.postCoupon = Object.assign({}, vm.coupons.tempCoupon);
-      vm.coupons.postCoupon.due_date = new Date(this.coupons.postCoupon.due_date).getTime() / 1000;
-      this.$http.post(api, { data: vm.coupons.postCoupon }).then((response) => {
-        console.log(response.data);
-        this.getCoupons();
-      });
+      if (!vm.coupons.isNew) {
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
+        httpMethod = 'put';
+      }
+      this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
+        (response) => {
+          if (response.data.success) {
+            console.log(response.data);
+          } else {
+            console.log(response.data);
+          }
+          this.getCoupons();
+          this.closeEditDialog();
+        }
+      );
     },
-    openEditDialog() {
+    deleteCoupon() {},
+    openEditDialog(item, isNew) {
       const vm = this;
+      vm.coupons.isNew = isNew;
+      if (vm.coupons.isNew) {
+        vm.coupons.due_date = new Date().toLocaleDateString().replace(/\//g, '-');
+        vm.coupons.tempCoupon = Object.assign({}, {});
+      } else {
+        vm.coupons.tempCoupon = Object.assign({}, item);
+        const dateAndTime = new Date(vm.coupons.tempCoupon.due_date * 1000)
+          .toLocaleDateString()
+          .replace(/\//g, '-');
+        vm.coupons.due_date = dateAndTime;
+      }
       vm.dialog.editDialog = true;
     },
     closeEditDialog() {
