@@ -150,7 +150,9 @@
                   <v-btn color="blue darken-1" text @click="closeDelDialog()"
                     >Cancel</v-btn
                   >
-                  <v-btn color="danger" text>Delete</v-btn>
+                  <v-btn color="danger" text @click="deleteCoupon"
+                    >Delete</v-btn
+                  >
                   <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
@@ -202,6 +204,7 @@ export default {
         due_date: '',
         tempCoupon: {},
         isNew: false,
+        total_pages: '',
       },
       search: '',
       date: new Date().toISOString().substr(0, 10),
@@ -220,15 +223,21 @@ export default {
     },
   },
   methods: {
-    getCoupons() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons`;
+    getAllCoupons() {
       const vm = this;
-      //   vm.loading.dataTable = true;
-      //   console.log(api);
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`;
       this.$http.get(api).then((response) => {
-        // console.log(response.data);
-        vm.coupons.data = response.data.coupons;
-        // vm.loading.dataTable = false;
+        vm.coupons.total_pages = response.data.pagination.total_pages;
+        for (let i = 1; i <= vm.coupons.total_pages; i++) {
+          this.getCoupons(i);
+        }
+      });
+    },
+    getCoupons(page = 1) {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
+      this.$http.get(api).then((response) => {
+        vm.coupons.data = vm.coupons.data.concat(response.data.coupons);
       });
     },
     updateCoupon() {
@@ -251,12 +260,22 @@ export default {
         }
       );
     },
-    deleteCoupon() {},
+    deleteCoupon() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
+      this.$http.delete(api).then((response) => {
+        console.log(response.data);
+        this.getCoupons();
+        this.closeDelDialog();
+      });
+    },
     openEditDialog(item, isNew) {
       const vm = this;
       vm.coupons.isNew = isNew;
       if (vm.coupons.isNew) {
-        vm.coupons.due_date = new Date().toLocaleDateString().replace(/\//g, '-');
+        vm.coupons.due_date = new Date()
+          .toLocaleDateString()
+          .replace(/\//g, '-');
         vm.coupons.tempCoupon = Object.assign({}, {});
       } else {
         vm.coupons.tempCoupon = Object.assign({}, item);
@@ -272,8 +291,8 @@ export default {
       vm.dialog.editDialog = false;
     },
     openDelDialog(item) {
-      console.log(item);
       const vm = this;
+      vm.coupons.tempCoupon = Object.assign({}, item);
       vm.dialog.delDialog = true;
     },
     closeDelDialog() {
@@ -282,7 +301,7 @@ export default {
     },
   },
   created() {
-    this.getCoupons();
+    this.getAllCoupons();
   },
 };
 </script>
