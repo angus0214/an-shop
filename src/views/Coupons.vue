@@ -10,7 +10,7 @@
       >
         <template v-slot:top>
           <v-card-title class="mb-4 font-weight-bold">
-            Product
+            Coupons
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -43,7 +43,8 @@
                   ></v-progress-linear>
                 </template>
                 <v-card-title>
-                  <span class="headline">新增優惠券</span>
+                  <span class="headline" v-if="coupons.isNew">新增優惠券</span>
+                  <span class="headline" v-else>編輯優惠券</span>
                 </v-card-title>
                 <v-card-text>
                   <v-container>
@@ -144,7 +145,7 @@
                   ></v-progress-linear>
                 </template>
                 <v-card-title class="headline text-center white--text danger"
-                  >是否刪除以下商品</v-card-title
+                  >是否刪除以下優惠券</v-card-title
                 >
                 <v-card-title> {{ coupons.tempCoupon.title }} </v-card-title>
                 <v-card-actions>
