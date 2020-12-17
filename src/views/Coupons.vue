@@ -5,6 +5,8 @@
         :headers="coupons.dataHeaders"
         :items="coupons.data"
         :search="search"
+        :loading="loading.dataTable"
+        loading-text="資料載入中... 請稍等"
       >
         <template v-slot:top>
           <v-card-title class="mb-4 font-weight-bold">
@@ -30,7 +32,7 @@
                   新增優惠券
                 </v-btn>
               </template>
-              <v-card>
+              <v-card :loading="loading.card" :disabled="loading.card">
                 <template slot="progress">
                   <v-progress-linear
                     color="primary"
@@ -131,7 +133,7 @@
             </v-dialog>
             <!-- del dialog -->
             <v-dialog v-model="dialog.delDialog" max-width="500px">
-              <v-card>
+              <v-card :loading="loading.delete" :disabled="loading.delete">
                 <template slot="progress">
                   <v-progress-linear
                     color="danger"
@@ -206,6 +208,11 @@ export default {
         isNew: false,
         total_pages: '',
       },
+      loading: {
+        dataTable: false,
+        card: false,
+        delete:false,
+      },
       search: '',
       date: new Date().toISOString().substr(0, 10),
       datePicker: false,
@@ -226,11 +233,13 @@ export default {
     getAllCoupons() {
       const vm = this;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`;
+      vm.loading.dataTable = true;
       this.$http.get(api).then((response) => {
         vm.coupons.total_pages = response.data.pagination.total_pages;
         for (let i = 1; i <= vm.coupons.total_pages; i++) {
           this.getCoupons(i);
         }
+        vm.loading.dataTable = false;
       });
     },
     getCoupons(page = 1) {
@@ -244,6 +253,7 @@ export default {
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
       let httpMethod = 'post';
       const vm = this;
+      vm.loading.card = true;
       if (!vm.coupons.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
         httpMethod = 'put';
@@ -255,18 +265,21 @@ export default {
           } else {
             console.log(response.data);
           }
-          this.getCoupons();
+          this.getAllCoupons();
           this.closeEditDialog();
+          vm.loading.card = false;
         }
       );
     },
     deleteCoupon() {
       const vm = this;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
+      vm.loading.delete = true;
       this.$http.delete(api).then((response) => {
         console.log(response.data);
-        this.getCoupons();
+        this.getAllCoupons();
         this.closeDelDialog();
+        vm.loading.delete = false;
       });
     },
     openEditDialog(item, isNew) {
