@@ -146,7 +146,7 @@
                 <v-card-title class="headline text-center white--text danger"
                   >是否刪除以下商品</v-card-title
                 >
-                <v-card-title></v-card-title>
+                <v-card-title> {{ coupons.tempCoupon.title }} </v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="closeDelDialog()"
@@ -211,7 +211,7 @@ export default {
       loading: {
         dataTable: false,
         card: false,
-        delete:false,
+        delete: false,
       },
       search: '',
       date: new Date().toISOString().substr(0, 10),
