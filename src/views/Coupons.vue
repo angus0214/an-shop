@@ -254,18 +254,32 @@ export default {
     updateCoupon() {
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
       let httpMethod = 'post';
+      let alertMessage = '新增';
       const vm = this;
       vm.loading.card = true;
       if (!vm.coupons.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
         httpMethod = 'put';
+        alertMessage = '編輯'
       }
       this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
         (response) => {
           if (response.data.success) {
-            console.log(response.data);
+            // console.log(response.data);
+            vm.$bus.$emit(
+              'messsage:push',
+              `優惠券${alertMessage}成功`,
+              'success',
+              'mdi-check-circle'
+            );
           } else {
-            console.log(response.data);
+            // console.log(response.data);
+            vm.$bus.$emit(
+              'messsage:push',
+              `優惠券${alertMessage}失敗`,
+              'danger',
+              'mdi-alert-outline'
+            );
           }
           this.getAllCoupons();
           this.closeEditDialog();
@@ -278,6 +292,22 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
       vm.loading.delete = true;
       this.$http.delete(api).then((response) => {
+        if(response.data.success){
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'success',
+            'mdi-check-circle'
+          );
+        }
+        else{
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'danger',
+            'mdi-alert-outline'
+          );
+        }
         console.log(response.data);
         this.getAllCoupons();
         this.closeDelDialog();
