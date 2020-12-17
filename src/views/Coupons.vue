@@ -232,6 +232,7 @@ export default {
   methods: {
     getAllCoupons() {
       const vm = this;
+      vm.coupons.data = [];
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`;
       vm.loading.dataTable = true;
       this.$http.get(api).then((response) => {
