@@ -4,6 +4,7 @@ import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Products from '../views/Products.vue';
 import Coupons from '../views/Coupons.vue';
+import Orders from '../views/Orders.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
         path: 'coupons',
         name: 'Coupons',
         component: Coupons,
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: Orders,
       }
     ],
   },
