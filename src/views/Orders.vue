@@ -6,7 +6,9 @@
         :items="orders.data"
         :search="search"
         :loading="loading.dataTable"
+        :expanded.sync="expanded"
         loading-text="資料載入中... 請稍等"
+        show-expand
       >
         <!-- Table Header -->
         <template v-slot:top>
@@ -40,6 +42,38 @@
           <p v-if="item.is_paid == 1" class="mb-0 success--text">Yes</p>
           <p v-else class="mb-0 danger--text">No</p>
         </template>
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length" class="px-0" elevation="0">
+            <v-simple-table dense class="rounded-0" style="background-color: #EEEEEE;">
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      產品名稱
+                    </th>
+                    <th class="text-left">
+                      數量
+                    </th>
+                    <th class="text-left">
+                      產品售價
+                    </th>
+                    <th class="text-left">
+                      總計金額
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(products, index) in item.products" :key="index">
+                    <td>{{ products.product.title }}</td>
+                    <td>{{ products.qty }} {{ products.product.unit }}</td>
+                    <td>{{ products.product.price }} 元</td>
+                    <td>{{ products.final_total }} 元</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </td>
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -50,6 +84,7 @@ export default {
     return {
       orders: {
         dataHeaders: [
+          { text: '', value: 'data-table-expand' },
           {
             text: '購買時間',
             align: 'start',
@@ -63,8 +98,9 @@ export default {
         data: [],
         total_pages: '',
       },
-      loading:{
-          dataTable:false,
+      expanded: [],
+      loading: {
+        dataTable: false,
       },
       search: '',
     };
@@ -96,3 +132,11 @@ export default {
   },
 };
 </script>
+<style>
+.v-data-table
+  > .v-data-table__wrapper
+  tbody
+  tr.v-data-table__expanded__content {
+  box-shadow: none;
+}
+</style>
