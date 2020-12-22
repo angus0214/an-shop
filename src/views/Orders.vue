@@ -28,6 +28,12 @@
         <template v-slot:item.create_at="{ item }">
           {{ item.create_at | date }}
         </template>
+        <template v-slot:item.user.email="{ item }">
+          <v-btn icon>
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+          {{ item.user.email }}
+        </template>
         <template v-slot:item.products="{ item }">
           <div
             class="my-1"
@@ -109,6 +115,9 @@ export default {
         total_pages: '',
       },
       expanded: [],
+      dialog:{
+        userInfo:false,
+      },
       loading: {
         dataTable: false,
       },
