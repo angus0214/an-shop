@@ -44,7 +44,17 @@
         </template>
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" class="px-0" elevation="0">
-            <v-simple-table dense class="rounded-0" style="background-color: #EEEEEE;">
+            <div
+              class="pa-3 font-weight-bold"
+              style="background-color: #EEEEEE;"
+            >
+              訂單詳細資訊
+            </div>
+            <v-simple-table
+              dense
+              class="rounded-0"
+              style="background-color: #EEEEEE;"
+            >
               <template v-slot:default>
                 <thead>
                   <tr>
