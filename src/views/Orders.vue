@@ -24,12 +24,44 @@
               class="pt-0 mt-0 mr-12"
             ></v-text-field>
           </v-card-title>
+          <!-- userInfo Dialog -->
+          <v-dialog v-model="dialog.userInfo" max-width="290px">
+            <v-card>
+              <v-card-title class="headline">
+                購買人詳細資訊
+              </v-card-title>
+              <v-card-text>
+                <v-icon class="pr-2">
+                  mdi-account
+                </v-icon>
+                {{ orders.tempUser.name }}
+              </v-card-text>
+              <v-card-text>
+                <v-icon class="pr-2">
+                  mdi-email
+                </v-icon>
+                {{ orders.tempUser.email }}
+              </v-card-text>
+              <v-card-text>
+                <v-icon class="pr-2">
+                  mdi-home
+                </v-icon>
+                {{ orders.tempUser.address }}
+              </v-card-text>
+              <v-card-text>
+                <v-icon class="pr-2">
+                  mdi-phone
+                  {{ orders.tempUser.tel }}
+                </v-icon>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </template>
         <template v-slot:item.create_at="{ item }">
           {{ item.create_at | date }}
         </template>
         <template v-slot:item.user.email="{ item }">
-          <v-btn icon>
+          <v-btn icon @click="openUserInfoDialog(item)">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
           {{ item.user.email }}
@@ -113,10 +145,11 @@ export default {
         ],
         data: [],
         total_pages: '',
+        tempUser: {},
       },
       expanded: [],
-      dialog:{
-        userInfo:false,
+      dialog: {
+        userInfo: false,
       },
       loading: {
         dataTable: false,
@@ -144,6 +177,11 @@ export default {
       this.$http.get(api).then((response) => {
         vm.orders.data = vm.orders.data.concat(response.data.orders);
       });
+    },
+    openUserInfoDialog(item) {
+      const vm = this;
+      vm.orders.tempUser = Object.assign({}, item.user);
+      vm.dialog.userInfo = true;
     },
   },
   created() {
