@@ -6,7 +6,7 @@ import Products from '../views/Products.vue';
 import Coupons from '../views/Coupons.vue';
 import Orders from '../views/Orders.vue';
 // shop
-import ShopIndex from '../views/Index.vue';
+import ShopIndex from '../views/shop/Index.vue';
 Vue.use(VueRouter);
 
 const routes = [
