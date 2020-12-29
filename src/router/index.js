@@ -5,6 +5,8 @@ import Dashboard from '../views/Dashboard.vue';
 import Products from '../views/Products.vue';
 import Coupons from '../views/Coupons.vue';
 import Orders from '../views/Orders.vue';
+// shop
+import ShopIndex from '../views/Shop/Index.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -46,8 +48,13 @@ const routes = [
         path: 'orders',
         name: 'Orders',
         component: Orders,
-      }
+      },
     ],
+  },
+  {
+    path: '/index',
+    name: 'ShopIndex',
+    component: ShopIndex,
   },
 ];
 
