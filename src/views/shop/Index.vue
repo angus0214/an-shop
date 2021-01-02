@@ -43,6 +43,13 @@
         </v-row>
         <v-row>
           <v-col cols="12">
+            <div class="d-flex justify-center align-center banner-go-shop">
+              <v-btn>立即瀏覽更多商品</v-btn>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
             <swiper class="swiper" :options="swiperOption">
               <swiper-slide v-for="(item, index) in products.data" :key="index"
                 ><v-card class="mx-auto">
@@ -51,13 +58,12 @@
                     height="200px"
                     src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                   >
-                    
                   </v-img>
-                  <v-card-title>{{item.title}}</v-card-title>
+                  <v-card-title>{{ item.title }}</v-card-title>
                   <v-card-subtitle class="pb-0">
                     Number 10
                   </v-card-subtitle>
-                  <v-card-title>$ {{item.price}}</v-card-title>
+                  <v-card-title>$ {{ item.price }}</v-card-title>
                   <v-card-actions>
                     <v-btn color="orange" text>
                       商品頁面
@@ -160,5 +166,12 @@ export default {
   background-position: center;
   background-image: url(../../assets/banner-sm-2.jpg);
   height: 60vh;
+}
+.banner-go-shop {
+  background-size: cover;
+  background-position: center;
+  -webkit-filter: grayscale(1);
+  background-image: url(../../assets/banner-go-shop.jpg);
+  padding: 80px 0;
 }
 </style>
