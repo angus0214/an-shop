@@ -42,7 +42,35 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12"> </v-col>
+          <v-col cols="12">
+            <swiper class="swiper" :options="swiperOption">
+              <swiper-slide v-for="(item, index) in products.data" :key="index"
+                ><v-card class="mx-auto">
+                  <v-img
+                    class="white--text align-end"
+                    height="200px"
+                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+                  >
+                    
+                  </v-img>
+                  <v-card-title>{{item.title}}</v-card-title>
+                  <v-card-subtitle class="pb-0">
+                    Number 10
+                  </v-card-subtitle>
+                  <v-card-title>$ {{item.price}}</v-card-title>
+                  <v-card-actions>
+                    <v-btn color="orange" text>
+                      商品頁面
+                    </v-btn>
+                    <v-btn color="orange" text>
+                      加入購物車
+                    </v-btn>
+                  </v-card-actions>
+                </v-card></swiper-slide
+              >
+              <div class="swiper-pagination" slot="pagination"></div>
+            </swiper>
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -52,6 +80,20 @@
 export default {
   data() {
     return {
+      swiperOption: {
+        slidesPerView: 4,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        autoplay: {
+          delay: 5000,
+          stopOnLastSlide: false,
+          disableOnInteraction: true,
+        },
+      },
       products: {
         data: [],
       },
@@ -70,7 +112,7 @@ export default {
         {
           text: 'About',
           title: 'Back to Home page',
-          active: true,
+          active: false,
         },
       ],
     };
