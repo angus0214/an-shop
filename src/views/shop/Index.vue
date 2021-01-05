@@ -26,24 +26,103 @@
       <v-container fluid>
         <v-row>
           <v-col cols="12" class="pt-0">
-            <div class="bg banner-main"></div>
+            <div class="bg banner-main">
+              <v-col class="d-flex h-100" cols="4">
+                <div class="banner-card d-flex justify-center  flex-column">
+                  <h2>Watches</h2>
+                  <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Soluta modi minima consequuntur nulla nostrum ducimus!
+                    Expedita consequuntur officiis fugiat, voluptatum sint
+                    magnam vel autem nihil, neque consequatur, dignissimos eum
+                    inventore?
+                  </p>
+                  <v-btn max-width="100px">
+                    More
+                    <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
+                  </v-btn>
+                </div>
+              </v-col>
+            </div>
           </v-col>
           <v-col cols="8" class="pt-0 pr-0">
-            <div class="bg banner-left"></div>
+            <div class="bg banner-left d-flex justify-end">
+              <v-col class="d-flex h-100" cols="4">
+                <div class="banner-card d-flex justify-center  flex-column">
+                  <h2>Rings</h2>
+                  <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Soluta modi minima consequuntur nulla nostrum ducimus!
+                    Expedita consequuntur officiis fugiat, voluptatum sint
+                    magnam vel autem nihil, neque consequatur, dignissimos eum
+                    inventore?
+                  </p>
+                  <v-btn max-width="100px">
+                    More
+                    <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
+                  </v-btn>
+                </div>
+              </v-col>
+            </div>
           </v-col>
           <v-col cols="4" class="pt-0">
-            <div class="bg banner-sm-1"></div>
+            <v-hover v-slot="{ hover }">
+              <div class="bg banner-sm-1">
+                <v-expand-transition>
+                  <div
+                    v-if="hover"
+                    class="d-flex blue-grey darken-1 banner-hover"
+                  >
+                    <v-btn large>
+                      More
+                      <v-icon size="16px">mdi-arrow-right</v-icon>
+                    </v-btn>
+                  </div>
+                </v-expand-transition>
+              </div>
+            </v-hover>
           </v-col>
           <v-col cols="4" class="pt-0 pr-0">
-            <div class="bg banner-sm-2"></div>
+            <v-hover v-slot="{ hover }">
+              <div class="bg banner-sm-2">
+                <v-expand-transition>
+                  <div
+                    v-if="hover"
+                    class="d-flex blue-grey darken-1 banner-hover"
+                  >
+                    <v-btn large>
+                      More
+                      <v-icon size="16px">mdi-arrow-right</v-icon>
+                    </v-btn>
+                  </div>
+                </v-expand-transition>
+              </div>
+            </v-hover>
           </v-col>
           <v-col cols="8" class="pt-0">
-            <div class="bg banner-right"></div>
+            <div class="bg banner-right">
+              <v-col class="d-flex h-100" cols="4">
+                <div class="banner-card d-flex justify-center  flex-column">
+                  <h2>Galsses</h2>
+                  <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Soluta modi minima consequuntur nulla nostrum ducimus!
+                    Expedita consequuntur officiis fugiat, voluptatum sint
+                    magnam vel autem nihil, neque consequatur, dignissimos eum
+                    inventore?
+                  </p>
+                  <v-btn max-width="100px">
+                    More
+                    <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
+                  </v-btn>
+                </div>
+              </v-col>
+            </div>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <div class="d-flex justify-center align-center banner-go-shop">
+            <div class="d-flex justify-center align-center  banner-go-shop">
               <v-btn>立即瀏覽更多商品</v-btn>
             </div>
           </v-col>
@@ -79,7 +158,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-footer v-bind="localAttrs" padless>
+      <v-footer padless>
         <v-card flat tile width="100%" class="blue-grey darken-1 text-center">
           <v-card-text>
             <v-btn v-for="icon in footerIcons" :key="icon" class="mx-4" icon>
@@ -92,7 +171,7 @@
           <v-divider></v-divider>
 
           <v-card-text class="white--text">
-            {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+            {{ new Date().getFullYear() }} — <strong>Angus Wu</strong>
           </v-card-text>
         </v-card>
       </v-footer>
@@ -160,7 +239,10 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
+.h-100 {
+  height: 100%;
+}
 .bg {
   background-size: cover;
   background-repeat: no-repeat;
@@ -169,16 +251,19 @@ export default {
   background-position: right;
   background-image: url(../../assets/banner-main.jpg);
   height: 80vh;
+  padding-left: 10%;
 }
 .banner-left {
   background-position: center;
   background-image: url(../../assets/banner-left.jpg);
   height: 60vh;
+  padding-right: 10%;
 }
 .banner-right {
   background-position: bottom;
   background-image: url(../../assets/banner-right.jpg);
   height: 60vh;
+  padding-left: 10%;
 }
 .banner-sm-1 {
   background-position: center;
@@ -196,5 +281,14 @@ export default {
   -webkit-filter: grayscale(1);
   background-image: url(../../assets/banner-go-shop.jpg);
   padding: 80px 0;
+}
+.banner-card {
+}
+.banner-hover {
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
 }
 </style>
