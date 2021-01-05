@@ -137,31 +137,17 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-footer padless>
-        <v-card flat tile width="100%" class="blue-grey darken-1 text-center">
-          <v-card-text>
-            <v-btn v-for="icon in footerIcons" :key="icon" class="mx-4" icon>
-              <v-icon size="24px">
-                {{ icon }}
-              </v-icon>
-            </v-btn>
-          </v-card-text>
-
-          <v-divider></v-divider>
-
-          <v-card-text class="white--text">
-            {{ new Date().getFullYear() }} — <strong>Angus Wu</strong>
-          </v-card-text>
-        </v-card>
-      </v-footer>
+      <Footer></Footer>
     </v-main>
   </v-app>
 </template>
 <script>
-import Navbar from '../../components/shop/Navbar.vue'
+import Navbar from '../../components/shop/Navbar.vue';
+import Footer from '../../components/shop/Footer.vue';
 export default {
-  components:{
+  components: {
     Navbar,
+    Footer,
   },
   data() {
     return {
@@ -179,12 +165,6 @@ export default {
           disableOnInteraction: true,
         },
       },
-      footerIcons: [
-        'mdi-facebook',
-        'mdi-twitter',
-        'mdi-linkedin',
-        'mdi-instagram',
-      ],
       products: {
         data: [],
       },
