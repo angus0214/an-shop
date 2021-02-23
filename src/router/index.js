@@ -6,6 +6,7 @@ import Products from '../views/Products.vue';
 import Coupons from '../views/Coupons.vue';
 import Orders from '../views/Orders.vue';
 // shop
+import Shop from '../views/shop/Shop.vue';
 import ShopIndex from '../views/shop/Index.vue';
 import ShopProducts from '../views/shop/Products.vue';
 Vue.use(VueRouter);
@@ -53,15 +54,23 @@ const routes = [
     ],
   },
   {
-    path: '/index',
-    name: 'ShopIndex',
-    component: ShopIndex,
-  },
-  {
-    path: '/products',
-    name: 'ShopProducts',
-    component: ShopProducts,
-  },
+    path: '/',
+    name: 'Shop',
+    component: Shop,
+    redirect:'/index',
+    children:[
+      {
+        path: 'index',
+        name: 'ShopIndex',
+        component: ShopIndex,
+      },
+      {
+        path: 'products',
+        name: 'ShopProducts',
+        component: ShopProducts,
+      },
+    ]
+  }
 ];
 
 const router = new VueRouter({
