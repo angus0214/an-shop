@@ -227,8 +227,6 @@ export default {
   background-image: url(../../assets/banner-go-shop.jpg);
   padding: 80px 0;
 }
-.banner-card {
-}
 .banner-hover {
   align-items: center;
   justify-content: center;
