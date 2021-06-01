@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" class="pt-0">
+      <v-col cols="12" sm="12" md="12" class="pt-0">
         <div class="bg banner-main">
           <v-col class="d-flex h-100" cols="4">
             <div class="banner-card d-flex justify-center  flex-column">
@@ -12,7 +12,7 @@
                 consequuntur officiis fugiat, voluptatum sint magnam vel autem
                 nihil, neque consequatur, dignissimos eum inventore?
               </p>
-              <v-btn max-width="100px">
+              <v-btn max-width="100px" color="blue-grey darken-1" dark>
                 More
                 <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
               </v-btn>
@@ -20,7 +20,7 @@
           </v-col>
         </div>
       </v-col>
-      <v-col cols="8" class="pt-0 pr-0">
+      <v-col cols="8" sm="12" md="8" class="pt-0 pr-md-0">
         <div class="bg banner-left d-flex justify-end">
           <v-col class="d-flex h-100" cols="4">
             <div class="banner-card d-flex justify-center  flex-column">
@@ -31,7 +31,7 @@
                 consequuntur officiis fugiat, voluptatum sint magnam vel autem
                 nihil, neque consequatur, dignissimos eum inventore?
               </p>
-              <v-btn max-width="100px">
+              <v-btn max-width="100px" color="blue-grey darken-1" dark>
                 More
                 <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
               </v-btn>
@@ -39,7 +39,7 @@
           </v-col>
         </div>
       </v-col>
-      <v-col cols="4" class="pt-0">
+      <v-col cols="4" sm="6" md="4" class="pt-0">
         <v-hover v-slot="{ hover }">
           <div class="bg banner-sm-1">
             <v-expand-transition>
@@ -53,7 +53,7 @@
           </div>
         </v-hover>
       </v-col>
-      <v-col cols="4" class="pt-0 pr-0">
+      <v-col cols="4" sm="6" md="4" class="pt-0 pr-md-0">
         <v-hover v-slot="{ hover }">
           <div class="bg banner-sm-2">
             <v-expand-transition>
@@ -67,7 +67,7 @@
           </div>
         </v-hover>
       </v-col>
-      <v-col cols="8" class="pt-0">
+      <v-col cols="8" sm="12" md="8" class="pt-0">
         <div class="bg banner-right">
           <v-col class="d-flex h-100" cols="4">
             <div class="banner-card d-flex justify-center  flex-column">
@@ -78,7 +78,7 @@
                 consequuntur officiis fugiat, voluptatum sint magnam vel autem
                 nihil, neque consequatur, dignissimos eum inventore?
               </p>
-              <v-btn max-width="100px">
+              <v-btn max-width="100px" color="blue-grey darken-1" dark>
                 More
                 <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
               </v-btn>
@@ -90,7 +90,7 @@
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-center align-center  banner-go-shop">
-          <v-btn>立即瀏覽更多商品</v-btn>
+          <v-btn color="blue-grey lighten-2" dark>立即瀏覽更多商品</v-btn>
         </div>
       </v-col>
     </v-row>
