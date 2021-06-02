@@ -37,19 +37,16 @@
         </v-col>
         <v-col cols="9">
           <v-row>
-            <v-col cols="4">
+            <v-col cols="4" v-for="(item, index) in products" :key="index">
               <v-card>
-                <v-img
-                  height="200"
-                  src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-                ></v-img>
-                <v-card-title>Cafe Badilico</v-card-title>
-                <v-card-text>$556</v-card-text>
+                <v-img height="250" :src="item.imageUrl"></v-img>
+                <v-card-title>{{ item.title }}</v-card-title>
+                <v-card-text>$ {{ item.price }}</v-card-text>
                 <v-card-actions>
-                  <v-btn color="deep-purple lighten-2" text @click="reserve">
+                  <v-btn color="deep-purple lighten-2" text>
                     詳細資訊
                   </v-btn>
-                  <v-btn color="deep-purple lighten-2" text @click="reserve">
+                  <v-btn color="deep-purple lighten-2" text>
                     加入購物車
                   </v-btn>
                 </v-card-actions>
