@@ -43,9 +43,7 @@
                 <v-card-title>{{ item.title }}</v-card-title>
                 <v-card-text>$ {{ item.price }}</v-card-text>
                 <v-card-actions>
-                  <v-btn color="deep-purple lighten-2" text>
-                    詳細資訊
-                  </v-btn>
+                  <DialogProduct :product="item"></DialogProduct>
                   <v-btn color="deep-purple lighten-2" text>
                     加入購物車
                   </v-btn>
@@ -68,7 +66,11 @@
   </div>
 </template>
 <script>
+import DialogProduct from '../../components/shop/DialogProduct.vue';
 export default {
+  components: {
+    DialogProduct,
+  },
   data() {
     return {
       products: [],
