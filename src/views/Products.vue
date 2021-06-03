@@ -119,7 +119,7 @@
                           </v-col>
                           <v-col cols="12">
                             <v-autocomplete
-                              :items="['Man', 'Lady', 'Fashion', 'Outdoor']"
+                              :items="['Man', 'Lady', 'Fashion', 'Best Sell','character']"
                               label="Hashtag"
                               v-model="products.tempProduct.description"
                               multiple
