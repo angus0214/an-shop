@@ -8,7 +8,7 @@
     </v-img>
     <v-container>
       <v-row>
-        <v-col cols="3">
+        <v-col sm="12" md="3">
           <v-card class="mx-auto">
             <v-list>
               <v-list-group
@@ -27,9 +27,12 @@
                 <v-list-item
                   v-for="child in item.items"
                   :key="child.title"
-                  @click="focusMenuItem = child.value"
+                  @click="
+                    focusMenuItem.type = item.type;
+                    focusMenuItem.category = child.value;
+                  "
                   class="menu_item"
-                  :class="{ active: focusMenuItem === child.value }"
+                  :class="{ active: focusMenuItem.category === child.value }"
                   link
                 >
                   <v-list-item-content>
@@ -42,9 +45,14 @@
             </v-list>
           </v-card>
         </v-col>
-        <v-col cols="9">
+        <v-col sm="12" md="9">
           <v-row>
-            <v-col cols="4" v-for="(item, index) in products" :key="index">
+            <v-col
+              sm="12"
+              md="4"
+              v-for="(item, index) in filterProducts"
+              :key="index"
+            >
               <v-card>
                 <v-img height="250" :src="item.imageUrl"></v-img>
                 <v-card-title>{{ item.title }}</v-card-title>
@@ -57,12 +65,15 @@
                 </v-card-actions>
                 <v-divider class="mx-4"></v-divider>
                 <v-card-title>分類標籤</v-card-title>
-                <v-card-text>
-                  <v-chip-group column>
-                    <v-chip dark color="blue-grey lighten-2">5:30PM</v-chip>
-                    <v-chip dark color="blue-grey lighten-2">7:30P</v-chip>
-                    <v-chip dark color="blue-grey lighten-2">8:00PM</v-chip>
-                  </v-chip-group>
+                <v-card-text class="d-flex flex-wrap">
+                  <v-chip
+                    class="ma-1"
+                    dark
+                    color="blue-grey lighten-2"
+                    v-for="(category, index) in item.description"
+                    :key="index"
+                    >{{ category }}</v-chip
+                  >
                 </v-card-text>
               </v-card>
             </v-col>
@@ -81,18 +92,23 @@ export default {
   data() {
     return {
       products: [],
-      focusMenuItem: 'all',
+      focusMenuItem: {
+        type: 'products',
+        category: 'all',
+      },
       menuItems: [
         {
           action: 'mdi-ticket',
           active: true,
           items: [
+            { title: '全部商品', value: 'all' },
             { title: '手錶', value: 'watches' },
             { title: '墨鏡', value: 'sunglasses' },
-            { title: '戒指', value: 'rings' },
-            { title: '項鍊', value: 'neck' },
-            { title: '耳環', value: 'earrings' },
+            { title: '戒指', value: 'ring' },
+            { title: '項鍊', value: 'necklace' },
+            { title: '耳環', value: 'earings' },
           ],
+          type: 'products',
           title: '商品分類',
         },
         {
@@ -102,12 +118,38 @@ export default {
             { title: 'Lady', value: 'Lady' },
             { title: 'Fashion', value: 'Fashion' },
             { title: 'Best Sell', value: 'Best Sell' },
-            { title: 'Character', value: 'Character' },
+            { title: 'Character', value: 'character' },
           ],
+          type: 'tag',
           title: '標籤分類',
         },
       ],
     };
+  },
+  computed: {
+    filterProducts() {
+      const vm = this;
+      let data = [];
+      if (vm.focusMenuItem.type === 'products') {
+        if (vm.focusMenuItem.category === 'all') {
+          data = vm.products;
+        } else {
+          data = vm.products.filter(function(item) {
+            return item.category === vm.focusMenuItem.category;
+          });
+        }
+      } else if (vm.focusMenuItem.type === 'tag') {
+        vm.products.forEach(function(el) {
+          el.description.forEach(function(item) {
+            if (item === vm.focusMenuItem.category) {
+              data.push(el);
+            }
+          });
+        });
+        console.log(data);
+      }
+      return data;
+    },
   },
   methods: {
     // 取得所有商品資料
