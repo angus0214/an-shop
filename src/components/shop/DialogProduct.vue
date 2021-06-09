@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" width="60%">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on" text>
           詳細資訊
@@ -8,28 +8,54 @@
       </template>
 
       <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
+        <v-card-title class="text-h5 blue-grey darken-1 white--text">
           {{ product.title }}
         </v-card-title>
+        <div class="d-flex flex-wrap">
+          <v-col cols="6">
+            <v-img :src="product.imageUrl"> </v-img>
+          </v-col>
+          <v-col cols="6">
+            <div class="text-h4 font-weight-bold mb-2">{{ product.title }}</div>
+            <v-chip-group class="mb-6">
+              <v-chip
+                small
+                class="mr-1"
+                dark
+                color="blue-grey lighten-2"
+                v-for="(category, index) in product.description"
+                :key="index"
+                >{{ category }}</v-chip
+              ></v-chip-group
+            >
+            <div class="text-subtitle-2 grey--text  text--darken-2">
+              建議售價
+            </div>
+            <v-divider></v-divider>
+            <div class="d-flex py-3">
+              <div
+                class="text-h6 text-decoration-line-through grey--text mr-3 darken-2"
+              >
+                NT${{ product.origin_price }}
+              </div>
+              <div class="text-h6 blue-grey--text  text--darken-1">
+                NT${{ product.price }}
+              </div>
+            </div>
 
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="dialog = false">
-            I accept
-          </v-btn>
-        </v-card-actions>
+            <v-divider></v-divider>
+            <div class="mt-6">
+              <v-select dense outlined :items="selectItems" label="請選擇數量"></v-select>
+            </div>
+            <div>
+              <v-btn depressed dark color="blue-grey lighten-1" class="mr-3">加入購物車</v-btn>
+              <v-btn depressed >繼續購物</v-btn>
+            </div>
+          </v-col>
+          <v-col cols="12">
+            產品資訊
+          </v-col>
+        </div>
       </v-card>
     </v-dialog>
   </div>
@@ -42,6 +68,7 @@ export default {
   data() {
     return {
       dialog: false,
+      selectItems :[1,2,3,4,5,6,7,8,9,10]
     };
   },
 };

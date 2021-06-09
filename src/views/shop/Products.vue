@@ -93,13 +93,12 @@ export default {
     return {
       products: [],
       focusMenuItem: {
-        type: 'products',
-        category: 'all',
+        type: 'tag',
+        category: 'Man',
       },
       menuItems: [
         {
           action: 'mdi-ticket',
-          active: true,
           items: [
             { title: '全部商品', value: 'all' },
             { title: '手錶', value: 'watches' },
