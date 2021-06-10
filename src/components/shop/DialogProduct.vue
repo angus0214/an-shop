@@ -45,11 +45,18 @@
 
             <v-divider></v-divider>
             <div class="mt-6">
-              <v-select dense outlined :items="selectItems" label="請選擇數量"></v-select>
+              <v-select
+                dense
+                outlined
+                :items="selectItems"
+                label="請選擇數量"
+              ></v-select>
             </div>
             <div>
-              <v-btn depressed dark color="blue-grey lighten-1" class="mr-3">加入購物車</v-btn>
-              <v-btn depressed >繼續購物</v-btn>
+              <v-btn depressed dark color="blue-grey lighten-1" class="mr-3"
+                >加入購物車</v-btn
+              >
+              <v-btn depressed>繼續購物</v-btn>
             </div>
           </v-col>
           <v-col cols="12">
@@ -68,7 +75,7 @@ export default {
   data() {
     return {
       dialog: false,
-      selectItems :[1,2,3,4,5,6,7,8,9,10]
+      selectItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     };
   },
 };
