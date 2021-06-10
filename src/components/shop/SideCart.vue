@@ -1,33 +1,67 @@
 <template>
   <div class="side-cart-wrap" :class="{ active: isActive }">
     <div class="side-cart">
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left"></th>
-              <th class="text-left">
-                品名
-              </th>
-              <th class="text-left">
-                售價
-              </th>
-              <th class="text-left">
-                數量
-              </th>
-              <th class="text-left"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>name</td>
-              <td>name</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <div>總計 : $20000</div>
-      <v-btn>結帳去</v-btn>
+      <div v-if="carts.length > 0">
+        <div
+          class="text-center white--text text-h6 font-weight-bold py-4"
+          style="background-color:#78909C;"
+        >
+          我的購物車
+        </div>
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left"></th>
+                <th class="text-left">
+                  品名
+                </th>
+                <th class="text-left">
+                  售價
+                </th>
+                <th class="text-left">
+                  數量
+                </th>
+                <th class="text-left"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(product, index) in carts" :key="index">
+                <td class="pa-2">
+                  <v-img
+                    max-height="90"
+                    max-width="90"
+                    :src="product.product.imageUrl"
+                  ></v-img>
+                </td>
+                <td>{{ product.product.title }}</td>
+                <td>{{ product.product.price }}</td>
+                <td>{{ product.qty }}</td>
+                <td>
+                  <v-btn icon color="black" @click="delCart(product.id)">
+                    <v-icon size="16">mdi-close</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <v-divider></v-divider>
+        <div class="text-right pa-5" style="background-color:#ffffff">
+          總計 : {{ totalPrice }}
+        </div>
+        <div class="py-2 px-2">
+          <v-btn dark block depressed color="blue-grey lighten-1">結帳去</v-btn>
+        </div>
+      </div>
+      <div v-else class="d-flex flex-column px-6 justify-center h-100">
+        <div class="text-h6 font-weight-bold mb-5">
+          目前沒有任何商品唷
+        </div>
+        <v-btn dark depressed color="blue-grey lighten-1" @click="hide"
+          >前往購物</v-btn
+        >
+      </div>
     </div>
     <div class="overlay" @click="hide"></div>
   </div>
@@ -37,9 +71,19 @@ export default {
   props: {
     isActive: Boolean,
   },
+  data() {
+    return {
+      carts: [],
+    };
+  },
   computed: {
-    sideCartActive() {
-      return this.isActive;
+    totalPrice() {
+      let total = 0;
+      this.carts.forEach(function(el) {
+        let onePrice = el.product.price * el.qty;
+        total += onePrice;
+      });
+      return total;
     },
   },
   methods: {
@@ -48,9 +92,18 @@ export default {
     },
     getCarts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      // const vm = this;
+      const vm = this;
       this.$http.get(api).then((response) => {
-        console.log(response.data);
+        vm.carts = response.data.data.carts;
+        console.log(vm.carts);
+      });
+    },
+    delCart(id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`;
+      const vm = this;
+      this.$http.delete(api).then((response) => {
+        console.log(response);
+        vm.getCarts();
       });
     },
   },
@@ -64,7 +117,8 @@ export default {
   .side-cart {
     position: fixed;
     height: 100vh;
-    width: 20%;
+    max-height: 100vh;
+    overflow-y: scroll;
     right: 0;
     top: 0;
     background-color: #eceff1;
@@ -91,5 +145,8 @@ export default {
   .overlay {
     display: block;
   }
+}
+.h-100 {
+  height: 100%;
 }
 </style>
