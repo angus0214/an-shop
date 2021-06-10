@@ -13,14 +13,14 @@
           >{{ item.text }}</v-btn
         >
       </v-toolbar-items>
-      <v-btn icon class="ml-10" @click="sideCartActive = true">
+      <v-btn icon class="ml-10" @click="getCarts">
         <v-icon>mdi-cart</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-toolbar>
-    <SideCart :isActive="sideCartActive" @hideCart="hideSideCart"></SideCart>
+    <SideCart :carts="carts" :isActive="sideCartActive" @hideCart="hideSideCart"></SideCart>
   </v-card>
 </template>
 <script>
@@ -49,13 +49,22 @@ export default {
           active: false,
         },
       ],
-      sideCartActive:false,
+      carts:[],
+      sideCartActive: false,
     };
   },
-  methods:{
-    hideSideCart(){
+  methods: {
+    hideSideCart() {
       this.sideCartActive = false;
-    }
-  }
+    },
+    getCarts() {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
+      const vm = this;
+      this.$http.get(api).then((response) => {
+        vm.carts = response.data.data.carts;
+        vm.sideCartActive = true;
+      });
+    },
+  },
 };
 </script>

@@ -70,11 +70,7 @@
 export default {
   props: {
     isActive: Boolean,
-  },
-  data() {
-    return {
-      carts: [],
-    };
+    carts:Array,
   },
   computed: {
     totalPrice() {
@@ -90,7 +86,7 @@ export default {
     hide() {
       this.$emit('hideCart');
     },
-    getCarts() {
+    updateCarts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
       const vm = this;
       this.$http.get(api).then((response) => {
@@ -103,12 +99,9 @@ export default {
       const vm = this;
       this.$http.delete(api).then((response) => {
         console.log(response);
-        vm.getCarts();
+        vm.updateCarts();
       });
     },
-  },
-  mounted() {
-    this.getCarts();
   },
 };
 </script>
