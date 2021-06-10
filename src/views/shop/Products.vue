@@ -59,7 +59,11 @@
                 <v-card-text>$ {{ item.price }}</v-card-text>
                 <v-card-actions>
                   <DialogProduct :product="item"></DialogProduct>
-                  <v-btn color="deep-purple lighten-2" text>
+                  <v-btn
+                    color="deep-purple lighten-2"
+                    text
+                    @click="addToCart(item.id, 1)"
+                  >
                     加入購物車
                   </v-btn>
                 </v-card-actions>
@@ -156,9 +160,18 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
       const vm = this;
       this.$http.get(api).then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         vm.products = response.data.products;
       });
+    },
+    addToCart(id, itemQty) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
+      // const vm = this;
+      this.$http
+        .post(api, { data: { product_id: id, qty: itemQty } })
+        .then((response) => {
+          console.log(response.data);
+        });
     },
   },
   created() {

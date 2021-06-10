@@ -50,10 +50,16 @@
                 outlined
                 :items="selectItems"
                 label="請選擇數量"
+                v-model="tempQty"
               ></v-select>
             </div>
             <div>
-              <v-btn depressed dark color="blue-grey lighten-1" class="mr-3"
+              <v-btn
+                depressed
+                dark
+                color="blue-grey lighten-1"
+                class="mr-3"
+                @click="addToCart"
                 >加入購物車</v-btn
               >
               <v-btn depressed>繼續購物</v-btn>
@@ -76,7 +82,19 @@ export default {
     return {
       dialog: false,
       selectItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      tempQty: 1,
     };
+  },
+  methods: {
+    addToCart() {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
+      const vm = this;
+      this.$http
+        .post(api, { data: { product_id: vm.product.id, qty: vm.tempQty } })
+        .then((response) => {
+          console.log(response.data);
+        });
+    },
   },
 };
 </script>
