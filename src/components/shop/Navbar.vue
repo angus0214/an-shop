@@ -13,17 +13,22 @@
           >{{ item.text }}</v-btn
         >
       </v-toolbar-items>
-      <v-btn icon class="ml-10">
+      <v-btn icon class="ml-10" @click="sideCartActive = true">
         <v-icon>mdi-cart</v-icon>
       </v-btn>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
       </v-btn>
     </v-toolbar>
+    <SideCart :isActive="sideCartActive" @hideCart="hideSideCart"></SideCart>
   </v-card>
 </template>
 <script>
+import SideCart from './SideCart';
 export default {
+  components: {
+    SideCart,
+  },
   data() {
     return {
       nav: [
@@ -44,7 +49,13 @@ export default {
           active: false,
         },
       ],
+      sideCartActive:false,
     };
   },
+  methods:{
+    hideSideCart(){
+      this.sideCartActive = false;
+    }
+  }
 };
 </script>
