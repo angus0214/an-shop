@@ -110,6 +110,8 @@
                             outlined
                             append-outer-icon="mdi-send"
                             placeholder="輸入優惠碼"
+                            v-model="couponCode"
+                            @click:append-outer="useCoupon"
                           >
                           </v-text-field>
                         </div>
@@ -120,13 +122,13 @@
                             >總計金額</v-col
                           >
                           <v-col cols="6" class="text-right text-subtitle-2"
-                            >$ 10000</v-col
+                            >$ {{ totalPrice }}</v-col
                           >
                           <v-col cols="6" class="text-right text-subtitle-2"
                             >優惠折抵</v-col
                           >
                           <v-col cols="6" class="text-right text-subtitle-2"
-                            >-$ 10999</v-col
+                            >-$ {{ discount }}</v-col
                           >
                           <v-col
                             cols="6"
@@ -136,8 +138,12 @@
                           <v-col
                             cols="6"
                             class="text-right text-subtitle-1 blue-grey--text"
-                            >$ 100000</v-col
                           >
+                            <div v-if="final_total_price != 0">
+                              $ {{ final_total_price }}
+                            </div>
+                            <div v-else>$ {{ totalPrice }}</div>
+                          </v-col>
                         </v-row>
                       </v-col>
                     </v-row>
@@ -177,6 +183,7 @@
                             append-icon="mdi-account"
                             color="blue-grey lighten-2"
                             hint="請確認輸入姓名與身分證上一致"
+                            v-model="user.name"
                           >
                           </v-text-field>
                         </v-col>
@@ -192,6 +199,7 @@
                             append-icon="mdi-phone"
                             color="blue-grey lighten-2"
                             hint="屆時貨運人員會以此號碼聯絡取貨"
+                            v-model="user.tel"
                           ></v-text-field
                         ></v-col>
                         <v-col cols="6">
@@ -205,6 +213,7 @@
                             dense
                             append-icon="mdi-email"
                             color="blue-grey lighten-2"
+                            v-model="user.email"
                           ></v-text-field
                         ></v-col>
                         <v-col cols="6"
@@ -218,6 +227,7 @@
                             dense
                             append-icon="mdi-map-marker"
                             color="blue-grey lighten-2"
+                            v-model="user.address"
                           ></v-text-field
                         ></v-col>
                         <v-col cols="12">
@@ -230,6 +240,7 @@
                             outlined
                             color="blue-grey lighten-2"
                             name="input-7-4"
+                            v-model="message"
                           ></v-textarea
                         ></v-col>
                       </v-row>
@@ -246,7 +257,7 @@
                         dark
                         depressed
                         color="blue-grey lighten-1"
-                        @click="stepEl = 3"
+                        @click="createOrder"
                         >下一步</v-btn
                       >
                     </div>
@@ -254,7 +265,10 @@
                 </div>
               </v-stepper-content>
               <v-stepper-content step="3">
-                <div class="d-flex justify-center">
+                <div
+                  class="d-flex justify-center"
+                  v-if="order.products.length > 0"
+                >
                   <v-card flat width="80%">
                     <v-expansion-panels class="mb-5">
                       <v-expansion-panel>
@@ -265,11 +279,48 @@
                           詳細訂單內容
                         </v-expansion-panel-header>
                         <v-expansion-panel-content class="py-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco laboris nisi ut aliquip
-                          ex ea commodo consequat.
+                          <v-simple-table>
+                            <template v-slot:default>
+                              <thead>
+                                <tr>
+                                  <th class="text-left"></th>
+                                  <th
+                                    class="text-left text-h6 font-weight-bold"
+                                  >
+                                    品名
+                                  </th>
+                                  <th
+                                    class="text-left text-h6 font-weight-bold"
+                                  >
+                                    售價
+                                  </th>
+                                  <th
+                                    class="text-left text-h6 font-weight-bold"
+                                  >
+                                    數量
+                                  </th>
+                                  <th class="text-left"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  v-for="(product, index) in order.products"
+                                  :key="index"
+                                >
+                                  <td class="pa-2">
+                                    <v-img
+                                      max-height="90"
+                                      max-width="90"
+                                      :src="product.product.imageUrl"
+                                    ></v-img>
+                                  </td>
+                                  <td>{{ product.product.title }}</td>
+                                  <td>{{ product.product.price }}</td>
+                                  <td>{{ product.qty }}</td>
+                                </tr>
+                              </tbody>
+                            </template>
+                          </v-simple-table>
                         </v-expansion-panel-content>
                       </v-expansion-panel>
                     </v-expansion-panels>
@@ -285,33 +336,31 @@
                       <v-col cols="6" class="pl-7 font-weight-bold"
                         >訂購人姓名</v-col
                       >
-                      <v-col cols="6">訂購人</v-col>
+                      <v-col cols="6">{{ order.user.name }}</v-col>
                       <v-col cols="6" class="pl-7 font-weight-bold"
                         >訂購人電話</v-col
                       >
-                      <v-col cols="6">0931000566</v-col>
+                      <v-col cols="6">{{ order.user.tel }}</v-col>
                       <v-col cols="6" class="pl-7 font-weight-bold"
                         >訂購人 Email</v-col
                       >
-                      <v-col cols="6">google@gmail.com</v-col>
+                      <v-col cols="6">{{ order.user.email }}</v-col>
                       <v-col cols="6" class="pl-7 font-weight-bold"
                         >訂購人地址</v-col
                       >
-                      <v-col cols="6">XXX</v-col>
+                      <v-col cols="6">{{ order.user.address }}</v-col>
+                      <v-col cols="6" class="pl-7 font-weight-bold"
+                        >總計金額</v-col
+                      >
+                      <v-col cols="6">{{ order.total }}</v-col>
                     </v-row>
                     <v-divider></v-divider>
-                    <div class="d-flex justify-space-between mt-4">
-                      <v-btn
-                        depressed
-                        color="blue-grey lighten-5"
-                        @click="stepEl = 1"
-                        >修改資料</v-btn
-                      >
+                    <div class="d-flex justify-end mt-4">
                       <v-btn
                         dark
                         depressed
                         color="blue-grey lighten-1"
-                        @click="stepEl = 3"
+                        @click="pay"
                         >確認付款</v-btn
                       >
                     </div>
@@ -329,8 +378,19 @@
 export default {
   data() {
     return {
-      stepEl: 3,
+      stepEl: 1,
       carts: [],
+      couponCode: '',
+      final_total_price: 0,
+      user: {},
+      message: '',
+      order: {
+        user: {},
+        products: [],
+        create_at: '',
+        total: 0,
+        id: '',
+      },
     };
   },
   methods: {
@@ -344,6 +404,72 @@ export default {
     countQty(item) {
       item = item + 1;
       console.log(item);
+    },
+    useCoupon() {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`;
+      const vm = this;
+      this.$http
+        .post(api, { data: { code: vm.couponCode } })
+        .then((response) => {
+          vm.final_total_price = response.data.data.final_total;
+          console.log(response.data);
+        });
+    },
+    createOrder() {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`;
+      const vm = this;
+      this.$http
+        .post(api, { data: { user: vm.user }, message: vm.message })
+        .then((response) => {
+          if (response.data.success) {
+            vm.getOrder(response.data.orderId);
+            vm.stepEl = 3;
+          } else {
+            console.log(response.data);
+          }
+        });
+    },
+    getOrder(id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`;
+      const vm = this;
+      this.$http.get(api).then((response) => {
+        console.log(response.data);
+        vm.order.user = response.data.order.user;
+        vm.order.id = response.data.order.id;
+        vm.order.create_at = response.data.order.create_at;
+        vm.order.total = response.data.order.total;
+        for (let el in response.data.order.products) {
+          vm.order.products.push(response.data.order.products[el]);
+        }
+      });
+    },
+    pay() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`;
+
+      this.$http.post(api).then((response) => {
+        console.log(response.data);
+      });
+    },
+  },
+  computed: {
+    totalPrice() {
+      let price = 0;
+      this.carts.forEach((el) => {
+        let onePrice = el.product.price * el.qty;
+        price += onePrice;
+      });
+      return price;
+    },
+    discount() {
+      let dc = '';
+      const vm = this;
+      if (vm.final_total_price === 0) {
+        dc = 0;
+      } else {
+        dc = vm.totalPrice - vm.final_total_price;
+      }
+      return dc;
     },
   },
   created() {
