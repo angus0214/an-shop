@@ -367,6 +367,27 @@
                   </v-card>
                 </div>
               </v-stepper-content>
+              <v-stepper-content step="4">
+                <div class="d-flex justify-center">
+                  <v-card flat width="80%">
+                    <div
+                      class="text-center text-h5 font-weight-bold blue-grey--text mb-3"
+                    >
+                      {{ orderMsg.title }}
+                    </div>
+                    <div class="text-center mb-3">{{ orderMsg.message }}</div>
+                    <div class="d-flex justify-center">
+                      <v-btn
+                        depresse
+                        dark
+                        color="blue-grey lighten-1"
+                        to="/products"
+                        >繼續選購</v-btn
+                      >
+                    </div>
+                  </v-card>
+                </div>
+              </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
         </v-col>
@@ -390,6 +411,10 @@ export default {
         create_at: '',
         total: 0,
         id: '',
+      },
+      orderMsg: {
+        title: '完成訂購',
+        message: '感謝您訂購 An-Shop 產品',
       },
     };
   },
@@ -448,7 +473,14 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`;
 
       this.$http.post(api).then((response) => {
-        console.log(response.data);
+        if (response.data.success) {
+          vm.orderMsg.title = '完成訂購';
+          vm.orderMsg.message = '感謝您訂購 An-Shop 產品';
+        } else {
+          vm.orderMsg.title = '訂購失敗';
+          vm.orderMsg.message = '很抱歉，訂單出錯，麻煩您重新選購商品';
+        }
+        vm.stepEl = 4;
       });
     },
   },
