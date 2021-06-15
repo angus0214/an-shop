@@ -38,7 +38,7 @@
             <v-stepper-items>
               <v-stepper-content step="1">
                 <div class="d-flex justify-center">
-                  <v-card flat class="my-6" width="80%">
+                  <v-card flat class="my-6" width="80%" v-if="carts.length > 0">
                     <v-divider></v-divider>
                     <v-simple-table>
                       <template v-slot:default>
@@ -163,6 +163,10 @@
                         >下一步</v-btn
                       >
                     </div>
+                  </v-card>
+                  <v-card flat class="my-6" width="80%" v-else>
+                    <div class="text-center blue-grey--text font-weight-bold text-h5 mb-3">目前購物車沒有任何商品</div>
+                    <div class="d-flex justify-center"><v-btn dark depressed color="blue-grey lighten-1" to="/products">前往選購</v-btn></div>
                   </v-card>
                 </div>
               </v-stepper-content>
