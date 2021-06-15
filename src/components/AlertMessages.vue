@@ -3,7 +3,7 @@
     <v-card v-for="(item, i) in messages" :key="i">
       <v-alert
         dense
-        text    
+        text
         border="left"
         :type="item.status"
         close-icon="mdi-close"
@@ -62,8 +62,9 @@ export default {
 </script>
 <style>
 .alert-custom {
-  position: absolute;
+  position: fixed;
   right: 24px;
   z-index: 999;
+  top: 10px;
 }
 </style>

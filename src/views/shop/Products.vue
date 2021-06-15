@@ -13,7 +13,7 @@
             <v-list>
               <v-list-group
                 v-for="item in menuItems"
-                :key="item.title"
+                :key="item.id"
                 v-model="item.active"
                 :prepend-icon="item.action"
                 no-action
@@ -46,42 +46,54 @@
           </v-card>
         </v-col>
         <v-col sm="12" md="9">
-          <v-row>
-            <v-col
-              sm="12"
-              md="4"
-              v-for="(item, index) in filterProducts"
-              :key="index"
-            >
-              <v-card>
-                <v-img height="250" :src="item.imageUrl"></v-img>
-                <v-card-title>{{ item.title }}</v-card-title>
-                <v-card-text>$ {{ item.price }}</v-card-text>
-                <v-card-actions>
-                  <DialogProduct :product="item"></DialogProduct>
-                  <v-btn
-                    color="deep-purple lighten-2"
-                    text
-                    @click="addToCart(item.id, 1)"
-                  >
-                    加入購物車
-                  </v-btn>
-                </v-card-actions>
-                <v-divider class="mx-4"></v-divider>
-                <v-card-title>分類標籤</v-card-title>
-                <v-card-text class="d-flex flex-wrap">
-                  <v-chip
-                    class="ma-1"
-                    dark
-                    color="blue-grey lighten-2"
-                    v-for="(category, index) in item.description"
-                    :key="index"
-                    >{{ category }}</v-chip
-                  >
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
+          <div v-if="filterProducts.length > 0">
+            <v-row>
+              <v-col
+                sm="12"
+                md="4"
+                v-for="(item, index) in filterProducts"
+                :key="index"
+              >
+                <v-card :disabled="loading.isLoading && index == loading.index">
+                  <template slot="progress">
+                    <v-progress-linear
+                      color="blue-grey"
+                      height="10"
+                      indeterminate
+                      bottom
+                      absolute
+                    ></v-progress-linear>
+                  </template>
+                  <v-img height="250" :src="item.imageUrl"></v-img>
+                  <v-card-title>{{ item.title }}</v-card-title>
+                  <v-card-text>$ {{ item.price }}</v-card-text>
+                  <v-card-actions>
+                    <DialogProduct :product="item"></DialogProduct>
+                    <v-btn
+                      :loading="loading.isLoading && index == loading.index"
+                      color="deep-purple lighten-2"
+                      text
+                      @click="addToCart(item.id, 1, index)"
+                    >
+                      加入購物車
+                    </v-btn>
+                  </v-card-actions>
+                  <v-divider class="mx-4"></v-divider>
+                  <v-card-title>分類標籤</v-card-title>
+                  <v-card-text class="d-flex flex-wrap">
+                    <v-chip
+                      class="ma-1"
+                      dark
+                      color="blue-grey lighten-2"
+                      v-for="(category, index) in item.description"
+                      :key="index"
+                      >{{ category }}</v-chip
+                    >
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -97,11 +109,12 @@ export default {
     return {
       products: [],
       focusMenuItem: {
-        type: 'tag',
-        category: 'Man',
+        type: 'products',
+        category: 'all',
       },
       menuItems: [
         {
+          active: true,
           action: 'mdi-ticket',
           items: [
             { title: '全部商品', value: 'all' },
@@ -127,6 +140,10 @@ export default {
           title: '標籤分類',
         },
       ],
+      loading: {
+        index: -1,
+        isLoading: false,
+      },
     };
   },
   computed: {
@@ -149,7 +166,6 @@ export default {
             }
           });
         });
-        console.log(data);
       }
       return data;
     },
@@ -162,15 +178,38 @@ export default {
       this.$http.get(api).then((response) => {
         // console.log(response.data);
         vm.products = response.data.products;
+        vm.products.forEach(function(el) {
+          el.loading = false;
+        });
       });
     },
-    addToCart(id, itemQty) {
+    addToCart(id, itemQty, index) {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      // const vm = this;
+      const vm = this;
+      vm.loading.isLoading = true;
+      vm.loading.index = index;
+      vm.filterProducts[index].loading = true;
       this.$http
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
-          console.log(response.data);
+          if (response.data.success) {
+            console.log(response.data);
+            vm.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增至購物車`,
+              'success',
+              'mdi-check-circle'
+            );
+            vm.loading.isLoading = false;
+          } else {
+            vm.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增失敗`,
+              'danger',
+              'mdi-alert-outline'
+            );
+            vm.loading.isLoading = false;
+          }
         });
     },
   },

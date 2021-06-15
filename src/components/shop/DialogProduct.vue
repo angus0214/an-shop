@@ -59,14 +59,12 @@
                 dark
                 color="blue-grey lighten-1"
                 class="mr-3"
+                :loading="loading"
                 @click="addToCart"
                 >加入購物車</v-btn
               >
-              <v-btn depressed>繼續購物</v-btn>
+              <v-btn depressed @click="dialog = false">繼續購物</v-btn>
             </div>
-          </v-col>
-          <v-col cols="12">
-            產品資訊
           </v-col>
         </div>
       </v-card>
@@ -83,16 +81,34 @@ export default {
       dialog: false,
       selectItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       tempQty: 1,
+      loading: false,
     };
   },
   methods: {
     addToCart() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
       const vm = this;
+      vm.loading = true;
       this.$http
         .post(api, { data: { product_id: vm.product.id, qty: vm.tempQty } })
         .then((response) => {
-          console.log(response.data);
+          if (response.data.success) {
+            this.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增至購物車`,
+              'success',
+              'mdi-check-circle'
+            );
+            vm.loading = false;
+          } else {
+            this.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增失敗`,
+              'danger',
+              'mdi-alert-outline'
+            );
+            vm.loading = false;
+          }
         });
     },
   },
