@@ -165,106 +165,150 @@
                     </div>
                   </v-card>
                   <v-card flat class="my-6" width="80%" v-else>
-                    <div class="text-center blue-grey--text font-weight-bold text-h5 mb-3">目前購物車沒有任何商品</div>
-                    <div class="d-flex justify-center"><v-btn dark depressed color="blue-grey lighten-1" to="/products">前往選購</v-btn></div>
+                    <div
+                      class="text-center blue-grey--text font-weight-bold text-h5 mb-3"
+                    >
+                      目前購物車沒有任何商品
+                    </div>
+                    <div class="d-flex justify-center">
+                      <v-btn
+                        dark
+                        depressed
+                        color="blue-grey lighten-1"
+                        to="/products"
+                        >前往選購</v-btn
+                      >
+                    </div>
                   </v-card>
                 </div>
               </v-stepper-content>
               <v-stepper-content step="2">
                 <div class="d-flex justify-center">
                   <v-card flat width="80%">
-                    <v-form>
-                      <v-row>
-                        <v-col cols="6">
-                          <div
-                            class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
-                          >
-                            收件人姓名
-                          </div>
-                          <v-text-field
-                            outlined
-                            dense
-                            append-icon="mdi-account"
-                            color="blue-grey lighten-2"
-                            hint="請確認輸入姓名與身分證上一致"
-                            v-model="user.name"
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <div
-                            class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
-                          >
-                            收件人電話
-                          </div>
-                          <v-text-field
-                            outlined
-                            dense
-                            append-icon="mdi-phone"
-                            color="blue-grey lighten-2"
-                            hint="屆時貨運人員會以此號碼聯絡取貨"
-                            v-model="user.tel"
-                          ></v-text-field
-                        ></v-col>
-                        <v-col cols="6">
-                          <div
-                            class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
-                          >
-                            Email
-                          </div>
-                          <v-text-field
-                            outlined
-                            dense
-                            append-icon="mdi-email"
-                            color="blue-grey lighten-2"
-                            v-model="user.email"
-                          ></v-text-field
-                        ></v-col>
-                        <v-col cols="6"
-                          ><div
-                            class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
-                          >
-                            收件地址
-                          </div>
-                          <v-text-field
-                            outlined
-                            dense
-                            append-icon="mdi-map-marker"
-                            color="blue-grey lighten-2"
-                            v-model="user.address"
-                          ></v-text-field
-                        ></v-col>
-                        <v-col cols="12">
-                          <div
-                            class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
-                          >
-                            備註
-                          </div>
-                          <v-textarea
-                            outlined
-                            color="blue-grey lighten-2"
-                            name="input-7-4"
-                            v-model="message"
-                          ></v-textarea
-                        ></v-col>
-                      </v-row>
-                    </v-form>
-                    <v-divider></v-divider>
-                    <div class="d-flex justify-space-between mt-4">
-                      <v-btn
-                        depressed
-                        color="blue-grey lighten-5"
-                        @click="stepEl = 1"
-                        >返回</v-btn
-                      >
-                      <v-btn
-                        dark
-                        depressed
-                        color="blue-grey lighten-1"
-                        @click="createOrder"
-                        >下一步</v-btn
-                      >
-                    </div>
+                    <ValidationObserver v-slot="{ valid }">
+                      <v-form @submit.prevent="submit">
+                        <v-row>
+                          <v-col cols="6">
+                            <div
+                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            >
+                              收件人姓名
+                            </div>
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="姓名欄位"
+                              rules="required"
+                            >
+                              <v-text-field
+                                outlined
+                                dense
+                                :error-messages="errors"
+                                append-icon="mdi-account"
+                                color="blue-grey lighten-2"
+                                hint="請確認輸入姓名與身分證上一致"
+                                v-model="user.name"
+                              >
+                              </v-text-field
+                            ></validation-provider>
+                          </v-col>
+                          <v-col cols="6">
+                            <div
+                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            >
+                              收件人電話
+                            </div>
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="電話號碼"
+                              rules="required|numeric|min:10"
+                            >
+                              <v-text-field
+                                outlined
+                                dense
+                                :error-messages="errors"
+                                append-icon="mdi-phone"
+                                color="blue-grey lighten-2"
+                                hint="屆時貨運人員會以此號碼聯絡取貨"
+                                v-model="user.tel"
+                              ></v-text-field
+                            ></validation-provider>
+                          </v-col>
+                          <v-col cols="6">
+                            <div
+                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            >
+                              Email
+                            </div>
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="Email"
+                              rules="required|email"
+                            >
+                              <v-text-field
+                                outlined
+                                dense
+                                append-icon="mdi-email"
+                                :error-messages="errors"
+                                color="blue-grey lighten-2"
+                                v-model="user.email"
+                              ></v-text-field
+                            ></validation-provider>
+                          </v-col>
+                          <v-col cols="6"
+                            ><div
+                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            >
+                              收件地址
+                            </div>
+                            <validation-provider
+                              v-slot="{ errors }"
+                              name="地址"
+                              rules="required"
+                            >
+                              <v-text-field
+                                outlined
+                                dense
+                                append-icon="mdi-map-marker"
+                                :error-messages="errors"
+                                color="blue-grey lighten-2"
+                                v-model="user.address"
+                              ></v-text-field
+                            ></validation-provider>
+                          </v-col>
+                          <v-col cols="12">
+                            <div
+                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            >
+                              備註
+                            </div>
+                            <v-textarea
+                              outlined
+                              color="blue-grey lighten-2"
+                              name="input-7-4"
+                              v-model="message"
+                            ></v-textarea>
+                          </v-col>
+                          <v-col cols="12">
+                            <div class="d-flex justify-space-between">
+                              <v-btn
+                                @click="sterEl = 1"
+                                depressed
+                                color="blue-grey lighten-5"
+                                >返回購物車
+                              </v-btn>
+                              <v-btn
+                                :disabled="!valid"
+                                depressed
+                                class="white--text"
+                                color="blue-grey lighten-1"
+                                @click="createOrder"
+                                >下一步
+                              </v-btn>
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-form>
+                    </ValidationObserver>
                   </v-card>
                 </div>
               </v-stepper-content>
@@ -400,7 +444,13 @@
   </div>
 </template>
 <script>
+import { ValidationObserver } from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
 export default {
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
   data() {
     return {
       stepEl: 1,
@@ -423,6 +473,9 @@ export default {
     };
   },
   methods: {
+    submit(status) {
+      console.log(status)
+    },
     getCarts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
       const vm = this;
