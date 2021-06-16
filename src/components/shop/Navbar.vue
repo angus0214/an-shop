@@ -42,6 +42,7 @@ export default {
           text: 'Shop',
           title: 'Go to Shopping',
           active: false,
+          to: '/products',
         },
         {
           text: 'About',

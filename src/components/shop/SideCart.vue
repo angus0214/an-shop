@@ -51,7 +51,7 @@
           總計 : {{ totalPrice }}
         </div>
         <div class="py-2 px-2">
-          <v-btn dark block depressed color="blue-grey lighten-1">結帳去</v-btn>
+          <v-btn dark block depressed color="blue-grey lighten-1" to="/carts" @click="hide">結帳去</v-btn>
         </div>
       </div>
       <div v-else class="d-flex flex-column px-6 justify-center h-100">
