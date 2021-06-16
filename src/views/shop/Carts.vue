@@ -180,7 +180,7 @@
                     <ValidationObserver v-slot="{ valid }">
                       <v-form @submit.prevent="submit">
                         <v-row>
-                          <v-col cols="6">
+                          <v-col cols="12" sm="6">
                             <div
                               class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
                             >
@@ -203,7 +203,7 @@
                               </v-text-field
                             ></validation-provider>
                           </v-col>
-                          <v-col cols="6">
+                          <v-col cols="12" sm="6">
                             <div
                               class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
                             >
@@ -225,7 +225,7 @@
                               ></v-text-field
                             ></validation-provider>
                           </v-col>
-                          <v-col cols="6">
+                          <v-col cols="12" sm="6">
                             <div
                               class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
                             >
@@ -246,7 +246,7 @@
                               ></v-text-field
                             ></validation-provider>
                           </v-col>
-                          <v-col cols="6"
+                          <v-col cols="12" sm="6"
                             ><div
                               class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
                             >
@@ -323,7 +323,7 @@
                             <template v-slot:default>
                               <thead>
                                 <tr>
-                                  <th class="text-left"></th>
+                                  <th class="text-left d-none d-sm-table-cell"></th>
                                   <th
                                     class="text-left text-h6 font-weight-bold"
                                   >
@@ -339,7 +339,6 @@
                                   >
                                     數量
                                   </th>
-                                  <th class="text-left"></th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -347,7 +346,7 @@
                                   v-for="(product, index) in order.products"
                                   :key="index"
                                 >
-                                  <td class="pa-2">
+                                  <td class="pa-2  d-none d-sm-table-cell">
                                     <v-img
                                       max-height="90"
                                       max-width="90"
