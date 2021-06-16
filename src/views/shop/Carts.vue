@@ -44,14 +44,14 @@
                       <template v-slot:default>
                         <thead>
                           <tr>
-                            <th class="text-left"></th>
-                            <th class="text-left text-h6 font-weight-bold">
+                            <th class="text-left  d-none d-sm-table-cell"></th>
+                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
                               品名
                             </th>
-                            <th class="text-left text-h6 font-weight-bold">
+                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
                               售價
                             </th>
-                            <th class="text-left text-h6 font-weight-bold">
+                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
                               數量
                             </th>
                             <th class="text-left"></th>
@@ -59,7 +59,7 @@
                         </thead>
                         <tbody>
                           <tr v-for="(product, index) in carts" :key="index">
-                            <td class="pa-2">
+                            <td class="pa-2 d-none d-sm-table-cell">
                               <v-img
                                 max-height="90"
                                 max-width="90"
@@ -68,19 +68,7 @@
                             </td>
                             <td>{{ product.product.title }}</td>
                             <td>{{ product.product.price }}</td>
-                            <td>
-                              <v-btn-toggle active-class="none">
-                                <v-btn text>
-                                  <v-icon>mdi-chevron-left</v-icon>
-                                </v-btn>
-                                <v-btn text>
-                                  {{ product.qty }}
-                                </v-btn>
-                                <v-btn text @click="countQty(product.qty)">
-                                  <v-icon>mdi-chevron-right</v-icon>
-                                </v-btn>
-                              </v-btn-toggle>
-                            </td>
+                            <td>{{ product.qty }}</td>
                             <td>
                               <v-btn
                                 icon
@@ -96,7 +84,7 @@
                     </v-simple-table>
                     <v-divider></v-divider>
                     <v-row class="mt-5">
-                      <v-col cols="6">
+                      <v-col cols="12" sm="12" md="6">
                         <div
                           class="rounded pa-3 coupon-tip blue-grey--text text--darken-2 mb-4"
                         >
@@ -116,15 +104,19 @@
                           </v-text-field>
                         </div>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col cols="12" sm="12" md="6">
                         <v-row>
-                          <v-col cols="6" class="text-right text-subtitle-2"
+                          <v-col
+                            cols="6"
+                            class="text-sm-left text-md-right text-subtitle-2"
                             >總計金額</v-col
                           >
                           <v-col cols="6" class="text-right text-subtitle-2"
                             >$ {{ totalPrice }}</v-col
                           >
-                          <v-col cols="6" class="text-right text-subtitle-2"
+                          <v-col
+                            cols="6"
+                            class="text-sm-left text-md-right text-subtitle-2"
                             >優惠折抵</v-col
                           >
                           <v-col cols="6" class="text-right text-subtitle-2"
@@ -132,7 +124,7 @@
                           >
                           <v-col
                             cols="6"
-                            class="text-right text-subtitle-1 blue-grey--text"
+                            class="text-sm-left text-md-right text-subtitle-1 blue-grey--text"
                             >應付金額</v-col
                           >
                           <v-col
@@ -474,7 +466,7 @@ export default {
   },
   methods: {
     submit(status) {
-      console.log(status)
+      console.log(status);
     },
     getCarts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
@@ -540,6 +532,14 @@ export default {
         vm.stepEl = 4;
       });
     },
+    delCart(id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`;
+      const vm = this;
+      this.$http.delete(api).then((response) => {
+        console.log(response);
+        vm.getCarts();
+      });
+    },
   },
   computed: {
     totalPrice() {
@@ -582,5 +582,13 @@ export default {
   left: 1px;
   top: 0;
   background-color: #78909c;
+}
+@media screen and (max-width: 600px) {
+  .v-data-table__wrapper table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 }
 </style>
