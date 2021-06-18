@@ -3,10 +3,15 @@
     <div class="side-cart">
       <div v-if="carts.length > 0">
         <div
-          class="text-center white--text text-h6 font-weight-bold py-4"
+          class="text-center pa-4 d-flex justify-center"
           style="background-color:#78909C;"
         >
-          我的購物車
+          <div class="white--text text-h6 font-weight-bold mr-auto">
+            我的購物車
+          </div>
+          <v-icon large class="white--text d-sm-none" @click="hide"
+            >mdi-close</v-icon
+          >
         </div>
         <v-simple-table>
           <template v-slot:default>
@@ -51,7 +56,15 @@
           總計 : {{ totalPrice }}
         </div>
         <div class="py-2 px-2">
-          <v-btn dark block depressed color="blue-grey lighten-1" to="/carts" @click="hide">結帳去</v-btn>
+          <v-btn
+            dark
+            block
+            depressed
+            color="blue-grey lighten-1"
+            to="/carts"
+            @click="hide"
+            >結帳去</v-btn
+          >
         </div>
       </div>
       <div v-else class="d-flex flex-column px-6 justify-center h-100">
@@ -70,7 +83,7 @@
 export default {
   props: {
     isActive: Boolean,
-    carts:Array,
+    carts: Array,
   },
   computed: {
     totalPrice() {
@@ -137,6 +150,11 @@ export default {
   }
   .overlay {
     display: block;
+  }
+}
+@media screen and (max-width: 600px) {
+  .side-cart {
+    width: 100vw;
   }
 }
 .h-100 {
