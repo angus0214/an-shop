@@ -17,6 +17,7 @@
                 v-model="item.active"
                 :prepend-icon="item.action"
                 no-action
+                color="blue-grey darken-1"
               >
                 <template v-slot:activator>
                   <v-list-item-content>
@@ -86,9 +87,14 @@
                     <v-chip
                       class="ma-1"
                       dark
-                      color="blue-grey lighten-2"
                       v-for="(category, index) in item.description"
                       :key="index"
+                      color="blue-grey "
+                      @click="
+                        focusMenuItem.type = 'tag';
+                        focusMenuItem.category = category;
+                        menuItems[1].active = true;
+                      "
                       >{{ category }}</v-chip
                     >
                   </v-card-text>
@@ -98,7 +104,16 @@
           </div>
         </v-col>
       </v-row>
-      <v-btn class="mx-2 d-md-none" fab dark fixed bottom right color="teal lighten-1" @click="goTop">
+      <v-btn
+        class="mx-2 d-md-none"
+        fab
+        dark
+        fixed
+        bottom
+        right
+        color="teal lighten-1"
+        @click="goTop"
+      >
         <v-icon dark large>
           mdi-chevron-up
         </v-icon>
@@ -221,7 +236,7 @@ export default {
     },
     goTop() {
       const el = document.getElementById('menu-start');
-      el.scrollIntoView({behavior:"smooth"})
+      el.scrollIntoView({ behavior: 'smooth' });
     },
   },
   created() {
@@ -231,7 +246,7 @@ export default {
 </script>
 <style lang="css">
 .menu_item:before {
-  background-color: #007aff;
+  background-color: #b0bec5;
   bottom: 0;
   content: '';
   left: 0;
@@ -242,6 +257,6 @@ export default {
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 .menu_item.active {
-  background-color: #bbdefb;
+  background-color: #CFD8DC;
 }
 </style>
