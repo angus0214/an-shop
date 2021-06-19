@@ -6,10 +6,10 @@
       position="center 20%"
     >
     </v-img>
-    <v-container>
+    <v-container id="menu-start">
       <v-row>
-        <v-col sm="12" md="3">
-          <v-card class="mx-auto">
+        <v-col cols="12" sm="12" md="3" style="position: relative;">
+          <v-card class="mx-auto" style="position: sticky;top:15px;">
             <v-list>
               <v-list-group
                 v-for="item in menuItems"
@@ -45,14 +45,16 @@
             </v-list>
           </v-card>
         </v-col>
-        <v-col sm="12" md="9">
+        <v-col cols="12" sm="12" md="9">
           <div v-if="filterProducts.length > 0">
             <v-row>
               <v-col
-                sm="12"
+                cols="12"
+                sm="6"
                 md="4"
                 v-for="(item, index) in filterProducts"
                 :key="index"
+                class="pt-0"
               >
                 <v-card :disabled="loading.isLoading && index == loading.index">
                   <template slot="progress">
@@ -96,6 +98,11 @@
           </div>
         </v-col>
       </v-row>
+      <v-btn class="mx-2 d-md-none" fab dark fixed bottom right color="teal lighten-1" @click="goTop">
+        <v-icon dark large>
+          mdi-chevron-up
+        </v-icon>
+      </v-btn>
     </v-container>
   </div>
 </template>
@@ -211,6 +218,10 @@ export default {
             vm.loading.isLoading = false;
           }
         });
+    },
+    goTop() {
+      const el = document.getElementById('menu-start');
+      el.scrollIntoView({behavior:"smooth"})
     },
   },
   created() {
