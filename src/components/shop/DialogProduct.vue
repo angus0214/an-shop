@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="60%">
+    <v-dialog v-model="dialog" max-width="80%">
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on" text>
           詳細資訊
@@ -12,10 +12,10 @@
           {{ product.title }}
         </v-card-title>
         <div class="d-flex flex-wrap">
-          <v-col cols="6">
-            <v-img :src="product.imageUrl"> </v-img>
+          <v-col cols="12" sm="6">
+            <v-img max-height="500"  :src="product.imageUrl"> </v-img>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" sm="6">
             <div class="text-h4 font-weight-bold mb-2">{{ product.title }}</div>
             <v-chip-group class="mb-6">
               <v-chip
