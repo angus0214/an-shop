@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
-import Dashboard from '../views/Dashboard.vue';
+import Admin from '../views/Admin.vue';
 import Products from '../views/Products.vue';
 import Coupons from '../views/Coupons.vue';
 import Orders from '../views/Orders.vue';
+import Dashboard from '../views/Dashboard.vue';
 // shop
 import Shop from '../views/shop/Shop.vue';
 import ShopIndex from '../views/shop/Index.vue';
@@ -32,11 +33,16 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: { requiresAuth: true },
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    // meta: { requiresAuth: true },
     children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
+      },
       {
         path: 'products',
         name: 'Products',
