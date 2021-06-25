@@ -2,6 +2,7 @@
   <div>
     <v-card class="mt-8">
       <v-data-table
+        v-if="orders"
         :headers="orders.dataHeaders"
         :items="orders.data"
         :search="search"
@@ -25,7 +26,7 @@
             ></v-text-field>
           </v-card-title>
           <!-- userInfo Dialog -->
-          <v-dialog v-model="dialog.userInfo" max-width="290px">
+          <v-dialog v-model="dialog.userInfo" max-width="400px">
             <v-card>
               <v-card-title class="headline">
                 購買人詳細資訊
@@ -51,8 +52,8 @@
               <v-card-text>
                 <v-icon class="pr-2">
                   mdi-phone
-                  {{ orders.tempUser.tel }}
                 </v-icon>
+                {{ orders.tempUser.tel }}
               </v-card-text>
             </v-card>
           </v-dialog>
@@ -61,10 +62,12 @@
           {{ item.create_at | date }}
         </template>
         <template v-slot:item.user.email="{ item }">
-          <v-btn icon @click="openUserInfoDialog(item)">
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-          {{ item.user.email }}
+          <div class="d-flex align-center">
+            <v-btn icon @click="openUserInfoDialog(item)">
+              <v-icon>mdi-account-box</v-icon>
+            </v-btn>
+            <div v-if="item.user">{{ item.user.email }}</div>
+          </div>
         </template>
         <template v-slot:item.products="{ item }">
           <div
@@ -73,25 +76,27 @@
             :key="index"
           >
             {{ product.product.title }} : {{ product.qty }}
-            {{ product.product.unit }}
           </div>
         </template>
         <template v-slot:item.is_paid="{ item }">
           <p v-if="item.is_paid == 1" class="mb-0 success--text">Yes</p>
           <p v-else class="mb-0 danger--text">No</p>
         </template>
+        <template v-slot:item.edit="{ item }">
+          <v-btn icon color="success" @click="openEditDialog(item)">
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </template>
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" class="px-0" elevation="0">
             <div
               class="pa-3 font-weight-bold"
-              style="background-color: #EEEEEE;"
             >
               訂單詳細資訊
             </div>
             <v-simple-table
               dense
               class="rounded-0"
-              style="background-color: #EEEEEE;"
             >
               <template v-slot:default>
                 <thead>
@@ -124,12 +129,60 @@
         </template>
       </v-data-table>
     </v-card>
+    <v-dialog
+      v-model="editDialog"
+      max-width="650px"
+      v-if="orders.tempOrder.user"
+    >
+      <v-card>
+        <v-card-title style="background-color: blue;">
+          <span class="headline white--text">編輯訂單</span>
+        </v-card-title>
+        <v-container>
+          <v-row>
+            <v-col cols="12">訂購人資料</v-col>
+            <v-col cols="6" class="pa-3"
+              ><v-text-field
+                label="訂購人姓名"
+                v-model="orders.tempOrder.user.name"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="6" class="pa-3"
+              ><v-text-field
+                label="訂購人 E-mail"
+                v-model="orders.tempOrder.user.email"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="6" class="pa-3"
+              ><v-text-field
+                label="訂購人電話"
+                v-model="orders.tempOrder.user.tel"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="6" class="pa-3"
+              ><v-text-field
+                label="訂購人地址"
+                v-model="orders.tempOrder.user.address"
+              ></v-text-field
+            ></v-col>
+            <v-col cols="12">
+              <v-checkbox
+                label="是否付款"
+                v-model="orders.tempOrder.is_paid"
+              ></v-checkbox>
+            </v-col>
+            <v-btn @click="updateOrder">確認</v-btn>
+          </v-row></v-container
+        >
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      editDialog: false,
       orders: {
         dataHeaders: [
           { text: '', value: 'data-table-expand' },
@@ -139,13 +192,15 @@ export default {
             value: 'create_at',
           },
           { text: '購買人 Email', value: 'user.email' },
-          { text: '購買款項', value: 'products', sortable: false },
+          { text: '購買品項', value: 'products', sortable: false },
           { text: '應付金額', value: 'total' },
           { text: '是否付款', value: 'is_paid', filterable: false },
+          { text: '編輯', value: 'edit', sortable: false },
         ],
         data: [],
         total_pages: '',
         tempUser: {},
+        tempOrder: {},
       },
       expanded: [],
       dialog: {
@@ -164,6 +219,7 @@ export default {
       vm.loading.dataTable = true;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`;
       this.$http.get(api).then((response) => {
+        console.log(response.data);
         vm.orders.total_pages = response.data.pagination.total_pages;
         for (let i = 1; i <= vm.orders.total_pages; i++) {
           this.getOrders(i);
@@ -178,10 +234,40 @@ export default {
         vm.orders.data = vm.orders.data.concat(response.data.orders);
       });
     },
+    updateOrder() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/order/${vm.orders.tempOrder.id}`;
+      this.$http.put(api, { data: vm.orders.tempOrder }).then((response) => {
+        if (response.data.success) {
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'success',
+            'mdi-check-circle'
+          );
+        } else {
+          vm.$bus.$emit(
+            'messsage:push',
+            response.data.message,
+            'danger',
+            'mdi-alert-outline'
+          );
+        }
+        vm.getAllOrders();
+        vm.editDialog = false;
+      });
+    },
     openUserInfoDialog(item) {
       const vm = this;
       vm.orders.tempUser = Object.assign({}, item.user);
+      console.log(vm.orders.tempUser);
       vm.dialog.userInfo = true;
+    },
+    openEditDialog(item) {
+      const vm = this;
+      vm.orders.tempOrder = Object.assign({}, item);
+      console.log(vm.orders.tempOrder);
+      vm.editDialog = true;
     },
   },
   created() {
