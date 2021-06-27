@@ -62,7 +62,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main>
+    <v-main style="background-color:#CFD8DC">
       <v-container>
         <Alert></Alert>
         <router-view></router-view>
@@ -81,7 +81,11 @@ export default {
     return {
       drawer: 'true',
       navItems: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/admin/dashboard' },
+        {
+          title: 'Dashboard',
+          icon: 'mdi-view-dashboard',
+          link: '/admin/dashboard',
+        },
         {
           title: 'Products',
           icon: 'mdi-folder-multiple',
