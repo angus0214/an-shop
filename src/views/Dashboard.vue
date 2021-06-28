@@ -71,12 +71,16 @@
       </v-col>
       <v-col cols="12" sm="8">
         <v-card flat class="pa-4 chart-container">
-          <LineChart :chartdata="chartdata" :options="options" />
+          <div class="text-h6 font-weight-bold">
+            本年度每月訂單數量
+          </div>
+          <LineChart :chartData="ordersChartData" />
         </v-card>
       </v-col>
       <v-col cols="12" sm="4">
         <v-card flat class="chart-container pa-4">
-          <PieChart :chartdata="chartdata" :options="options" />
+          <div class="text-h6 font-weight-bold">上架商品比例</div>
+          <PieChart />
         </v-card>
       </v-col>
       <v-col cols="12"></v-col>
@@ -86,36 +90,167 @@
 <script>
 import LineChart from '../components/LineChart.vue';
 import PieChart from '../components/PieChart.vue';
+import moment from 'moment';
 export default {
   components: { LineChart, PieChart },
   data() {
     return {
-      chartdata: {
-        labels: ['January', 'February'],
-        datasets: [
-          {
-            label: 'Data One',
-            backgroundColor: ['#f87979', 'black'],
-            data: [40, 20],
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
+      loaded: false,
+      ordersChartData: null,
+      orders: {
+        data: [],
+        total_pages: 0,
       },
     };
   },
+  methods: {
+     getAllOrders() {
+      const vm = this;
+      vm.orders.data = [];
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`;
+       this.$http.get(api).then((response) => {
+        vm.orders.total_pages = response.data.pagination.total_pages;
+        for (let i = 1; i <= vm.orders.total_pages; i++) {
+          this.getOrders(i);
+          console.log(1)
+        }
+      });
+      
+    },
+     getOrders(page = 1) {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${page}`;
+       this.$http.get(api).then((response) => {
+        vm.orders.data = vm.orders.data.concat(response.data.orders);
+        vm.fillData()
+      });
+    },
+    async fillData() {
+      const vm = this;
+      console.log(vm.orders.data);
+      let orderschart = {
+        labels: [
+          'JAN',
+          'FEB',
+          'MAR',
+          'APR',
+          'MAY',
+          'JUN',
+          'JUL',
+          'AUG',
+          'SEP',
+          'OCT',
+          'NOV',
+          'DEC',
+        ],
+        datasets: [
+          {
+            label: 'Orders',
+            backgroundColor: ['#80DEEA'],
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            borderColor: ['#00838F'],
+          },
+        ],
+      };
+      if (vm.orders.data.length > 0) {
+        vm.orders.data.forEach(function(el) {
+          let year = moment(el.create_at * 1000).format('YYYY');
+          let month = moment(el.create_at * 1000).format('MM');
+
+          if (year === '2021') {
+            switch (month) {
+              case '01':
+                orderschart.datasets[0].data[0] =
+                  orderschart.datasets[0].data[0] + 1;
+                break;
+              case '02':
+                orderschart.datasets[0].data[1] =
+                  orderschart.datasets[0].data[1] + 1;
+                break;
+              case '03':
+                orderschart.datasets[0].data[2] =
+                  orderschart.datasets[0].data[2] + 1;
+                break;
+              case '04':
+                orderschart.datasets[0].data[3] =
+                  orderschart.datasets[0].data[3] + 1;
+                break;
+              case '05':
+                orderschart.datasets[0].data[4] =
+                  orderschart.datasets[0].data[4] + 1;
+                break;
+              case '06':
+                orderschart.datasets[0].data[5] =
+                  orderschart.datasets[0].data[5] + 1;
+                break;
+              case '07':
+                orderschart.datasets[0].data[6] =
+                  orderschart.datasets[0].data[6] + 1;
+                break;
+              case '08':
+                orderschart.datasets[0].data[7] =
+                  orderschart.datasets[0].data[7] + 1;
+                break;
+              case '09':
+                orderschart.datasets[0].data[8] =
+                  orderschart.datasets[0].data[8] + 1;
+                break;
+              case '10':
+                orderschart.datasets[0].data[9] =
+                  orderschart.datasets[0].data[9] + 1;
+                break;
+              case '11':
+                orderschart.datasets[0].data[10] =
+                  orderschart.datasets[0].data[10] + 1;
+                break;
+              case '12':
+                orderschart.datasets[0].data[11] =
+                  orderschart.datasets[0].data[11] + 1;
+                break;
+            }
+          }
+        });
+      }
+      vm.ordersChartData = orderschart;
+      vm.loaded = true;
+    },
+    con(){
+      console.log('OK')
+    }
+  },
+  computed: {
+    test2() {
+      let orderschart = {
+        labels: [
+          'JAN',
+          'FEB',
+          'MAR',
+          'APR',
+          'MAY',
+          'JUN',
+          'JUL',
+          'AUG',
+          'SEP',
+          'OCT',
+          'NOV',
+          'DEC',
+        ],
+        datasets: [
+          {
+            label: 'Orders',
+            backgroundColor: ['#80DEEA'],
+            data: [0, 0, 0, 2, 0, 6, 0, 5, 0, 0, 0, 0],
+            borderColor: ['#00838F'],
+          },
+        ],
+      };
+      return orderschart;
+    },
+  },
+  mounted() {},
+  created() {
+    this.getAllOrders();
+  },
 };
 </script>
-<style lang="scss">
-.chart-container {
-  flex-grow: 1;
-  min-height: 0;
-
-  > div {
-    position: relative;
-    height: 100%;
-  }
-}
-</style>
+<style lang="scss"></style>
