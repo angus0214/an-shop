@@ -1,6 +1,9 @@
 <template>
   <div>
     <v-row class="pa-8">
+      <v-col cols="12">
+        <div class="text-center text-sm-left text-h4 font-weight-bold blue-grey--text text--darken-2">Dashboard</div>
+      </v-col>
       <v-col cols="12" sm="3">
         <v-card flat>
           <div class="d-flex justify-space-between align-center pa-3">
