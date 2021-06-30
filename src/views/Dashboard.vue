@@ -126,13 +126,11 @@ export default {
       for (let i = 1; i <= total_page; i++) {
         let getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`;
         await this.$http.get(getApi).then((response) => {
-          console.log(2);
           vm.orders.data = vm.orders.data.concat(response.data.orders);
         });
       }
       // 
       vm.fillData();
-      console.log(typeof vm.ordersChartData);
       vm.loaded = true;
     },
     fillData() {
@@ -219,35 +217,6 @@ export default {
         }
       });
       vm.ordersChartData = Object.assign({}, orderschart);
-    },
-  },
-  computed: {
-    test2() {
-      let orderschart = {
-        labels: [
-          'JAN',
-          'FEB',
-          'MAR',
-          'APR',
-          'MAY',
-          'JUN',
-          'JUL',
-          'AUG',
-          'SEP',
-          'OCT',
-          'NOV',
-          'DEC',
-        ],
-        datasets: [
-          {
-            label: 'Orders',
-            backgroundColor: ['#80DEEA'],
-            data: [0, 0, 0, 2, 0, 6, 0, 5, 0, 0, 0, 0],
-            borderColor: ['#00838F'],
-          },
-        ],
-      };
-      return orderschart;
     },
   },
   async mounted() {
