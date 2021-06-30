@@ -6,20 +6,21 @@
         :items="coupons.data"
         :search="search"
         :loading="loading.dataTable"
+        mobile-breakpoint="0"
         loading-text="資料載入中... 請稍等"
       >
         <template v-slot:top>
-          <v-card-title class="mb-4 font-weight-bold">
-            Coupons
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-              class="pt-0 mt-0 mr-12"
-            ></v-text-field>
+          <div class="pa-3 d-flex justify-space-between align-center">
+            <div class="text-h4 font-weight-bold">Coupons</div>
+            <div class="d-none d-sm-block">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </div>
             <!-- edit dialog -->
             <v-dialog v-model="dialog.editDialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
@@ -132,35 +133,43 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <!-- del dialog -->
-            <v-dialog v-model="dialog.delDialog" max-width="500px">
-              <v-card :loading="loading.delete" :disabled="loading.delete">
-                <template slot="progress">
-                  <v-progress-linear
-                    color="danger"
-                    height="6"
-                    indeterminate
-                    absolute
-                    bottom
-                  ></v-progress-linear>
-                </template>
-                <v-card-title class="headline text-center white--text danger"
-                  >是否刪除以下優惠券</v-card-title
+          </div>
+          <div class="d-sm-none px-3 mb-6">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </div>
+
+          <!-- del dialog -->
+          <v-dialog v-model="dialog.delDialog" max-width="500px">
+            <v-card :loading="loading.delete" :disabled="loading.delete">
+              <template slot="progress">
+                <v-progress-linear
+                  color="danger"
+                  height="6"
+                  indeterminate
+                  absolute
+                  bottom
+                ></v-progress-linear>
+              </template>
+              <v-card-title class="headline text-center white--text danger"
+                >是否刪除以下優惠券</v-card-title
+              >
+              <v-card-title> {{ coupons.tempCoupon.title }} </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelDialog()"
+                  >Cancel</v-btn
                 >
-                <v-card-title> {{ coupons.tempCoupon.title }} </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelDialog()"
-                    >Cancel</v-btn
-                  >
-                  <v-btn color="danger" text @click="deleteCoupon"
-                    >Delete</v-btn
-                  >
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-card-title>
+                <v-btn color="danger" text @click="deleteCoupon">Delete</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </template>
         <template v-slot:item.percent="{ item }">
           {{ item.percent }}%
@@ -260,7 +269,7 @@ export default {
       if (!vm.coupons.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
         httpMethod = 'put';
-        alertMessage = '編輯'
+        alertMessage = '編輯';
       }
       this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
         (response) => {
@@ -292,15 +301,14 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
       vm.loading.delete = true;
       this.$http.delete(api).then((response) => {
-        if(response.data.success){
+        if (response.data.success) {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
             'success',
             'mdi-check-circle'
           );
-        }
-        else{
+        } else {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
