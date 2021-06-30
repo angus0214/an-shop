@@ -8,23 +8,34 @@
         :search="search"
         :loading="loading.dataTable"
         :expanded.sync="expanded"
+        mobile-breakpoint="0"
         loading-text="資料載入中... 請稍等"
         show-expand
       >
         <!-- Table Header -->
         <template v-slot:top>
-          <v-card-title class="mb-4 font-weight-bold">
-            Orders
-            <v-spacer></v-spacer>
+          <div class="pa-3 d-flex justify-space-between align-center">
+            <div class="text-h4 font-weight-bold">Orders</div>
+            <div class="d-none d-sm-block">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </div>
+          </div>
+          <div class="d-sm-none px-3 mb-6">
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
               label="Search"
               single-line
               hide-details
-              class="pt-0 mt-0 mr-12"
             ></v-text-field>
-          </v-card-title>
+          </div>
+
           <!-- userInfo Dialog -->
           <v-dialog v-model="dialog.userInfo" max-width="400px">
             <v-card>
@@ -89,15 +100,10 @@
         </template>
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" class="px-0" elevation="0">
-            <div
-              class="pa-3 font-weight-bold"
-            >
+            <div class="pa-3 font-weight-bold">
               訂單詳細資訊
             </div>
-            <v-simple-table
-              dense
-              class="rounded-0"
-            >
+            <v-simple-table dense class="rounded-0">
               <template v-slot:default>
                 <thead>
                   <tr>
