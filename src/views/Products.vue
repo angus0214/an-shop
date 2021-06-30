@@ -6,20 +6,22 @@
         :items="products.data"
         :search="search"
         :loading="loading.dataTable"
+        mobile-breakpoint="0"
         loading-text="資料載入中... 請稍等"
       >
         <template v-slot:top>
-          <v-card-title class="mb-4 font-weight-bold">
-            Product
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-              class="pt-0 mt-0 mr-12"
-            ></v-text-field>
+          <div class="pa-3 d-flex justify-space-between align-center">
+            <div class="text-h4 font-weight-bold">Product</div>
+            <div class="d-none d-sm-block">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+              ></v-text-field>
+            </div>
+
             <!-- edit dialog -->
             <v-dialog v-model="editDialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
@@ -119,7 +121,13 @@
                           </v-col>
                           <v-col cols="12">
                             <v-autocomplete
-                              :items="['Man', 'Lady', 'Fashion', 'Best Sell','character']"
+                              :items="[
+                                'Man',
+                                'Lady',
+                                'Fashion',
+                                'Best Sell',
+                                'character',
+                              ]"
                               label="Hashtag"
                               v-model="products.tempProduct.description"
                               multiple
@@ -157,36 +165,47 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-            <!-- del dialog -->
-            <v-dialog v-model="delDialog" max-width="500px">
-              <v-card :loading="loading.delete" :disabled="loading.delete">
-                <template slot="progress">
-                  <v-progress-linear
-                    color="danger"
-                    height="6"
-                    indeterminate
-                    absolute
-                    bottom
-                  ></v-progress-linear>
-                </template>
-                <v-card-title class="headline text-center white--text danger"
-                  >是否刪除以下商品</v-card-title
+          </div>
+          <v-spacer></v-spacer>
+          <div class="d-sm-none px-3 mb-6">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+            ></v-text-field>
+          </div>
+
+          <!-- del dialog -->
+          <v-dialog v-model="delDialog" max-width="500px">
+            <v-card :loading="loading.delete" :disabled="loading.delete">
+              <template slot="progress">
+                <v-progress-linear
+                  color="danger"
+                  height="6"
+                  indeterminate
+                  absolute
+                  bottom
+                ></v-progress-linear>
+              </template>
+              <v-card-title class="headline text-center white--text danger"
+                >是否刪除以下商品</v-card-title
+              >
+              <v-card-title
+                >{{ products.delItem.category }} -
+                {{ products.delItem.title }}</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelDialog"
+                  >Cancel</v-btn
                 >
-                <v-card-title
-                  >{{ products.delItem.category }} -
-                  {{ products.delItem.title }}</v-card-title
-                >
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelDialog"
-                    >Cancel</v-btn
-                  >
-                  <v-btn color="danger" text @click="delProduct">Delete</v-btn>
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-card-title>
+                <v-btn color="danger" text @click="delProduct">Delete</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </template>
         <template v-slot:item.edit="{ item }">
           <v-icon
@@ -348,8 +367,7 @@ export default {
             'success',
             'mdi-check-circle'
           );
-        }
-        else{
+        } else {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
@@ -391,3 +409,10 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@media screen and (max-width: 600px) {
+  .v-data-footer__pagination {
+    display: none;
+  }
+}
+</style>
