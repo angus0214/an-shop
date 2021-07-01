@@ -2,7 +2,11 @@
   <div>
     <v-row class="pa-8">
       <v-col cols="12">
-        <div class="text-center text-sm-left text-h4 font-weight-bold blue-grey--text text--darken-2">Dashboard</div>
+        <div
+          class="text-center text-sm-left text-h4 font-weight-bold blue-grey--text text--darken-2"
+        >
+          Dashboard
+        </div>
       </v-col>
       <v-col cols="12" sm="3">
         <v-card flat>
@@ -126,13 +130,16 @@ export default {
         total_page = response.data.pagination.total_pages;
       });
       // fetch all data
+      let promiseAry = [];
       for (let i = 1; i <= total_page; i++) {
         let getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`;
-        await this.$http.get(getApi).then((response) => {
-          vm.orders.data = vm.orders.data.concat(response.data.orders);
-        });
+        promiseAry.push(
+          this.$http.get(getApi).then((response) => {
+            vm.orders.data = vm.orders.data.concat(response.data.orders);
+          })
+        );
       }
-      // 
+      await Promise.all(promiseAry);
       vm.fillData();
       vm.loaded = true;
     },
