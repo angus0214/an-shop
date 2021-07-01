@@ -81,13 +81,17 @@
           </div>
         </template>
         <template v-slot:item.products="{ item }">
-          <div
-            class="my-1"
-            v-for="(product, index) in item.products"
-            :key="index"
-          >
-            {{ product.product.title }} : {{ product.qty }}
+          
+          <div style="max-height:100px;overflow-y: hidden;">
+            <div
+              class="my-1"
+              v-for="(product, index) in item.products"
+              :key="index"
+            >
+              {{ product.product.title }} : {{ product.qty }}
+            </div>
           </div>
+          <div v-if="getObjLength(item) > 3" class="font-weight-bold">...</div>
         </template>
         <template v-slot:item.is_paid="{ item }">
           <p v-if="item.is_paid == 1" class="mb-0 success--text">Yes</p>
@@ -225,7 +229,6 @@ export default {
       vm.loading.dataTable = true;
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`;
       this.$http.get(api).then((response) => {
-        console.log(response.data);
         vm.orders.total_pages = response.data.pagination.total_pages;
         for (let i = 1; i <= vm.orders.total_pages; i++) {
           this.getOrders(i);
@@ -274,6 +277,15 @@ export default {
       vm.orders.tempOrder = Object.assign({}, item);
       console.log(vm.orders.tempOrder);
       vm.editDialog = true;
+    },
+    getObjLength(item) {
+      console.log(item);
+      let length = 0;
+      if (Object.prototype.hasOwnProperty.call(item, 'products')) {
+        length = Object.keys(item.products).length;
+      }
+      console.log(length);
+      return length;
     },
   },
   created() {
