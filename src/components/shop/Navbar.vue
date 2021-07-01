@@ -23,8 +23,8 @@
       <v-btn icon class="ml-10" @click="getCarts">
         <v-icon>mdi-cart</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
+      <v-btn icon to="/login">
+        <v-icon>mdi-login</v-icon>
       </v-btn>
     </v-toolbar>
     <SideCart
