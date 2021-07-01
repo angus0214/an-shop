@@ -31,11 +31,8 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
       const vm = this;
       let data = [0,0,0,0,0];
-      //   console.log(api);
       await this.$http.get(api).then((response) => {
-        console.log(response.data);
         response.data.products.forEach(function(el) {
-          console.log(el.category);
           switch (el.category) {
             case 'watches':
               data[0] = data[0] + 1;
@@ -54,7 +51,6 @@ export default {
               break;
           }
         });
-        console.log(data)
         vm.chartdata.datasets[0].data = data;
       });
     },

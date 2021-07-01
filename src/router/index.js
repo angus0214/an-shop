@@ -14,50 +14,45 @@ import ShopCarts from '../views/shop/Carts.vue';
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path:'*',
-  //   redirect:'login'
-  // },
+  {
+    path:'*',
+    redirect:'/'
+  },
   {
     path: '/login',
     name: 'Login',
     component: Login,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-  {
     path: '/admin',
     name: 'Admin',
     redirect:'/admin/dashboard',
     component: Admin,
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'dashboard',
         name: 'Dashboard',
         component: Dashboard,
+        meta: { requiresAuth: true },
       },
       {
         path: 'products',
         name: 'Products',
         component: Products,
+        meta: { requiresAuth: true },
       },
       {
         path: 'coupons',
         name: 'Coupons',
         component: Coupons,
+        meta: { requiresAuth: true },
       },
       {
         path: 'orders',
         name: 'Orders',
         component: Orders,
+        meta: { requiresAuth: true },
       },
     ],
   },
