@@ -74,7 +74,7 @@
         </template>
         <template v-slot:item.user.email="{ item }">
           <div class="d-flex align-center">
-            <v-btn icon @click="openUserInfoDialog(item)">
+            <v-btn color="primary" icon @click="openUserInfoDialog(item)">
               <v-icon>mdi-account-box</v-icon>
             </v-btn>
             <div v-if="item.user">{{ item.user.email }}</div>

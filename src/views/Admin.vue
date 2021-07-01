@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app v-model="drawer">
+    <v-navigation-drawer app v-model="drawer" color="blue-grey darken-3" dark>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -29,40 +29,32 @@
             }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
-        <v-list-item two-line style="position: absolute;bottom: 0;">
-          <v-switch
-            v-model="$vuetify.theme.dark"
-            inset
-            label="Theme Changer"
-          ></v-switch>
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app>
+    <v-app-bar app color="blue-grey " flat dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>AN - Shop</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-heart</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-      <v-menu left bottom>
+      <v-menu left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          <v-list-item @click="logout()">
+            <v-list-item-title>登出</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="goShop()">
+            <v-list-item-title>前往商店</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-main style="background-color:#CFD8DC">
+    <v-main class="blue-grey lighten-4">
       <v-container>
         <Alert></Alert>
         <router-view></router-view>
@@ -95,6 +87,19 @@ export default {
         { title: 'Orders', icon: 'mdi-clipboard-list', link: '/admin/orders' },
       ],
     };
+  },
+  methods: {
+    logout() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_API_PATH}/logout`;
+      this.$http.post(api).then((response) => {
+        console.log(response);
+        vm.$router.push('/login');
+      });
+    },
+    goShop(){
+      this.$router.push('/');
+    }
   },
   created() {
     const token = document.cookie.replace(
