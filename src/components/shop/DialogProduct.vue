@@ -13,7 +13,7 @@
         </v-card-title>
         <div class="d-flex flex-wrap">
           <v-col cols="12" sm="6">
-            <v-img max-height="500"  :src="product.imageUrl"> </v-img>
+            <v-img max-height="500" :src="product.imageUrl"> </v-img>
           </v-col>
           <v-col cols="12" sm="6">
             <div class="text-h4 font-weight-bold mb-2">{{ product.title }}</div>
@@ -53,7 +53,7 @@
                 v-model="tempQty"
               ></v-select>
             </div>
-            <div>
+            <div class="mb-3">
               <v-btn
                 depressed
                 dark
@@ -64,6 +64,11 @@
                 >加入購物車</v-btn
               >
               <v-btn depressed @click="dialog = false">繼續購物</v-btn>
+            </div>
+            <v-divider></v-divider>
+            <div class="mt-3">
+              <div class="text-h5 font-weight-bold mb-2">產品資訊</div>
+              <div>{{ product.content }}</div>
             </div>
           </v-col>
         </div>

@@ -27,7 +27,9 @@
           class="d-flex justify-center align-center flex-column banner-go-shop"
         >
           <div class="text-h4 text-md-h3 font-weight-bold white--text mb-6">
-            目前全館 <span class="red--text text-h3 font-weight-bold">9折</span> 優惠活動中
+            目前全館
+            <span class="red--text text-h3 font-weight-bold">9折</span>
+            優惠活動中
           </div>
           <v-btn
             color="blue-grey"
@@ -241,11 +243,10 @@ export default {
 }
 .banner-go-shop {
   background-attachment: fixed;
-  background-size: cover;
   background-position: center;
-  -webkit-filter: grayscale(1);
   background-image: url(../../assets/banner-go-shop.jpg);
   padding: 80px 0;
+  will-change : transform;
 }
 .banner-text {
   position: relative;
