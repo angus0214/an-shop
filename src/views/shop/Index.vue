@@ -3,21 +3,40 @@
     <v-row no-gutters>
       <v-col cols="12">
         <div class="bg banner-main">
-          <v-col class="d-flex h-100" cols="12" sm="6" md="4">
-            <div class="banner-card d-flex justify-center align-start ml-sm-16  flex-column">
-              <div class="text-h3 font-weight-bold">Watches</div>
-              <div class="my-3 text-subtitle-1 font-weight-bold">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Soluta
-                modi minima consequuntur nulla nostrum ducimus! Expedita
-                consequuntur officiis fugiat, voluptatum sint magnam vel autem
-                nihil, neque consequatur, dignissimos eum inventore?
+          <v-col class="d-flex h-100" cols="12" sm="6" md="6">
+            <div
+              class="banner-card d-flex justify-center align-start ml-sm-16  flex-column"
+            >
+              <div class="text-h3 font-weight-bold">An Shop 飾品選貨店</div>
+              <div class="my-12 text-subtitle-1 font-weight-bold">
+                本店產品皆由專人親自到國外選貨帶回，每一件品項都由我們用心挑選，幫助你找到最適合自己的飾品
+              </div>
+              <div class="mb-3 text-h6 font-weight-bold">
+                立即用最獨一無二的飾品點綴您身上每一處細節
               </div>
               <v-btn large color="blue-grey darken-1" dark @click="goProducts">
-                Shop Now
+                馬上選購
                 <v-icon size="16px" class="ml-2">mdi-arrow-right</v-icon>
               </v-btn>
             </div>
           </v-col>
+        </div>
+      </v-col>
+      <v-col cols="12">
+        <div
+          class="d-flex justify-center align-center flex-column banner-go-shop"
+        >
+          <div class="text-h4 text-md-h3 font-weight-bold white--text mb-6">
+            目前全館 <span class="red--text text-h3 font-weight-bold">9折</span> 優惠活動中
+          </div>
+          <v-btn
+            color="blue-grey"
+            class="font-wight-bold text-h6"
+            large
+            dark
+            @click="goProducts"
+            >立即瀏覽更多商品</v-btn
+          >
         </div>
       </v-col>
       <v-col
@@ -92,14 +111,7 @@
         </v-row>
       </v-col>
     </v-row>
-    <v-row no-gutters>
-      <v-col cols="12">
-        <div class="d-flex justify-center align-center flex-column banner-go-shop">
-          <div class="text-h4 text-md-h3 font-weight-bold white--text mb-6">目前全館優惠活動中</div>
-          <v-btn color="blue-grey" class="font-wight-bold text-h6" large dark @click="goProducts">立即瀏覽更多商品</v-btn>
-        </div>
-      </v-col>
-    </v-row>
+    <v-row no-gutters> </v-row>
   </v-container>
 </template>
 <script>
@@ -228,6 +240,7 @@ export default {
   height: 50vh;
 }
 .banner-go-shop {
+  background-attachment: fixed;
   background-size: cover;
   background-position: center;
   -webkit-filter: grayscale(1);
