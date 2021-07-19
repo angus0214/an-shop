@@ -67,7 +67,7 @@
             </div>
             <v-divider></v-divider>
             <div class="mt-3">
-              <div class="text-h5 font-weight-bold mb-2">產品資訊</div>
+              <div class="text-h5 font-weight-bold mb-2">注意事項</div>
               <div>{{ product.content }}</div>
             </div>
           </v-col>
