@@ -20,7 +20,10 @@
           >{{ item.text }}</v-btn
         >
       </v-toolbar-items>
-      <v-btn icon class="ml-10" @click="getCarts">
+      <v-btn icon class="ml-10" @click="getFavList">
+        <v-icon color="red darken-1">mdi-heart</v-icon>
+      </v-btn>
+      <v-btn icon @click="getCarts">
         <v-icon>mdi-cart</v-icon>
       </v-btn>
       <v-btn icon to="/login">
@@ -33,15 +36,18 @@
       @hideCart="hideSideCart"
     ></SideCart>
     <SideBar :isActive="sideBarActive" @hideBar="hideSideBar"></SideBar>
+    <FavList :isActive="favListActive" @hideFavList="hideFavList" @getFavList="getFavList" :products="favList"></FavList>
   </v-card>
 </template>
 <script>
 import SideCart from './SideCart';
 import SideBar from './SideBar';
+import FavList from './FavList';
 export default {
   components: {
     SideCart,
     SideBar,
+    FavList,
   },
   data() {
     return {
@@ -65,16 +71,21 @@ export default {
         },
       ],
       carts: [],
+      favList: [],
       sideCartActive: false,
       sideBarActive: false,
+      favListActive: false,
     };
   },
   methods: {
     hideSideCart() {
       this.sideCartActive = false;
     },
-    hideSideBar(){
+    hideSideBar() {
       this.sideBarActive = false;
+    },
+    hideFavList() {
+      this.favListActive = false;
     },
     getCarts() {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
@@ -83,6 +94,11 @@ export default {
         vm.carts = response.data.data.carts;
         vm.sideCartActive = true;
       });
+    },
+    getFavList() {
+      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      this.favList = storageAry;
+      this.favListActive = true;
     },
   },
 };

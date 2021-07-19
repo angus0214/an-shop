@@ -68,7 +68,20 @@
                     ></v-progress-linear>
                   </template>
                   <v-img height="250" :src="item.imageUrl"></v-img>
-                  <v-card-title>{{ item.title }}</v-card-title>
+                  <div class="d-flex justify-space-between align-center">
+                    <v-card-title>{{ item.title }}</v-card-title>
+                    <v-btn
+                      v-if="getInLocalStorage(item)"
+                      icon
+                      class="ma-2"
+                      @click="delFav(item)"
+                    >
+                      <v-icon color="red">mdi-heart</v-icon>
+                    </v-btn>
+                    <v-btn v-else icon class="ma-2" @click="setFav(item)">
+                      <v-icon color="red">mdi-heart-outline</v-icon>
+                    </v-btn>
+                  </div>
                   <v-card-text>$ {{ item.price }}</v-card-text>
                   <v-card-actions>
                     <DialogProduct :product="item"></DialogProduct>
@@ -227,12 +240,55 @@ export default {
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增失敗`,
-              'danger',
+              'error',
               'mdi-alert-outline'
             );
             vm.loading.isLoading = false;
           }
         });
+    },
+    setFav(item) {
+      let storageAry = [];
+      if (localStorage.getItem('favProducts') === null) {
+        localStorage.setItem('favProducts', JSON.stringify(storageAry));
+      } else {
+        storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      }
+      storageAry.push(item);
+      localStorage.setItem('favProducts', JSON.stringify(storageAry));
+      this.$bus.$emit(
+        'messsage:push',
+        `${item.title} 新增至我的最愛`,
+        'success',
+        'mdi-check-circle'
+      );
+      this.getProducts();
+    },
+    delFav(item) {
+      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      storageAry.forEach(function(el, index) {
+        if (el.id === item.id) {
+          storageAry.splice(index, 1);
+        }
+      });
+      localStorage.setItem('favProducts', JSON.stringify(storageAry));
+      this.$bus.$emit(
+        'messsage:push',
+        `${item.title} 從我的最愛移除`,
+        'error',
+        'mdi-alert-outline'
+      );
+      this.getProducts();
+    },
+    getInLocalStorage(item) {
+      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      let status = false;
+      storageAry.forEach(function(el) {
+        if (el.id === item.id) {
+          status = true;
+        }
+      });
+      return status;
     },
     goTop() {
       const el = document.getElementById('menu-start');
@@ -257,6 +313,6 @@ export default {
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
 }
 .menu_item.active {
-  background-color: #CFD8DC;
+  background-color: #cfd8dc;
 }
 </style>
