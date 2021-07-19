@@ -281,7 +281,7 @@ export default {
       this.getProducts();
     },
     getInLocalStorage(item) {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      let storageAry = JSON.parse(localStorage.getItem('favProducts')) || [];
       let status = false;
       storageAry.forEach(function(el) {
         if (el.id === item.id) {

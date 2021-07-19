@@ -96,7 +96,7 @@ export default {
       });
     },
     getFavList() {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
+      let storageAry = JSON.parse(localStorage.getItem('favProducts')) || [];
       this.favList = storageAry;
       this.favListActive = true;
     },
