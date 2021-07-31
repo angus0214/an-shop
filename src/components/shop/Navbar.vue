@@ -68,6 +68,7 @@ export default {
           text: 'About',
           title: 'Back to Home page',
           active: false,
+          to: '/about',
         },
       ],
       carts: [],

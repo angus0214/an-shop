@@ -11,6 +11,7 @@ import Shop from '../views/shop/Shop.vue';
 import ShopIndex from '../views/shop/Index.vue';
 import ShopProducts from '../views/shop/Products.vue';
 import ShopCarts from '../views/shop/Carts.vue';
+import ShopAbout from '../views/shop/About.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -76,6 +77,11 @@ const routes = [
         path: 'carts',
         name: 'ShopCarts',
         component: ShopCarts,
+      },
+      {
+        path:'about',
+        name:'About',
+        component:ShopAbout,
       }
     ]
   }
