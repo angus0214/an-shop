@@ -37,7 +37,7 @@ export default {
         { text: 'Home', icon: 'mdi-home', to: '/index' },
         { text: 'Products', icon: 'mdi-animation', to: '/products' },
         { text: 'Carts', icon: 'mdi-cart', to: '/carts' },
-        { text: 'About', icon: 'mdi-information' },
+        { text: 'About', icon: 'mdi-information',to: '/about' },
       ],
     };
   },
