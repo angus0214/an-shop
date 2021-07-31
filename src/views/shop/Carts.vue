@@ -45,13 +45,19 @@
                         <thead>
                           <tr>
                             <th class="text-left  d-none d-sm-table-cell"></th>
-                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
+                            <th
+                              class="text-left text-body-1 text-sm-h6 font-weight-bold"
+                            >
                               品名
                             </th>
-                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
+                            <th
+                              class="text-left text-body-1 text-sm-h6 font-weight-bold"
+                            >
                               售價
                             </th>
-                            <th class="text-left text-body-1 text-sm-h6 font-weight-bold">
+                            <th
+                              class="text-left text-body-1 text-sm-h6 font-weight-bold"
+                            >
                               數量
                             </th>
                             <th class="text-left"></th>
@@ -95,7 +101,7 @@
                             type="text"
                             color="blue-grey"
                             dense
-                            outlined
+                            solo
                             append-outer-icon="mdi-send"
                             placeholder="輸入優惠碼"
                             v-model="couponCode"
@@ -192,7 +198,7 @@
                               rules="required"
                             >
                               <v-text-field
-                                outlined
+                                solo
                                 dense
                                 :error-messages="errors"
                                 append-icon="mdi-account"
@@ -215,7 +221,7 @@
                               rules="required|numeric|min:10"
                             >
                               <v-text-field
-                                outlined
+                                solo
                                 dense
                                 :error-messages="errors"
                                 append-icon="mdi-phone"
@@ -237,7 +243,7 @@
                               rules="required|email"
                             >
                               <v-text-field
-                                outlined
+                                solo
                                 dense
                                 append-icon="mdi-email"
                                 :error-messages="errors"
@@ -258,7 +264,7 @@
                               rules="required"
                             >
                               <v-text-field
-                                outlined
+                                solo
                                 dense
                                 append-icon="mdi-map-marker"
                                 :error-messages="errors"
@@ -274,7 +280,7 @@
                               備註
                             </div>
                             <v-textarea
-                              outlined
+                              solo
                               color="blue-grey lighten-2"
                               name="input-7-4"
                               v-model="message"
@@ -283,7 +289,7 @@
                           <v-col cols="12">
                             <div class="d-flex justify-space-between">
                               <v-btn
-                                @click="sterEl = 1"
+                                @click="stepEl = 1"
                                 depressed
                                 color="blue-grey lighten-5"
                                 >返回購物車
@@ -323,7 +329,9 @@
                             <template v-slot:default>
                               <thead>
                                 <tr>
-                                  <th class="text-left d-none d-sm-table-cell"></th>
+                                  <th
+                                    class="text-left d-none d-sm-table-cell"
+                                  ></th>
                                   <th
                                     class="text-left text-h6 font-weight-bold"
                                   >
