@@ -58,16 +58,7 @@
                 class="pt-0"
               >
                 <v-card :disabled="loading.isLoading && index == loading.index">
-                  <template slot="progress">
-                    <v-progress-linear
-                      color="blue-grey"
-                      height="10"
-                      indeterminate
-                      bottom
-                      absolute
-                    ></v-progress-linear>
-                  </template>
-                  <v-img height="250" :src="item.imageUrl"></v-img>
+                  <v-img class="cursor-pointer" height="250" :src="item.imageUrl" @click="$router.push({ name: 'product', params: { id: item.id } })"></v-img>
                   <div class="d-flex justify-space-between align-center">
                     <v-card-title>{{ item.title }}</v-card-title>
                     <v-btn
@@ -314,5 +305,8 @@ export default {
 }
 .menu_item.active {
   background-color: #cfd8dc;
+}
+.cursor-pointer{
+  cursor: pointer;
 }
 </style>

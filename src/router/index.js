@@ -12,6 +12,7 @@ import ShopIndex from '../views/shop/Index.vue';
 import ShopProducts from '../views/shop/Products.vue';
 import ShopCarts from '../views/shop/Carts.vue';
 import ShopAbout from '../views/shop/About.vue';
+import ShopProduct from '../views/shop/ProductInfo.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -82,6 +83,11 @@ const routes = [
         path:'about',
         name:'About',
         component:ShopAbout,
+      },
+      {
+        path:'product/:id',
+        name:'product',
+        component:ShopProduct,
       }
     ]
   }
