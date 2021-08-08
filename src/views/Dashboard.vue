@@ -122,16 +122,16 @@ export default {
   methods: {
     async getChartData () {
       const vm = this
-      let total_page = 1
+      let totalPage = 1
       vm.orders.data = []
       // get total page
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`
       await this.$http.get(api).then((response) => {
-        total_page = response.data.pagination.total_pages
+        totalPage = response.data.pagination.total_pages
       })
       // fetch all data
       const promiseAry = []
-      for (let i = 1; i <= total_page; i++) {
+      for (let i = 1; i <= totalPage; i++) {
         const getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`
         promiseAry.push(
           this.$http.get(getApi).then((response) => {

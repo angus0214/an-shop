@@ -104,14 +104,12 @@ export default {
       const vm = this
       this.$http.get(api).then((response) => {
         vm.carts = response.data.data.carts
-        console.log(vm.carts)
       })
     },
     delCart (id) {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       const vm = this
       this.$http.delete(api).then((response) => {
-        console.log(response)
         vm.updateCarts()
       })
     }

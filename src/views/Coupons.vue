@@ -274,7 +274,6 @@ export default {
       this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
         (response) => {
           if (response.data.success) {
-            // console.log(response.data);
             vm.$bus.$emit(
               'messsage:push',
               `優惠券${alertMessage}成功`,
@@ -282,7 +281,6 @@ export default {
               'mdi-check-circle'
             )
           } else {
-            // console.log(response.data);
             vm.$bus.$emit(
               'messsage:push',
               `優惠券${alertMessage}失敗`,
@@ -316,7 +314,6 @@ export default {
             'mdi-alert-outline'
           )
         }
-        console.log(response.data)
         this.getAllCoupons()
         this.closeDelDialog()
         vm.loading.delete = false

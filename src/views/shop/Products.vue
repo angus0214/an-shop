@@ -202,7 +202,6 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
       this.$http.get(api).then((response) => {
-        // console.log(response.data);
         vm.products = response.data.products
         vm.products.forEach(function (el) {
           el.loading = false
@@ -219,7 +218,6 @@ export default {
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {
-            console.log(response.data)
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增至購物車`,

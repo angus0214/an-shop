@@ -93,7 +93,6 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/logout`
       this.$http.post(api).then((response) => {
-        console.log(response)
         vm.$router.push('/login')
       })
     },
@@ -106,7 +105,6 @@ export default {
       /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
     )
-    console.log('my cookie', token)
     this.$http.defaults.headers.common.Authorization = `${token}`
   }
 }

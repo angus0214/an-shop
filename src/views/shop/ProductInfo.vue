@@ -139,7 +139,6 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`
       const vm = this
       this.$http.get(api).then((response) => {
-        console.log(response.data)
         if (response.data.success === false) {
           vm.dataLoaded = false
         } else {
@@ -164,7 +163,6 @@ export default {
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {
-            console.log(response.data)
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增至購物車`,

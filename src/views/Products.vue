@@ -262,30 +262,12 @@ export default {
     }
   },
   methods: {
-    // dev test
-    consoleApi () {
-      console.log(
-        process.env.VUE_APP_API_PATH,
-        process.env.VUE_APP_CUSTOM_PATH
-      )
-    },
-    checkLogin () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/user/check`
-      this.$http.post(api).then((response) => {
-        console.log(response.data)
-      })
-    },
-    callEventBus () {
-      this.$bus.$emit()
-    },
     // 向 Sever 取得產品資料
     getProducts () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
       vm.loading.dataTable = true
-      //   console.log(api);
       this.$http.get(api).then((response) => {
-        // console.log(response.data);
         vm.products.data = response.data.products
         vm.pagination = response.data.pagination
         vm.loading.dataTable = false
@@ -305,9 +287,7 @@ export default {
       }
       this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
-          console.log({ data: vm.products.tempProduct }, api)
           if (response.data.success) {
-            // console.log(response.data);
             vm.$bus.$emit(
               'messsage:push',
               `產品${alertMessage}成功`,
@@ -315,7 +295,6 @@ export default {
               'mdi-check-circle'
             )
           } else {
-            // console.log(response.data);
             vm.$bus.$emit(
               'messsage:push',
               `產品${alertMessage}失敗`,
@@ -332,7 +311,6 @@ export default {
     // 圖片上傳
     uploadFile () {
       const uploadedFile = this.$refs.files.files[0]
-      console.log(this)
       const vm = this
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
@@ -350,8 +328,6 @@ export default {
               'imageUrl',
               response.data.imageUrl
             )
-          } else {
-            console.log(response)
           }
         })
     },
@@ -392,7 +368,6 @@ export default {
     },
     // 刪除 Modal
     openDelDialog (item) {
-      console.log(item)
       const vm = this
       vm.products.delItem = Object.assign({}, item)
       vm.delDialog = true
@@ -405,7 +380,6 @@ export default {
   },
   created () {
     this.getProducts()
-    // this.$bus.$emit('messsage:push','產品成功新增', 'success','mdi-check-circle');
   }
 }
 </script>
