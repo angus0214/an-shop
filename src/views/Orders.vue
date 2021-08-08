@@ -227,10 +227,10 @@ export default {
       vm.orders.data = []
       vm.loading.dataTable = true
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`
-      this.$http.get(api).then(response => {
+      vm.$http.get(api).then(response => {
         vm.orders.total_pages = response.data.pagination.total_pages
         for (let i = 1; i <= vm.orders.total_pages; i++) {
-          this.getOrders(i)
+          vm.getOrders(i)
         }
         vm.loading.dataTable = false
       })
@@ -238,14 +238,14 @@ export default {
     getOrders (page = 1) {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${page}`
-      this.$http.get(api).then(response => {
+      vm.$http.get(api).then(response => {
         vm.orders.data = vm.orders.data.concat(response.data.orders)
       })
     },
     updateOrder () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/order/${vm.orders.tempOrder.id}`
-      this.$http.put(api, { data: vm.orders.tempOrder }).then(response => {
+      vm.$http.put(api, { data: vm.orders.tempOrder }).then(response => {
         if (response.data.success) {
           vm.$bus.$emit(
             'messsage:push',

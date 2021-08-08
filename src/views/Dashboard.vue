@@ -126,7 +126,7 @@ export default {
       vm.orders.data = []
       // get total page
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`
-      await this.$http.get(api).then((response) => {
+      await vm.$http.get(api).then((response) => {
         totalPage = response.data.pagination.total_pages
       })
       // fetch all data
@@ -134,7 +134,7 @@ export default {
       for (let i = 1; i <= totalPage; i++) {
         const getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`
         promiseAry.push(
-          this.$http.get(getApi).then((response) => {
+          vm.$http.get(getApi).then((response) => {
             vm.orders.data = vm.orders.data.concat(response.data.orders)
           })
         )

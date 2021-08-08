@@ -245,10 +245,10 @@ export default {
       vm.coupons.data = []
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`
       vm.loading.dataTable = true
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.coupons.total_pages = response.data.pagination.total_pages
         for (let i = 1; i <= vm.coupons.total_pages; i++) {
-          this.getCoupons(i)
+          vm.getCoupons(i)
         }
         vm.loading.dataTable = false
       })
@@ -256,7 +256,7 @@ export default {
     getCoupons (page = 1) {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.coupons.data = vm.coupons.data.concat(response.data.coupons)
       })
     },
@@ -271,7 +271,7 @@ export default {
         httpMethod = 'put'
         alertMessage = '編輯'
       }
-      this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
+      vm.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
         (response) => {
           if (response.data.success) {
             vm.$bus.$emit(
@@ -288,8 +288,8 @@ export default {
               'mdi-alert-outline'
             )
           }
-          this.getAllCoupons()
-          this.closeEditDialog()
+          vm.getAllCoupons()
+          vm.closeEditDialog()
           vm.loading.card = false
         }
       )
@@ -298,7 +298,7 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`
       vm.loading.delete = true
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.$bus.$emit(
             'messsage:push',
@@ -314,8 +314,8 @@ export default {
             'mdi-alert-outline'
           )
         }
-        this.getAllCoupons()
-        this.closeDelDialog()
+        vm.getAllCoupons()
+        vm.closeDelDialog()
         vm.loading.delete = false
       })
     },

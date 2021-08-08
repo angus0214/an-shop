@@ -87,7 +87,7 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/admin/signin`
       vm.loginError = false
       vm.loading = true
-      this.$http.post(api, vm.user).then((response) => {
+      vm.$http.post(api, vm.user).then((response) => {
         if (response.data.success === true) {
           const token = response.data.token
           const expired = response.data.expired

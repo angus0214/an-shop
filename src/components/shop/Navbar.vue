@@ -91,7 +91,7 @@ export default {
     getCarts () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.carts = response.data.data.carts
         vm.sideCartActive = true
       })

@@ -201,7 +201,7 @@ export default {
     getProducts () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.products = response.data.products
         vm.products.forEach(function (el) {
           el.loading = false
@@ -214,7 +214,7 @@ export default {
       vm.loading.isLoading = true
       vm.loading.index = index
       vm.filterProducts[index].loading = true
-      this.$http
+      vm.$http
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {

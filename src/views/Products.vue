@@ -267,7 +267,7 @@ export default {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
       vm.loading.dataTable = true
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.products.data = response.data.products
         vm.pagination = response.data.pagination
         vm.loading.dataTable = false
@@ -285,7 +285,7 @@ export default {
         httpMethod = 'put'
         alertMessage = '編輯'
       }
-      this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
+      vm.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
           if (response.data.success) {
             vm.$bus.$emit(
@@ -315,7 +315,7 @@ export default {
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`
-      this.$http
+      vm.$http
         .post(api, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -335,7 +335,7 @@ export default {
     delProduct () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.$bus.$emit(
             'messsage:push',

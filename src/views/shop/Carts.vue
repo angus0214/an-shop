@@ -478,7 +478,7 @@ export default {
     getCarts () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.carts = response.data.data.carts
       })
     },
@@ -489,7 +489,7 @@ export default {
     useCoupon () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`
       const vm = this
-      this.$http
+      vm.$http
         .post(api, { data: { code: vm.couponCode } })
         .then((response) => {
           vm.final_total_price = response.data.data.final_total
@@ -499,7 +499,7 @@ export default {
     createOrder () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`
       const vm = this
-      this.$http
+      vm.$http
         .post(api, { data: { user: vm.user }, message: vm.message })
         .then((response) => {
           if (response.data.success) {
@@ -513,7 +513,7 @@ export default {
     getOrder (id) {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         console.log(response.data)
         vm.order.user = response.data.order.user
         vm.order.id = response.data.order.id
@@ -528,7 +528,7 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`
 
-      this.$http.post(api).then((response) => {
+      vm.$http.post(api).then((response) => {
         if (response.data.success) {
           vm.orderMsg.title = '完成訂購'
           vm.orderMsg.message = '感謝您訂購 An-Shop 產品'
@@ -542,7 +542,7 @@ export default {
     delCart (id) {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       const vm = this
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         console.log(response)
         vm.getCarts()
       })

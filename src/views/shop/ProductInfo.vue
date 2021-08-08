@@ -138,7 +138,7 @@ export default {
     getProduct () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         if (response.data.success === false) {
           vm.dataLoaded = false
         } else {
@@ -150,7 +150,7 @@ export default {
     getProducts () {
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.products = response.data.products
       })
     },
@@ -159,7 +159,7 @@ export default {
       const vm = this
       vm.loading.isLoading = true
       vm.loading.index = index
-      this.$http
+      vm.$http
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {

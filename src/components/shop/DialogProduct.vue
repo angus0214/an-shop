@@ -91,14 +91,14 @@ export default {
   },
   methods: {
     addToCart () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.loading = true
-      this.$http
+      vm.$http
         .post(api, { data: { product_id: vm.product.id, qty: vm.tempQty } })
         .then((response) => {
           if (response.data.success) {
-            this.$bus.$emit(
+            vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增至購物車`,
               'success',
@@ -106,7 +106,7 @@ export default {
             )
             vm.loading = false
           } else {
-            this.$bus.$emit(
+            vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增失敗`,
               'danger',
