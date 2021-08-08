@@ -476,19 +476,18 @@ export default {
       console.log(status)
     },
     getCarts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.$http.get(api).then((response) => {
         vm.carts = response.data.data.carts
       })
     },
     countQty (item) {
       item = item + 1
-      console.log(item)
     },
     useCoupon () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`
       vm.$http
         .post(api, { data: { code: vm.couponCode } })
         .then((response) => {
@@ -497,8 +496,8 @@ export default {
         })
     },
     createOrder () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`
       vm.$http
         .post(api, { data: { user: vm.user }, message: vm.message })
         .then((response) => {
@@ -511,8 +510,8 @@ export default {
         })
     },
     getOrder (id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`
       vm.$http.get(api).then((response) => {
         console.log(response.data)
         vm.order.user = response.data.order.user
@@ -527,7 +526,6 @@ export default {
     pay () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`
-
       vm.$http.post(api).then((response) => {
         if (response.data.success) {
           vm.orderMsg.title = '完成訂購'
@@ -540,8 +538,8 @@ export default {
       })
     },
     delCart (id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       vm.$http.delete(api).then((response) => {
         console.log(response)
         vm.getCarts()
@@ -558,8 +556,8 @@ export default {
       return price
     },
     discount () {
-      let dc = ''
       const vm = this
+      let dc = ''
       if (vm.final_total_price === 0) {
         dc = 0
       } else {

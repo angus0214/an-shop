@@ -145,8 +145,8 @@ export default {
   },
   methods: {
     getProducts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       vm.$http.get(api).then((response) => {
         vm.products.data = response.data.products
       })

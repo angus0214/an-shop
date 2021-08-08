@@ -28,8 +28,8 @@ export default {
   },
   methods: {
     async getProducts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const data = [0, 0, 0, 0, 0]
       await this.$http.get(api).then((response) => {
         response.data.products.forEach(function (el) {

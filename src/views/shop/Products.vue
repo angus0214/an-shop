@@ -199,8 +199,8 @@ export default {
   methods: {
     // 取得所有商品資料
     getProducts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       vm.$http.get(api).then((response) => {
         vm.products = response.data.products
         vm.products.forEach(function (el) {
@@ -209,8 +209,8 @@ export default {
       })
     },
     addToCart (id, itemQty, index) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.loading.isLoading = true
       vm.loading.index = index
       vm.filterProducts[index].loading = true

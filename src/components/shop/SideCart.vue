@@ -100,15 +100,15 @@ export default {
       this.$emit('hideCart')
     },
     updateCarts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.$http.get(api).then((response) => {
         vm.carts = response.data.data.carts
       })
     },
     delCart (id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       vm.$http.delete(api).then((response) => {
         vm.updateCarts()
       })

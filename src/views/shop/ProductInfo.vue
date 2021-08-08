@@ -136,8 +136,8 @@ export default {
   },
   methods: {
     getProduct () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`
       vm.$http.get(api).then((response) => {
         if (response.data.success === false) {
           vm.dataLoaded = false
@@ -148,15 +148,15 @@ export default {
       })
     },
     getProducts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       vm.$http.get(api).then((response) => {
         vm.products = response.data.products
       })
     },
     addToCart (id, itemQty, index = -2) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.loading.isLoading = true
       vm.loading.index = index
       vm.$http

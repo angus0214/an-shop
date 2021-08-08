@@ -261,10 +261,10 @@ export default {
       })
     },
     updateCoupon () {
+      const vm = this
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`
       let httpMethod = 'post'
       let alertMessage = '新增'
-      const vm = this
       vm.loading.card = true
       if (!vm.coupons.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`

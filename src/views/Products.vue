@@ -264,8 +264,8 @@ export default {
   methods: {
     // 向 Sever 取得產品資料
     getProducts () {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
       vm.loading.dataTable = true
       vm.$http.get(api).then((response) => {
         vm.products.data = response.data.products
@@ -275,10 +275,10 @@ export default {
     },
     // 新增編輯產品
     updateProduct () {
+      const vm = this
       let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`
       let httpMethod = 'post'
       let alertMessage = '新增'
-      const vm = this
       vm.loading.card = true
       if (!vm.products.isNew) {
         api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`
@@ -310,8 +310,8 @@ export default {
     },
     // 圖片上傳
     uploadFile () {
-      const uploadedFile = this.$refs.files.files[0]
       const vm = this
+      const uploadedFile = this.$refs.files.files[0]
       const formData = new FormData()
       formData.append('file-to-upload', uploadedFile)
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`
