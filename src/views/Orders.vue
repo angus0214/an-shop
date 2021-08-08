@@ -81,7 +81,7 @@
           </div>
         </template>
         <template v-slot:item.products="{ item }">
-          
+
           <div style="max-height:100px;overflow-y: hidden;">
             <div
               class="my-1"
@@ -190,7 +190,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       editDialog: false,
       orders: {
@@ -199,53 +199,53 @@ export default {
           {
             text: '購買時間',
             align: 'start',
-            value: 'create_at',
+            value: 'create_at'
           },
           { text: '購買人 Email', value: 'user.email' },
           { text: '購買品項', value: 'products', sortable: false },
           { text: '應付金額', value: 'total' },
           { text: '是否付款', value: 'is_paid', filterable: false },
-          { text: '編輯', value: 'edit', sortable: false },
+          { text: '編輯', value: 'edit', sortable: false }
         ],
         data: [],
         total_pages: '',
         tempUser: {},
-        tempOrder: {},
+        tempOrder: {}
       },
       expanded: [],
       dialog: {
-        userInfo: false,
+        userInfo: false
       },
       loading: {
-        dataTable: false,
+        dataTable: false
       },
-      search: '',
-    };
+      search: ''
+    }
   },
   methods: {
-    getAllOrders() {
-      const vm = this;
-      vm.orders.data = [];
-      vm.loading.dataTable = true;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`;
+    getAllOrders () {
+      const vm = this
+      vm.orders.data = []
+      vm.loading.dataTable = true
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`
       this.$http.get(api).then((response) => {
-        vm.orders.total_pages = response.data.pagination.total_pages;
+        vm.orders.total_pages = response.data.pagination.total_pages
         for (let i = 1; i <= vm.orders.total_pages; i++) {
-          this.getOrders(i);
+          this.getOrders(i)
         }
-        vm.loading.dataTable = false;
-      });
+        vm.loading.dataTable = false
+      })
     },
-    getOrders(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${page}`;
+    getOrders (page = 1) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${page}`
       this.$http.get(api).then((response) => {
-        vm.orders.data = vm.orders.data.concat(response.data.orders);
-      });
+        vm.orders.data = vm.orders.data.concat(response.data.orders)
+      })
     },
-    updateOrder() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/order/${vm.orders.tempOrder.id}`;
+    updateOrder () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/order/${vm.orders.tempOrder.id}`
       this.$http.put(api, { data: vm.orders.tempOrder }).then((response) => {
         if (response.data.success) {
           vm.$bus.$emit(
@@ -253,45 +253,45 @@ export default {
             response.data.message,
             'success',
             'mdi-check-circle'
-          );
+          )
         } else {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
             'danger',
             'mdi-alert-outline'
-          );
+          )
         }
-        vm.getAllOrders();
-        vm.editDialog = false;
-      });
+        vm.getAllOrders()
+        vm.editDialog = false
+      })
     },
-    openUserInfoDialog(item) {
-      const vm = this;
-      vm.orders.tempUser = Object.assign({}, item.user);
-      console.log(vm.orders.tempUser);
-      vm.dialog.userInfo = true;
+    openUserInfoDialog (item) {
+      const vm = this
+      vm.orders.tempUser = Object.assign({}, item.user)
+      console.log(vm.orders.tempUser)
+      vm.dialog.userInfo = true
     },
-    openEditDialog(item) {
-      const vm = this;
-      vm.orders.tempOrder = Object.assign({}, item);
-      console.log(vm.orders.tempOrder);
-      vm.editDialog = true;
+    openEditDialog (item) {
+      const vm = this
+      vm.orders.tempOrder = Object.assign({}, item)
+      console.log(vm.orders.tempOrder)
+      vm.editDialog = true
     },
-    getObjLength(item) {
-      console.log(item);
-      let length = 0;
+    getObjLength (item) {
+      console.log(item)
+      let length = 0
       if (Object.prototype.hasOwnProperty.call(item, 'products')) {
-        length = Object.keys(item.products).length;
+        length = Object.keys(item.products).length
       }
-      console.log(length);
-      return length;
-    },
+      console.log(length)
+      return length
+    }
   },
-  created() {
-    this.getAllOrders();
-  },
-};
+  created () {
+    this.getAllOrders()
+  }
+}
 </script>
 <style>
 .v-data-table

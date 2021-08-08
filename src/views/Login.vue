@@ -70,45 +70,45 @@
 </style>
 <script>
 export default {
-  data() {
+  data () {
     return {
       user: {
         username: '',
-        password: '',
+        password: ''
       },
       selectTab: 0,
       loading: false,
-      loginError: false,
-    };
+      loginError: false
+    }
   },
   methods: {
-    con() {
-      console.log(this.selectTab);
+    con () {
+      console.log(this.selectTab)
     },
-    signin() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/admin/signin`;
-      vm.loginError = false;
-      vm.loading = true;
+    signin () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/admin/signin`
+      vm.loginError = false
+      vm.loading = true
       this.$http.post(api, vm.user).then((response) => {
         // console.log(response.data);
         if (response.data.success === true) {
-          const token = response.data.token;
-          const expired = response.data.expired;
+          const token = response.data.token
+          const expired = response.data.expired
           // console.log(token,expired)
-          document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
+          document.cookie = `hexToken=${token}; expires=${new Date(expired)}`
           if (vm.selectTab === 0) {
-            vm.$router.push('/shop');
+            vm.$router.push('/shop')
           } else {
-            vm.$router.push('/admin');
+            vm.$router.push('/admin')
           }
         } else {
           // console.log(response.data);
-          vm.loginError = true;
+          vm.loginError = true
         }
-        vm.loading = false;
-      });
-    },
-  },
-};
+        vm.loading = false
+      })
+    }
+  }
+}
 </script>

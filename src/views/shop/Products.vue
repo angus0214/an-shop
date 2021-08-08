@@ -126,17 +126,17 @@
   </div>
 </template>
 <script>
-import DialogProduct from '../../components/shop/DialogProduct.vue';
+import DialogProduct from '../../components/shop/DialogProduct.vue'
 export default {
   components: {
-    DialogProduct,
+    DialogProduct
   },
-  data() {
+  data () {
     return {
       products: [],
       focusMenuItem: {
         type: 'products',
-        category: 'all',
+        category: 'all'
       },
       menuItems: [
         {
@@ -148,10 +148,10 @@ export default {
             { title: '墨鏡', value: 'sunglasses' },
             { title: '戒指', value: 'ring' },
             { title: '項鍊', value: 'necklace' },
-            { title: '耳環', value: 'earings' },
+            { title: '耳環', value: 'earings' }
           ],
           type: 'products',
-          title: '商品分類',
+          title: '商品分類'
         },
         {
           action: 'mdi-silverware-fork-knife',
@@ -160,136 +160,136 @@ export default {
             { title: 'Lady', value: 'Lady' },
             { title: 'Fashion', value: 'Fashion' },
             { title: 'Best Sell', value: 'Best Sell' },
-            { title: 'Character', value: 'character' },
+            { title: 'Character', value: 'character' }
           ],
           type: 'tag',
-          title: '標籤分類',
-        },
+          title: '標籤分類'
+        }
       ],
       loading: {
         index: -1,
-        isLoading: false,
-      },
-    };
+        isLoading: false
+      }
+    }
   },
   computed: {
-    filterProducts() {
-      const vm = this;
-      let data = [];
+    filterProducts () {
+      const vm = this
+      let data = []
       if (vm.focusMenuItem.type === 'products') {
         if (vm.focusMenuItem.category === 'all') {
-          data = vm.products;
+          data = vm.products
         } else {
-          data = vm.products.filter(function(item) {
-            return item.category === vm.focusMenuItem.category;
-          });
+          data = vm.products.filter(function (item) {
+            return item.category === vm.focusMenuItem.category
+          })
         }
       } else if (vm.focusMenuItem.type === 'tag') {
-        vm.products.forEach(function(el) {
-          el.description.forEach(function(item) {
+        vm.products.forEach(function (el) {
+          el.description.forEach(function (item) {
             if (item === vm.focusMenuItem.category) {
-              data.push(el);
+              data.push(el)
             }
-          });
-        });
+          })
+        })
       }
-      return data;
-    },
+      return data
+    }
   },
   methods: {
     // 取得所有商品資料
-    getProducts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
-      const vm = this;
+    getProducts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
+      const vm = this
       this.$http.get(api).then((response) => {
         // console.log(response.data);
-        vm.products = response.data.products;
-        vm.products.forEach(function(el) {
-          el.loading = false;
-        });
-      });
+        vm.products = response.data.products
+        vm.products.forEach(function (el) {
+          el.loading = false
+        })
+      })
     },
-    addToCart(id, itemQty, index) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
-      vm.loading.isLoading = true;
-      vm.loading.index = index;
-      vm.filterProducts[index].loading = true;
+    addToCart (id, itemQty, index) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
+      vm.loading.isLoading = true
+      vm.loading.index = index
+      vm.filterProducts[index].loading = true
       this.$http
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {
-            console.log(response.data);
+            console.log(response.data)
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增至購物車`,
               'success',
               'mdi-check-circle'
-            );
-            vm.loading.isLoading = false;
+            )
+            vm.loading.isLoading = false
           } else {
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增失敗`,
               'error',
               'mdi-alert-outline'
-            );
-            vm.loading.isLoading = false;
+            )
+            vm.loading.isLoading = false
           }
-        });
+        })
     },
-    setFav(item) {
-      let storageAry = [];
+    setFav (item) {
+      let storageAry = []
       if (localStorage.getItem('favProducts') === null) {
-        localStorage.setItem('favProducts', JSON.stringify(storageAry));
+        localStorage.setItem('favProducts', JSON.stringify(storageAry))
       } else {
-        storageAry = JSON.parse(localStorage.getItem('favProducts'));
+        storageAry = JSON.parse(localStorage.getItem('favProducts'))
       }
-      storageAry.push(item);
-      localStorage.setItem('favProducts', JSON.stringify(storageAry));
+      storageAry.push(item)
+      localStorage.setItem('favProducts', JSON.stringify(storageAry))
       this.$bus.$emit(
         'messsage:push',
         `${item.title} 新增至我的最愛`,
         'success',
         'mdi-check-circle'
-      );
-      this.getProducts();
+      )
+      this.getProducts()
     },
-    delFav(item) {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
-      storageAry.forEach(function(el, index) {
+    delFav (item) {
+      const storageAry = JSON.parse(localStorage.getItem('favProducts'))
+      storageAry.forEach(function (el, index) {
         if (el.id === item.id) {
-          storageAry.splice(index, 1);
+          storageAry.splice(index, 1)
         }
-      });
-      localStorage.setItem('favProducts', JSON.stringify(storageAry));
+      })
+      localStorage.setItem('favProducts', JSON.stringify(storageAry))
       this.$bus.$emit(
         'messsage:push',
         `${item.title} 從我的最愛移除`,
         'error',
         'mdi-alert-outline'
-      );
-      this.getProducts();
+      )
+      this.getProducts()
     },
-    getInLocalStorage(item) {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts')) || [];
-      let status = false;
-      storageAry.forEach(function(el) {
+    getInLocalStorage (item) {
+      const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
+      let status = false
+      storageAry.forEach(function (el) {
         if (el.id === item.id) {
-          status = true;
+          status = true
         }
-      });
-      return status;
+      })
+      return status
     },
-    goTop() {
-      const el = document.getElementById('menu-start');
-      el.scrollIntoView({ behavior: 'smooth' });
-    },
+    goTop () {
+      const el = document.getElementById('menu-start')
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
   },
-  created() {
-    this.getProducts();
-  },
-};
+  created () {
+    this.getProducts()
+  }
+}
 </script>
 <style lang="css">
 .menu_item:before {

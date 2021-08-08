@@ -118,7 +118,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       swiperOption: {
         slidesPerView: 4,
@@ -126,39 +126,39 @@ export default {
         loop: true,
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          clickable: true
         },
         autoplay: {
           delay: 5000,
           stopOnLastSlide: false,
-          disableOnInteraction: true,
-        },
+          disableOnInteraction: true
+        }
       },
       products: {
-        data: [],
+        data: []
       },
       hover: {
         isHover: false,
-        index: -1,
-      },
-    };
+        index: -1
+      }
+    }
   },
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
-      const vm = this;
+    getProducts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
+      const vm = this
       this.$http.get(api).then((response) => {
-        vm.products.data = response.data.products;
-      });
+        vm.products.data = response.data.products
+      })
     },
-    goProducts() {
-      this.$router.push({ path: '/products' });
-    },
+    goProducts () {
+      this.$router.push({ path: '/products' })
+    }
   },
-  created() {
-    this.getProducts();
-  },
-};
+  created () {
+    this.getProducts()
+  }
+}
 </script>
 <style lang="scss">
 .h-100 {

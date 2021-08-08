@@ -121,7 +121,7 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       product: {},
       products: [],
@@ -130,90 +130,90 @@ export default {
       tempQty: 1,
       loading: {
         isLoading: false,
-        index: -1,
-      },
-    };
+        index: -1
+      }
+    }
   },
   methods: {
-    getProduct() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`;
-      const vm = this;
+    getProduct () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/product/${this.$route.params.id}`
+      const vm = this
       this.$http.get(api).then((response) => {
-        console.log(response.data);
+        console.log(response.data)
         if (response.data.success === false) {
-          vm.dataLoaded = false;
+          vm.dataLoaded = false
         } else {
-          vm.product = response.data.product;
-          vm.dataLoaded = true;
+          vm.product = response.data.product
+          vm.dataLoaded = true
         }
-      });
+      })
     },
-    getProducts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
-      const vm = this;
+    getProducts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
+      const vm = this
       this.$http.get(api).then((response) => {
-        vm.products = response.data.products;
-      });
+        vm.products = response.data.products
+      })
     },
-    addToCart(id, itemQty, index = -2) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
-      vm.loading.isLoading = true;
-      vm.loading.index = index;
+    addToCart (id, itemQty, index = -2) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
+      vm.loading.isLoading = true
+      vm.loading.index = index
       this.$http
         .post(api, { data: { product_id: id, qty: itemQty } })
         .then((response) => {
           if (response.data.success) {
-            console.log(response.data);
+            console.log(response.data)
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增至購物車`,
               'success',
               'mdi-check-circle'
-            );
+            )
           } else {
             vm.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增失敗`,
               'error',
               'mdi-alert-outline'
-            );
+            )
           }
-          vm.loading.isLoading = false;
-          vm.loading.index = -2;
-        });
+          vm.loading.isLoading = false
+          vm.loading.index = -2
+        })
     },
-    goTop() {
-      const el = document.getElementById('menu-start');
-      el.scrollIntoView({ behavior: 'smooth' });
-    },
+    goTop () {
+      const el = document.getElementById('menu-start')
+      el.scrollIntoView({ behavior: 'smooth' })
+    }
   },
   watch: {
-    $route() {
+    $route () {
       if (this.$route.params.id) {
-        this.getProduct();
-        this.getProducts();
-        this.goTop();
+        this.getProduct()
+        this.getProducts()
+        this.goTop()
       }
-    },
+    }
   },
   computed: {
-    likeProducts() {
-      const vm = this;
-      let ary = [];
+    likeProducts () {
+      const vm = this
+      const ary = []
       if (vm.products !== 0) {
         vm.products.forEach((el) => {
           if (el.category === vm.product.category && el.id !== vm.product.id) {
-            ary.push(el);
+            ary.push(el)
           }
-        });
+        })
       }
-      return ary;
-    },
+      return ary
+    }
   },
-  created() {
-    this.getProduct();
-    this.getProducts();
-  },
-};
+  created () {
+    this.getProduct()
+    this.getProducts()
+  }
+}
 </script>

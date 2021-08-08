@@ -231,81 +231,81 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       products: {
         dataHeaders: [
           {
             text: '品牌',
             align: 'start',
-            value: 'category',
+            value: 'category'
           },
           { text: '產品名稱', value: 'title' },
           { text: '售價', value: 'origin_price' },
           { text: '定價', value: 'price' },
           { text: '是否啟用', value: 'is_enabled', filterable: false },
-          { text: '編輯', value: 'edit', filterable: false },
+          { text: '編輯', value: 'edit', filterable: false }
         ],
         data: [],
         tempProduct: {},
         delItem: {},
-        isNew: false,
+        isNew: false
       },
       loading: {
         dataTable: false,
         card: false,
-        delete: false,
+        delete: false
       },
       search: '',
       editDialog: false,
-      delDialog: false,
-    };
+      delDialog: false
+    }
   },
   methods: {
     // dev test
-    consoleApi() {
+    consoleApi () {
       console.log(
         process.env.VUE_APP_API_PATH,
         process.env.VUE_APP_CUSTOM_PATH
-      );
+      )
     },
-    checkLogin() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/user/check`;
+    checkLogin () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/user/check`
       this.$http.post(api).then((response) => {
-        console.log(response.data);
-      });
+        console.log(response.data)
+      })
     },
-    callEventBus() {
-      this.$bus.$emit();
+    callEventBus () {
+      this.$bus.$emit()
     },
     // 向 Sever 取得產品資料
-    getProducts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`;
-      const vm = this;
-      vm.loading.dataTable = true;
+    getProducts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/products/all`
+      const vm = this
+      vm.loading.dataTable = true
       //   console.log(api);
       this.$http.get(api).then((response) => {
         // console.log(response.data);
-        vm.products.data = response.data.products;
-        vm.pagination = response.data.pagination;
-        vm.loading.dataTable = false;
-      });
+        vm.products.data = response.data.products
+        vm.pagination = response.data.pagination
+        vm.loading.dataTable = false
+      })
     },
     // 新增編輯產品
-    updateProduct() {
-      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`;
-      let httpMethod = 'post';
-      let alertMessage = '新增';
-      const vm = this;
-      vm.loading.card = true;
+    updateProduct () {
+      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product`
+      let httpMethod = 'post'
+      let alertMessage = '新增'
+      const vm = this
+      vm.loading.card = true
       if (!vm.products.isNew) {
-        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`;
-        httpMethod = 'put';
-        alertMessage = '編輯';
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.tempProduct.id}`
+        httpMethod = 'put'
+        alertMessage = '編輯'
       }
       this.$http[httpMethod](api, { data: vm.products.tempProduct }).then(
         (response) => {
-          console.log({ data: vm.products.tempProduct }, api);
+          console.log({ data: vm.products.tempProduct }, api)
           if (response.data.success) {
             // console.log(response.data);
             vm.$bus.$emit(
@@ -313,7 +313,7 @@ export default {
               `產品${alertMessage}成功`,
               'success',
               'mdi-check-circle'
-            );
+            )
           } else {
             // console.log(response.data);
             vm.$bus.$emit(
@@ -321,27 +321,27 @@ export default {
               `產品${alertMessage}失敗`,
               'danger',
               'mdi-alert-outline'
-            );
+            )
           }
-          vm.getProducts();
-          vm.closeEditDialog();
-          vm.loading.card = false;
+          vm.getProducts()
+          vm.closeEditDialog()
+          vm.loading.card = false
         }
-      );
+      )
     },
     // 圖片上傳
-    uploadFile() {
-      const uploadedFile = this.$refs.files.files[0];
-      console.log(this);
-      const vm = this;
-      const formData = new FormData();
-      formData.append('file-to-upload', uploadedFile);
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`;
+    uploadFile () {
+      const uploadedFile = this.$refs.files.files[0]
+      console.log(this)
+      const vm = this
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadedFile)
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/upload`
       this.$http
         .post(api, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then((response) => {
           if (response.data.success) {
@@ -349,16 +349,16 @@ export default {
               vm.products.tempProduct,
               'imageUrl',
               response.data.imageUrl
-            );
+            )
           } else {
-            console.log(response);
+            console.log(response)
           }
-        });
+        })
     },
     // 刪除產品
-    delProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`;
+    delProduct () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/product/${vm.products.delItem.id}`
       this.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.$bus.$emit(
@@ -366,48 +366,48 @@ export default {
             response.data.message,
             'success',
             'mdi-check-circle'
-          );
+          )
         } else {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
             'danger',
             'mdi-alert-outline'
-          );
+          )
         }
-        vm.getProducts();
-        vm.closeDelDialog();
-      });
+        vm.getProducts()
+        vm.closeDelDialog()
+      })
     },
     // 編輯 Modal
-    openEditDialog(item) {
-      const vm = this;
-      vm.products.tempProduct = Object.assign({}, item);
-      vm.editDialog = true;
+    openEditDialog (item) {
+      const vm = this
+      vm.products.tempProduct = Object.assign({}, item)
+      vm.editDialog = true
     },
-    closeEditDialog() {
-      const vm = this;
-      vm.products.tempProduct = {};
-      vm.editDialog = false;
+    closeEditDialog () {
+      const vm = this
+      vm.products.tempProduct = {}
+      vm.editDialog = false
     },
     // 刪除 Modal
-    openDelDialog(item) {
-      console.log(item);
-      const vm = this;
-      vm.products.delItem = Object.assign({}, item);
-      vm.delDialog = true;
+    openDelDialog (item) {
+      console.log(item)
+      const vm = this
+      vm.products.delItem = Object.assign({}, item)
+      vm.delDialog = true
     },
-    closeDelDialog() {
-      const vm = this;
-      vm.products.delItem = {};
-      vm.delDialog = false;
-    },
+    closeDelDialog () {
+      const vm = this
+      vm.products.delItem = {}
+      vm.delDialog = false
+    }
   },
-  created() {
-    this.getProducts();
+  created () {
+    this.getProducts()
     // this.$bus.$emit('messsage:push','產品成功新增', 'success','mdi-check-circle');
-  },
-};
+  }
+}
 </script>
 <style lang="scss">
 @media screen and (max-width: 600px) {

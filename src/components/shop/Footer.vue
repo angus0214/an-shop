@@ -19,15 +19,15 @@
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       footerIcons: [
         'mdi-facebook',
         'mdi-twitter',
         'mdi-linkedin',
-        'mdi-instagram',
-      ],
-    };
-  },
-};
+        'mdi-instagram'
+      ]
+    }
+  }
+}
 </script>

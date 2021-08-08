@@ -40,67 +40,67 @@
   </v-card>
 </template>
 <script>
-import SideCart from './SideCart';
-import SideBar from './SideBar';
-import FavList from './FavList';
+import SideCart from './SideCart'
+import SideBar from './SideBar'
+import FavList from './FavList'
 export default {
   components: {
     SideCart,
     SideBar,
-    FavList,
+    FavList
   },
-  data() {
+  data () {
     return {
       nav: [
         {
           text: 'Home',
           title: 'Back to Home page',
           active: true,
-          to: '/index',
+          to: '/index'
         },
         {
           text: 'Shop',
           title: 'Go to Shopping',
           active: false,
-          to: '/products',
+          to: '/products'
         },
         {
           text: 'About',
           title: 'Back to Home page',
           active: false,
-          to: '/about',
-        },
+          to: '/about'
+        }
       ],
       carts: [],
       favList: [],
       sideCartActive: false,
       sideBarActive: false,
-      favListActive: false,
-    };
+      favListActive: false
+    }
   },
   methods: {
-    hideSideCart() {
-      this.sideCartActive = false;
+    hideSideCart () {
+      this.sideCartActive = false
     },
-    hideSideBar() {
-      this.sideBarActive = false;
+    hideSideBar () {
+      this.sideBarActive = false
     },
-    hideFavList() {
-      this.favListActive = false;
+    hideFavList () {
+      this.favListActive = false
     },
-    getCarts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
+    getCarts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
       this.$http.get(api).then((response) => {
-        vm.carts = response.data.data.carts;
-        vm.sideCartActive = true;
-      });
+        vm.carts = response.data.data.carts
+        vm.sideCartActive = true
+      })
     },
-    getFavList() {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts')) || [];
-      this.favList = storageAry;
-      this.favListActive = true;
-    },
-  },
-};
+    getFavList () {
+      const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
+      this.favList = storageAry
+      this.favListActive = true
+    }
+  }
+}
 </script>

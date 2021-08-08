@@ -79,21 +79,21 @@
 <script>
 export default {
   props: {
-    product: {},
+    product: {}
   },
-  data() {
+  data () {
     return {
       dialog: false,
       selectItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       tempQty: 1,
-      loading: false,
-    };
+      loading: false
+    }
   },
   methods: {
-    addToCart() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
-      vm.loading = true;
+    addToCart () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
+      vm.loading = true
       this.$http
         .post(api, { data: { product_id: vm.product.id, qty: vm.tempQty } })
         .then((response) => {
@@ -103,19 +103,19 @@ export default {
               `${response.data.data.product.title}新增至購物車`,
               'success',
               'mdi-check-circle'
-            );
-            vm.loading = false;
+            )
+            vm.loading = false
           } else {
             this.$bus.$emit(
               'messsage:push',
               `${response.data.data.product.title}新增失敗`,
               'danger',
               'mdi-alert-outline'
-            );
-            vm.loading = false;
+            )
+            vm.loading = false
           }
-        });
-    },
-  },
-};
+        })
+    }
+  }
+}
 </script>

@@ -63,51 +63,51 @@
   </v-app>
 </template>
 <script>
-import Alert from '../components/AlertMessages';
+import Alert from '../components/AlertMessages'
 
 export default {
   components: {
-    Alert,
+    Alert
   },
-  data() {
+  data () {
     return {
       drawer: 'true',
       navItems: [
         {
           title: 'Dashboard',
           icon: 'mdi-view-dashboard',
-          link: '/admin/dashboard',
+          link: '/admin/dashboard'
         },
         {
           title: 'Products',
           icon: 'mdi-folder-multiple',
-          link: '/admin/products',
+          link: '/admin/products'
         },
         { title: 'Coupons', icon: 'mdi-ticket', link: '/admin/coupons' },
-        { title: 'Orders', icon: 'mdi-clipboard-list', link: '/admin/orders' },
-      ],
-    };
-  },
-  methods: {
-    logout() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/logout`;
-      this.$http.post(api).then((response) => {
-        console.log(response);
-        vm.$router.push('/login');
-      });
-    },
-    goShop(){
-      this.$router.push('/');
+        { title: 'Orders', icon: 'mdi-clipboard-list', link: '/admin/orders' }
+      ]
     }
   },
-  created() {
+  methods: {
+    logout () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/logout`
+      this.$http.post(api).then((response) => {
+        console.log(response)
+        vm.$router.push('/login')
+      })
+    },
+    goShop () {
+      this.$router.push('/')
+    }
+  },
+  created () {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
-    );
-    console.log('my cookie', token);
-    this.$http.defaults.headers.common.Authorization = `${token}`;
-  },
-};
+    )
+    console.log('my cookie', token)
+    this.$http.defaults.headers.common.Authorization = `${token}`
+  }
+}
 </script>

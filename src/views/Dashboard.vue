@@ -100,52 +100,52 @@
   </div>
 </template>
 <script>
-import LineChart from '../components/LineChart.vue';
-import PieChart from '../components/PieChart.vue';
-import moment from 'moment';
+import LineChart from '../components/LineChart.vue'
+import PieChart from '../components/PieChart.vue'
+import moment from 'moment'
 export default {
   components: { LineChart, PieChart },
-  data() {
+  data () {
     return {
       options: {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: false
       },
       loaded: false,
       ordersChartData: null,
       orders: {
         data: [],
-        total_pages: 0,
-      },
-    };
+        total_pages: 0
+      }
+    }
   },
   methods: {
-    async getChartData() {
-      const vm = this;
-      let total_page = 1;
-      vm.orders.data = [];
+    async getChartData () {
+      const vm = this
+      let total_page = 1
+      vm.orders.data = []
       // get total page
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`;
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=1`
       await this.$http.get(api).then((response) => {
-        total_page = response.data.pagination.total_pages;
-      });
+        total_page = response.data.pagination.total_pages
+      })
       // fetch all data
-      let promiseAry = [];
+      const promiseAry = []
       for (let i = 1; i <= total_page; i++) {
-        let getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`;
+        const getApi = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/orders?page=${i}`
         promiseAry.push(
           this.$http.get(getApi).then((response) => {
-            vm.orders.data = vm.orders.data.concat(response.data.orders);
+            vm.orders.data = vm.orders.data.concat(response.data.orders)
           })
-        );
+        )
       }
-      await Promise.all(promiseAry);
-      vm.fillData();
-      vm.loaded = true;
+      await Promise.all(promiseAry)
+      vm.fillData()
+      vm.loaded = true
     },
-    fillData() {
-      const vm = this;
-      let orderschart = {
+    fillData () {
+      const vm = this
+      const orderschart = {
         labels: [
           'JAN',
           'FEB',
@@ -158,81 +158,81 @@ export default {
           'SEP',
           'OCT',
           'NOV',
-          'DEC',
+          'DEC'
         ],
         datasets: [
           {
             label: 'Orders',
             backgroundColor: ['#80DEEA'],
             data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            borderColor: ['#00838F'],
-          },
-        ],
-      };
-      vm.orders.data.forEach(function(el) {
-        let year = moment(el.create_at * 1000).format('YYYY');
-        let month = moment(el.create_at * 1000).format('MM');
+            borderColor: ['#00838F']
+          }
+        ]
+      }
+      vm.orders.data.forEach(function (el) {
+        const year = moment(el.create_at * 1000).format('YYYY')
+        const month = moment(el.create_at * 1000).format('MM')
 
         if (year === '2021') {
           switch (month) {
             case '01':
               orderschart.datasets[0].data[0] =
-                orderschart.datasets[0].data[0] + 1;
-              break;
+                orderschart.datasets[0].data[0] + 1
+              break
             case '02':
               orderschart.datasets[0].data[1] =
-                orderschart.datasets[0].data[1] + 1;
-              break;
+                orderschart.datasets[0].data[1] + 1
+              break
             case '03':
               orderschart.datasets[0].data[2] =
-                orderschart.datasets[0].data[2] + 1;
-              break;
+                orderschart.datasets[0].data[2] + 1
+              break
             case '04':
               orderschart.datasets[0].data[3] =
-                orderschart.datasets[0].data[3] + 1;
-              break;
+                orderschart.datasets[0].data[3] + 1
+              break
             case '05':
               orderschart.datasets[0].data[4] =
-                orderschart.datasets[0].data[4] + 1;
-              break;
+                orderschart.datasets[0].data[4] + 1
+              break
             case '06':
               orderschart.datasets[0].data[5] =
-                orderschart.datasets[0].data[5] + 1;
-              break;
+                orderschart.datasets[0].data[5] + 1
+              break
             case '07':
               orderschart.datasets[0].data[6] =
-                orderschart.datasets[0].data[6] + 1;
-              break;
+                orderschart.datasets[0].data[6] + 1
+              break
             case '08':
               orderschart.datasets[0].data[7] =
-                orderschart.datasets[0].data[7] + 1;
-              break;
+                orderschart.datasets[0].data[7] + 1
+              break
             case '09':
               orderschart.datasets[0].data[8] =
-                orderschart.datasets[0].data[8] + 1;
-              break;
+                orderschart.datasets[0].data[8] + 1
+              break
             case '10':
               orderschart.datasets[0].data[9] =
-                orderschart.datasets[0].data[9] + 1;
-              break;
+                orderschart.datasets[0].data[9] + 1
+              break
             case '11':
               orderschart.datasets[0].data[10] =
-                orderschart.datasets[0].data[10] + 1;
-              break;
+                orderschart.datasets[0].data[10] + 1
+              break
             case '12':
               orderschart.datasets[0].data[11] =
-                orderschart.datasets[0].data[11] + 1;
-              break;
+                orderschart.datasets[0].data[11] + 1
+              break
           }
         }
-      });
-      vm.ordersChartData = Object.assign({}, orderschart);
-    },
+      })
+      vm.ordersChartData = Object.assign({}, orderschart)
+    }
   },
-  async mounted() {
-    this.getChartData();
+  async mounted () {
+    this.getChartData()
   },
-  created() {},
-};
+  created () {}
+}
 </script>
 <style lang="scss"></style>

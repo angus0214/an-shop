@@ -28,25 +28,25 @@
 <script>
 export default {
   props: {
-    isActive: Boolean,
+    isActive: Boolean
   },
-  data() {
+  data () {
     return {
       selectedItem: 1,
       items: [
         { text: 'Home', icon: 'mdi-home', to: '/index' },
         { text: 'Products', icon: 'mdi-animation', to: '/products' },
         { text: 'Carts', icon: 'mdi-cart', to: '/carts' },
-        { text: 'About', icon: 'mdi-information',to: '/about' },
-      ],
-    };
+        { text: 'About', icon: 'mdi-information', to: '/about' }
+      ]
+    }
   },
   methods: {
-    hide() {
-      this.$emit('hideBar');
-    },
-  },
-};
+    hide () {
+      this.$emit('hideBar')
+    }
+  }
+}
 </script>
 <style lang="scss">
 .sidebar-wrap {

@@ -83,40 +83,40 @@
 export default {
   props: {
     isActive: Boolean,
-    carts: Array,
+    carts: Array
   },
   computed: {
-    totalPrice() {
-      let total = 0;
-      this.carts.forEach(function(el) {
-        let onePrice = el.product.price * el.qty;
-        total += onePrice;
-      });
-      return total;
-    },
+    totalPrice () {
+      let total = 0
+      this.carts.forEach(function (el) {
+        const onePrice = el.product.price * el.qty
+        total += onePrice
+      })
+      return total
+    }
   },
   methods: {
-    hide() {
-      this.$emit('hideCart');
+    hide () {
+      this.$emit('hideCart')
     },
-    updateCarts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
+    updateCarts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
       this.$http.get(api).then((response) => {
-        vm.carts = response.data.data.carts;
-        console.log(vm.carts);
-      });
+        vm.carts = response.data.data.carts
+        console.log(vm.carts)
+      })
     },
-    delCart(id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`;
-      const vm = this;
+    delCart (id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      const vm = this
       this.$http.delete(api).then((response) => {
-        console.log(response);
-        vm.updateCarts();
-      });
-    },
-  },
-};
+        console.log(response)
+        vm.updateCarts()
+      })
+    }
+  }
+}
 </script>
 <style lang="scss">
 .side-cart-wrap {

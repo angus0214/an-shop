@@ -443,14 +443,14 @@
   </div>
 </template>
 <script>
-import { ValidationObserver } from 'vee-validate';
-import { ValidationProvider } from 'vee-validate';
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
+
 export default {
   components: {
     ValidationObserver,
-    ValidationProvider,
+    ValidationProvider
   },
-  data() {
+  data () {
     return {
       stepEl: 1,
       carts: [],
@@ -463,115 +463,115 @@ export default {
         products: [],
         create_at: '',
         total: 0,
-        id: '',
+        id: ''
       },
       orderMsg: {
         title: '完成訂購',
-        message: '感謝您訂購 An-Shop 產品',
-      },
-    };
+        message: '感謝您訂購 An-Shop 產品'
+      }
+    }
   },
   methods: {
-    submit(status) {
-      console.log(status);
+    submit (status) {
+      console.log(status)
     },
-    getCarts() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`;
-      const vm = this;
+    getCarts () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      const vm = this
       this.$http.get(api).then((response) => {
-        vm.carts = response.data.data.carts;
-      });
+        vm.carts = response.data.data.carts
+      })
     },
-    countQty(item) {
-      item = item + 1;
-      console.log(item);
+    countQty (item) {
+      item = item + 1
+      console.log(item)
     },
-    useCoupon() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`;
-      const vm = this;
+    useCoupon () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`
+      const vm = this
       this.$http
         .post(api, { data: { code: vm.couponCode } })
         .then((response) => {
-          vm.final_total_price = response.data.data.final_total;
-          console.log(response.data);
-        });
+          vm.final_total_price = response.data.data.final_total
+          console.log(response.data)
+        })
     },
-    createOrder() {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`;
-      const vm = this;
+    createOrder () {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order`
+      const vm = this
       this.$http
         .post(api, { data: { user: vm.user }, message: vm.message })
         .then((response) => {
           if (response.data.success) {
-            vm.getOrder(response.data.orderId);
-            vm.stepEl = 3;
+            vm.getOrder(response.data.orderId)
+            vm.stepEl = 3
           } else {
-            console.log(response.data);
+            console.log(response.data)
           }
-        });
+        })
     },
-    getOrder(id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`;
-      const vm = this;
+    getOrder (id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`
+      const vm = this
       this.$http.get(api).then((response) => {
-        console.log(response.data);
-        vm.order.user = response.data.order.user;
-        vm.order.id = response.data.order.id;
-        vm.order.create_at = response.data.order.create_at;
-        vm.order.total = response.data.order.total;
-        for (let el in response.data.order.products) {
-          vm.order.products.push(response.data.order.products[el]);
+        console.log(response.data)
+        vm.order.user = response.data.order.user
+        vm.order.id = response.data.order.id
+        vm.order.create_at = response.data.order.create_at
+        vm.order.total = response.data.order.total
+        for (const el in response.data.order.products) {
+          vm.order.products.push(response.data.order.products[el])
         }
-      });
+      })
     },
-    pay() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`;
+    pay () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/pay/${vm.order.id}`
 
       this.$http.post(api).then((response) => {
         if (response.data.success) {
-          vm.orderMsg.title = '完成訂購';
-          vm.orderMsg.message = '感謝您訂購 An-Shop 產品';
+          vm.orderMsg.title = '完成訂購'
+          vm.orderMsg.message = '感謝您訂購 An-Shop 產品'
         } else {
-          vm.orderMsg.title = '訂購失敗';
-          vm.orderMsg.message = '很抱歉，訂單出錯，麻煩您重新選購商品';
+          vm.orderMsg.title = '訂購失敗'
+          vm.orderMsg.message = '很抱歉，訂單出錯，麻煩您重新選購商品'
         }
-        vm.stepEl = 4;
-      });
+        vm.stepEl = 4
+      })
     },
-    delCart(id) {
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`;
-      const vm = this;
+    delCart (id) {
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      const vm = this
       this.$http.delete(api).then((response) => {
-        console.log(response);
-        vm.getCarts();
-      });
-    },
+        console.log(response)
+        vm.getCarts()
+      })
+    }
   },
   computed: {
-    totalPrice() {
-      let price = 0;
+    totalPrice () {
+      let price = 0
       this.carts.forEach((el) => {
-        let onePrice = el.product.price * el.qty;
-        price += onePrice;
-      });
-      return price;
+        const onePrice = el.product.price * el.qty
+        price += onePrice
+      })
+      return price
     },
-    discount() {
-      let dc = '';
-      const vm = this;
+    discount () {
+      let dc = ''
+      const vm = this
       if (vm.final_total_price === 0) {
-        dc = 0;
+        dc = 0
       } else {
-        dc = vm.totalPrice - vm.final_total_price;
+        dc = vm.totalPrice - vm.final_total_price
       }
-      return dc;
-    },
+      return dc
+    }
   },
-  created() {
-    this.getCarts();
-  },
-};
+  created () {
+    this.getCarts()
+  }
+}
 </script>
 <style>
 .v-stepper__header {

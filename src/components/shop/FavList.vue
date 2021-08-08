@@ -67,37 +67,37 @@
 export default {
   props: {
     isActive: Boolean,
-    products: Array,
+    products: Array
   },
   computed: {
-    totalPrice() {
-      let total = 0;
-      this.carts.forEach(function(el) {
-        let onePrice = el.product.price * el.qty;
-        total += onePrice;
-      });
-      return total;
-    },
+    totalPrice () {
+      let total = 0
+      this.carts.forEach(function (el) {
+        const onePrice = el.product.price * el.qty
+        total += onePrice
+      })
+      return total
+    }
   },
   methods: {
-    hide() {
-      this.$emit('hideFavList');
+    hide () {
+      this.$emit('hideFavList')
     },
-    getProducts() {
-        this.$emit('getFavList')
+    getProducts () {
+      this.$emit('getFavList')
     },
-    delFav(item) {
-      let storageAry = JSON.parse(localStorage.getItem('favProducts'));
-      storageAry.forEach(function(el, index) {
+    delFav (item) {
+      const storageAry = JSON.parse(localStorage.getItem('favProducts'))
+      storageAry.forEach(function (el, index) {
         if (el.id === item.id) {
-          storageAry.splice(index, 1);
+          storageAry.splice(index, 1)
         }
-      });
-      localStorage.setItem('favProducts', JSON.stringify(storageAry));
-      this.getProducts();
-    },
-  },
-};
+      })
+      localStorage.setItem('favProducts', JSON.stringify(storageAry))
+      this.getProducts()
+    }
+  }
+}
 </script>
 <style lang="scss">
 .side-cart-wrap {

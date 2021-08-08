@@ -198,78 +198,78 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       coupons: {
         dataHeaders: [
           {
             text: '名稱',
             align: 'start',
-            value: 'title',
+            value: 'title'
           },
           { text: '折扣代碼', value: 'code' },
           { text: '折扣百分比(%)', value: 'percent' },
           { text: '到期日', value: 'due_date' },
-          { text: '編輯', value: 'edit', filterable: false, sortable: false },
+          { text: '編輯', value: 'edit', filterable: false, sortable: false }
         ],
         data: [],
         due_date: '',
         tempCoupon: {},
         isNew: false,
-        total_pages: '',
+        total_pages: ''
       },
       loading: {
         dataTable: false,
         card: false,
-        delete: false,
+        delete: false
       },
       search: '',
       date: new Date().toISOString().substr(0, 10),
       datePicker: false,
       dialog: {
         editDialog: false,
-        delDialog: false,
-      },
-    };
+        delDialog: false
+      }
+    }
   },
   watch: {
-    'coupons.due_date': function() {
-      const vm = this;
-      const timestamp = new Date(vm.coupons.due_date).getTime() / 1000;
-      vm.coupons.tempCoupon.due_date = timestamp;
-    },
+    'coupons.due_date': function () {
+      const vm = this
+      const timestamp = new Date(vm.coupons.due_date).getTime() / 1000
+      vm.coupons.tempCoupon.due_date = timestamp
+    }
   },
   methods: {
-    getAllCoupons() {
-      const vm = this;
-      vm.coupons.data = [];
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`;
-      vm.loading.dataTable = true;
+    getAllCoupons () {
+      const vm = this
+      vm.coupons.data = []
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=1`
+      vm.loading.dataTable = true
       this.$http.get(api).then((response) => {
-        vm.coupons.total_pages = response.data.pagination.total_pages;
+        vm.coupons.total_pages = response.data.pagination.total_pages
         for (let i = 1; i <= vm.coupons.total_pages; i++) {
-          this.getCoupons(i);
+          this.getCoupons(i)
         }
-        vm.loading.dataTable = false;
-      });
+        vm.loading.dataTable = false
+      })
     },
-    getCoupons(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`;
+    getCoupons (page = 1) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupons?page=${page}`
       this.$http.get(api).then((response) => {
-        vm.coupons.data = vm.coupons.data.concat(response.data.coupons);
-      });
+        vm.coupons.data = vm.coupons.data.concat(response.data.coupons)
+      })
     },
-    updateCoupon() {
-      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`;
-      let httpMethod = 'post';
-      let alertMessage = '新增';
-      const vm = this;
-      vm.loading.card = true;
+    updateCoupon () {
+      let api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon`
+      let httpMethod = 'post'
+      let alertMessage = '新增'
+      const vm = this
+      vm.loading.card = true
       if (!vm.coupons.isNew) {
-        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
-        httpMethod = 'put';
-        alertMessage = '編輯';
+        api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`
+        httpMethod = 'put'
+        alertMessage = '編輯'
       }
       this.$http[httpMethod](api, { data: vm.coupons.tempCoupon }).then(
         (response) => {
@@ -280,7 +280,7 @@ export default {
               `優惠券${alertMessage}成功`,
               'success',
               'mdi-check-circle'
-            );
+            )
           } else {
             // console.log(response.data);
             vm.$bus.$emit(
@@ -288,18 +288,18 @@ export default {
               `優惠券${alertMessage}失敗`,
               'danger',
               'mdi-alert-outline'
-            );
+            )
           }
-          this.getAllCoupons();
-          this.closeEditDialog();
-          vm.loading.card = false;
+          this.getAllCoupons()
+          this.closeEditDialog()
+          vm.loading.card = false
         }
-      );
+      )
     },
-    deleteCoupon() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`;
-      vm.loading.delete = true;
+    deleteCoupon () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/admin/coupon/${vm.coupons.tempCoupon.id}`
+      vm.loading.delete = true
       this.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.$bus.$emit(
@@ -307,54 +307,54 @@ export default {
             response.data.message,
             'success',
             'mdi-check-circle'
-          );
+          )
         } else {
           vm.$bus.$emit(
             'messsage:push',
             response.data.message,
             'danger',
             'mdi-alert-outline'
-          );
+          )
         }
-        console.log(response.data);
-        this.getAllCoupons();
-        this.closeDelDialog();
-        vm.loading.delete = false;
-      });
+        console.log(response.data)
+        this.getAllCoupons()
+        this.closeDelDialog()
+        vm.loading.delete = false
+      })
     },
-    openEditDialog(item, isNew) {
-      const vm = this;
-      vm.coupons.isNew = isNew;
+    openEditDialog (item, isNew) {
+      const vm = this
+      vm.coupons.isNew = isNew
       if (vm.coupons.isNew) {
         vm.coupons.due_date = new Date()
           .toLocaleDateString()
-          .replace(/\//g, '-');
-        vm.coupons.tempCoupon = Object.assign({}, {});
+          .replace(/\//g, '-')
+        vm.coupons.tempCoupon = Object.assign({}, {})
       } else {
-        vm.coupons.tempCoupon = Object.assign({}, item);
+        vm.coupons.tempCoupon = Object.assign({}, item)
         const dateAndTime = new Date(vm.coupons.tempCoupon.due_date * 1000)
           .toLocaleDateString()
-          .replace(/\//g, '-');
-        vm.coupons.due_date = dateAndTime;
+          .replace(/\//g, '-')
+        vm.coupons.due_date = dateAndTime
       }
-      vm.dialog.editDialog = true;
+      vm.dialog.editDialog = true
     },
-    closeEditDialog() {
-      const vm = this;
-      vm.dialog.editDialog = false;
+    closeEditDialog () {
+      const vm = this
+      vm.dialog.editDialog = false
     },
-    openDelDialog(item) {
-      const vm = this;
-      vm.coupons.tempCoupon = Object.assign({}, item);
-      vm.dialog.delDialog = true;
+    openDelDialog (item) {
+      const vm = this
+      vm.coupons.tempCoupon = Object.assign({}, item)
+      vm.dialog.delDialog = true
     },
-    closeDelDialog() {
-      const vm = this;
-      vm.dialog.delDialog = false;
-    },
+    closeDelDialog () {
+      const vm = this
+      vm.dialog.delDialog = false
+    }
   },
-  created() {
-    this.getAllCoupons();
-  },
-};
+  created () {
+    this.getAllCoupons()
+  }
+}
 </script>

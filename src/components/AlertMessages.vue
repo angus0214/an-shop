@@ -18,47 +18,47 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      messages: [],
-    };
+      messages: []
+    }
   },
   methods: {
-    updateMessage(message, status, icon) {
-      const timestamp = Math.floor(new Date() / 1000);
+    updateMessage (message, status, icon) {
+      const timestamp = Math.floor(new Date() / 1000)
       this.messages.push({
         message,
         status,
         icon,
-        timestamp,
-      });
-      this.removeMessageWithTiming(timestamp);
+        timestamp
+      })
+      this.removeMessageWithTiming(timestamp)
     },
-    removeMessage(num) {
-      this.messages.splice(num, 1);
+    removeMessage (num) {
+      this.messages.splice(num, 1)
     },
-    removeMessageWithTiming(timestamp) {
-      const vm = this;
+    removeMessageWithTiming (timestamp) {
+      const vm = this
       setTimeout(() => {
         vm.messages.forEach((item, i) => {
           if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
+            vm.messages.splice(i, 1)
           }
-        });
-      }, 5000);
-    },
+        })
+      }, 5000)
+    }
   },
-  created() {
-    const vm = this;
+  created () {
+    const vm = this
     // 自定義名稱 'messsage:push'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
     vm.$bus.$on('messsage:push', (message, status = 'info', icon) => {
-      vm.updateMessage(message, status, icon);
-    });
+      vm.updateMessage(message, status, icon)
+    })
     // vm.$bus.$emit('messsage:push');
-  },
-};
+  }
+}
 </script>
 <style>
 .alert-custom {
