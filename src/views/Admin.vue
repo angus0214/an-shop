@@ -56,8 +56,8 @@
     </v-app-bar>
     <v-main class="blue-grey lighten-4">
       <v-container>
-        <Alert></Alert>
-        <router-view></router-view>
+        <Alert />
+        <router-view />
       </v-container>
     </v-main>
   </v-app>
