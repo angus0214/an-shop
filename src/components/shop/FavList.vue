@@ -72,7 +72,7 @@ export default {
   computed: {
     totalPrice () {
       let total = 0
-      this.carts.forEach(function (el) {
+      this.carts.forEach((el) => {
         const onePrice = el.product.price * el.qty
         total += onePrice
       })
@@ -88,7 +88,7 @@ export default {
     },
     delFav (item) {
       const storageAry = JSON.parse(localStorage.getItem('favProducts'))
-      storageAry.forEach(function (el, index) {
+      storageAry.forEach((el, index) => {
         if (el.id === item.id) {
           storageAry.splice(index, 1)
         }

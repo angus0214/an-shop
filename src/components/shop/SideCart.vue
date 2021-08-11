@@ -88,7 +88,7 @@ export default {
   computed: {
     totalPrice () {
       let total = 0
-      this.carts.forEach(function (el) {
+      this.carts.forEach((el) => {
         const onePrice = el.product.price * el.qty
         total += onePrice
       })

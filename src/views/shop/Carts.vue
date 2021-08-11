@@ -492,7 +492,6 @@ export default {
         .post(api, { data: { code: vm.couponCode } })
         .then((response) => {
           vm.final_total_price = response.data.data.final_total
-          console.log(response.data)
         })
     },
     createOrder () {
@@ -504,8 +503,6 @@ export default {
           if (response.data.success) {
             vm.getOrder(response.data.orderId)
             vm.stepEl = 3
-          } else {
-            console.log(response.data)
           }
         })
     },
@@ -513,7 +510,6 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/order/${id}`
       vm.$http.get(api).then((response) => {
-        console.log(response.data)
         vm.order.user = response.data.order.user
         vm.order.id = response.data.order.id
         vm.order.create_at = response.data.order.create_at
@@ -541,7 +537,6 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
       vm.$http.delete(api).then((response) => {
-        console.log(response)
         vm.getCarts()
       })
     }

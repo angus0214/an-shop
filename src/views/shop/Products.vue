@@ -180,13 +180,13 @@ export default {
         if (vm.focusMenuItem.category === 'all') {
           data = vm.products
         } else {
-          data = vm.products.filter(function (item) {
+          data = vm.products.filter((item) => {
             return item.category === vm.focusMenuItem.category
           })
         }
       } else if (vm.focusMenuItem.type === 'tag') {
-        vm.products.forEach(function (el) {
-          el.description.forEach(function (item) {
+        vm.products.forEach((el) => {
+          el.description.forEach((item) => {
             if (item === vm.focusMenuItem.category) {
               data.push(el)
             }
@@ -255,7 +255,7 @@ export default {
     },
     delFav (item) {
       const storageAry = JSON.parse(localStorage.getItem('favProducts'))
-      storageAry.forEach(function (el, index) {
+      storageAry.forEach((el, index) => {
         if (el.id === item.id) {
           storageAry.splice(index, 1)
         }
@@ -272,7 +272,7 @@ export default {
     getInLocalStorage (item) {
       const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
       let status = false
-      storageAry.forEach(function (el) {
+      storageAry.forEach((el) => {
         if (el.id === item.id) {
           status = true
         }
