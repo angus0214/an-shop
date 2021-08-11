@@ -17,10 +17,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '*',
-    redirect: '/'
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
@@ -90,6 +86,10 @@ const routes = [
         component: ShopProduct
       }
     ]
+  },
+  {
+    path: '*',
+    redirect: '/'
   }
 ]
 
