@@ -267,12 +267,12 @@ export default {
     },
     openUserInfoDialog (item) {
       const vm = this
-      vm.orders.tempUser = Object.assign({}, item.user)
+      vm.orders.tempUser = { ...item.user }
       vm.dialog.userInfo = true
     },
     openEditDialog (item) {
       const vm = this
-      vm.orders.tempOrder = Object.assign({}, item)
+      vm.orders.tempOrder = { ...item }
       vm.editDialog = true
     },
     getObjLength (item) {

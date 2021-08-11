@@ -328,7 +328,7 @@ export default {
           .replace(/\//g, '-')
         vm.coupons.tempCoupon = Object.assign({}, {})
       } else {
-        vm.coupons.tempCoupon = Object.assign({}, item)
+        vm.coupons.tempCoupon = { ...item }
         const dateAndTime = new Date(vm.coupons.tempCoupon.due_date * 1000)
           .toLocaleDateString()
           .replace(/\//g, '-')
@@ -342,7 +342,7 @@ export default {
     },
     openDelDialog (item) {
       const vm = this
-      vm.coupons.tempCoupon = Object.assign({}, item)
+      vm.coupons.tempCoupon = { ...item }
       vm.dialog.delDialog = true
     },
     closeDelDialog () {

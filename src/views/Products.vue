@@ -358,7 +358,7 @@ export default {
     // 編輯 Modal
     openEditDialog (item) {
       const vm = this
-      vm.products.tempProduct = Object.assign({}, item)
+      vm.products.tempProduct = { ...item }
       vm.editDialog = true
     },
     closeEditDialog () {
@@ -369,7 +369,7 @@ export default {
     // 刪除 Modal
     openDelDialog (item) {
       const vm = this
-      vm.products.delItem = Object.assign({}, item)
+      vm.products.delItem = { ...item }
       vm.delDialog = true
     },
     closeDelDialog () {

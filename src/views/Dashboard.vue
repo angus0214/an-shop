@@ -226,7 +226,7 @@ export default {
           }
         }
       })
-      vm.ordersChartData = Object.assign({}, orderschart)
+      vm.ordersChartData = { ...orderschart }
     }
   },
   async mounted () {
