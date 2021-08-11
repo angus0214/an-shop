@@ -63,7 +63,7 @@
   </v-app>
 </template>
 <script>
-import Alert from '../components/AlertMessages'
+import Alert from '@/components/AlertMessages'
 
 export default {
   components: {

@@ -100,8 +100,8 @@
   </div>
 </template>
 <script>
-import LineChart from '../components/LineChart.vue'
-import PieChart from '../components/PieChart.vue'
+import LineChart from '@/components/LineChart.vue'
+import PieChart from '@/components/PieChart.vue'
 import moment from 'moment'
 export default {
   components: { LineChart, PieChart },

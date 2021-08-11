@@ -9,9 +9,9 @@
   </v-app>
 </template>
 <script>
-import Navbar from '../../components/shop/Navbar.vue'
-import Footer from '../../components/shop/Footer.vue'
-import Alert from '../../components/AlertMessages'
+import Navbar from '@/components/shop/Navbar.vue'
+import Footer from '@/components/shop/Footer.vue'
+import Alert from '@/components/AlertMessages'
 export default {
   components: {
     Alert,

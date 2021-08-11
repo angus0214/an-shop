@@ -126,7 +126,7 @@
   </div>
 </template>
 <script>
-import DialogProduct from '../../components/shop/DialogProduct.vue'
+import DialogProduct from '@/components/shop/DialogProduct.vue'
 export default {
   components: {
     DialogProduct
