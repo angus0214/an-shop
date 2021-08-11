@@ -56,18 +56,6 @@
     </v-container>
   </v-app>
 </template>
-<style lang="scss">
-.v-tab-active {
-  background-color: #1976d2;
-  color: #ffffff !important;
-  transition: all 0.5s ease-out;
-}
-.bg .v-application--wrap {
-  background-image: url(../assets/login_bg.jpg);
-  background-position: center center;
-  background-size: cover;
-}
-</style>
 <script>
 export default {
   data () {
@@ -106,3 +94,15 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.v-tab-active {
+  background-color: #1976d2;
+  color: #ffffff !important;
+  transition: all 0.5s ease-out;
+}
+.bg .v-application--wrap {
+  background-image: url(../assets/login_bg.jpg);
+  background-position: center center;
+  background-size: cover;
+}
+</style>
