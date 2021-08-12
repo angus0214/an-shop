@@ -13,7 +13,7 @@
         </v-card-title>
         <div class="d-flex flex-wrap">
           <v-col cols="12" sm="6">
-            <v-img max-height="500" :src="product.imageUrl"> </v-img>
+            <v-img max-height="500" contain :src="product.imageUrl"> </v-img>
           </v-col>
           <v-col cols="12" sm="6">
             <div class="text-h4 font-weight-bold mb-2">{{ product.title }}</div>
