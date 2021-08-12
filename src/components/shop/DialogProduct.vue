@@ -2,7 +2,8 @@
   <div class="text-center">
     <v-dialog v-model="dialog" max-width="80%">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on" text>
+        <v-btn color="red lighten-2" dark v-bind="attrs" v-on="on" text class="font-weight-bold text-body-1 px-2">
+          <v-icon class="ma-1">mdi-chat-outline</v-icon>
           詳細資訊
         </v-btn>
       </template>

@@ -62,16 +62,18 @@
                   :class="{cardHover:cardHover.hover && cardHover.index === index}"
                   @mouseover="cardHover.hover = true;cardHover.index = index"
                   @mouseout="cardHover.hover = false;cardHover.index = -1"
+                  @click="$router.push({ name: 'product', params: { id: item.id } })"
+                  :ripple="false"
                   style="transition:all ease .5s"
                 >
-                  <v-img class="cursor-pointer" height="250" :src="item.imageUrl" @click="$router.push({ name: 'product', params: { id: item.id } })"></v-img>
+                  <v-img class="cursor-pointer" height="250" :src="item.imageUrl"></v-img>
                   <div class="d-flex justify-space-between align-center">
-                    <v-card-title>{{ item.title }}</v-card-title>
+                    <v-card-title class="font-weight-bold">{{ item.title }}</v-card-title>
                     <v-btn
                       v-if="getInLocalStorage(item)"
                       icon
                       class="ma-2"
-                      @click="delFav(item)"
+                      @click.stop="delFav(item)"
                     >
                       <v-icon color="red">mdi-heart</v-icon>
                     </v-btn>
@@ -86,21 +88,24 @@
                       :loading="loading.isLoading && index == loading.index"
                       color="deep-purple lighten-2"
                       text
-                      @click="addToCart(item.id, 1, index)"
+                      class="font-weight-bold text-body-1"
+                      @click.stop="addToCart(item.id, 1, index)"
                     >
+                      <v-icon class="mr-1">mdi-cart-outline</v-icon>
                       加入購物車
                     </v-btn>
                   </v-card-actions>
                   <v-divider class="mx-4"></v-divider>
-                  <v-card-title>分類標籤</v-card-title>
+                  <v-card-title class="text-body-1">分類標籤</v-card-title>
                   <v-card-text class="d-flex flex-wrap">
                     <v-chip
                       class="ma-1"
                       dark
+                      small
                       v-for="(category, index) in item.description"
                       :key="index"
                       color="blue-grey "
-                      @click="
+                      @click.stop="
                         focusMenuItem.type = 'tag';
                         focusMenuItem.category = category;
                         menuItems[1].active = true;
