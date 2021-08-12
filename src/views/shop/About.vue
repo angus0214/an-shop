@@ -6,7 +6,7 @@
       position="center 20%"
     >
     </v-img>
-    <v-container class="py-6">
+    <v-container class="py-6 px-5 px-sm-16">
       <div class="text-h3 font-weight-bold text-center blue-grey--text">
         關於我們
       </div>

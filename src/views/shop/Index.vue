@@ -1,11 +1,11 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container  class="pa-0">
     <v-row no-gutters>
       <v-col cols="12">
         <div class="bg banner-main">
           <v-col class="d-flex h-100" cols="12" sm="6" md="6">
             <div
-              class="banner-card d-flex justify-center align-start ml-sm-16  flex-column"
+              class="banner-card d-flex justify-center align-start pa-5 pa-sm-0 ml-sm-16  flex-column"
             >
               <div class="text-h3 font-weight-bold">An Shop 飾品選貨店</div>
               <div class="my-12 text-subtitle-1 font-weight-bold">
@@ -26,7 +26,7 @@
         <div
           class="d-flex justify-center align-center flex-column banner-go-shop"
         >
-          <div class="text-h4 text-md-h3 font-weight-bold white--text mb-6">
+          <div class="text-h4 text-md-h3 font-weight-bold white--text mb-6 pa-4 pa-sm-0">
             目前全館
             <span class="red--text text-h3 font-weight-bold">9折</span>
             優惠活動中
