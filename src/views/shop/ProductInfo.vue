@@ -75,37 +75,48 @@
           :key="index"
           class="pt-0"
         >
-          <v-card :disabled="loading.isLoading && index == loading.index">
+          <v-card
+            :disabled="loading.isLoading && index == loading.index"
+            :ripple="false"
+            @click.native ="
+              $router.push({ name: 'product', params: { id: item.id } })
+            "
+            class="cursor-pointer"
+          >
             <v-img height="200" contain :src="item.imageUrl"></v-img>
             <div class="d-flex justify-space-between align-center">
-              <v-card-title>{{ item.title }}</v-card-title>
+              <v-card-title class="font-weight-bold">{{ item.title }}</v-card-title>
             </div>
             <v-card-text>$ {{ item.price }}</v-card-text>
             <v-card-actions>
               <v-btn
                 text
                 color="primary"
-                @click="
+                @click.stop="
                   $router.push({ name: 'product', params: { id: item.id } })
                 "
               >
+                <v-icon class="ma-1">mdi-chat-outline</v-icon>
                 商品頁面
               </v-btn>
               <v-btn
                 :loading="loading.isLoading && index == loading.index"
                 color="deep-purple lighten-2"
                 text
-                @click="addToCart(item.id, 1, index)"
+                class="font-weight-bold"
+                @click.stop="addToCart(item.id, 1, index)"
               >
+                <v-icon class="mr-1">mdi-cart-outline</v-icon>
                 加入購物車
               </v-btn>
             </v-card-actions>
             <v-divider class="mx-4"></v-divider>
-            <v-card-title>分類標籤</v-card-title>
+            <v-card-title class="text-body-1">分類標籤</v-card-title>
             <v-card-text class="d-flex flex-wrap">
               <v-chip
                 class="ma-1"
                 dark
+                small
                 v-for="(category, index) in item.description"
                 :key="index"
                 color="blue-grey "
@@ -202,7 +213,9 @@ export default {
       if (vm.products !== 0) {
         vm.products.forEach((el) => {
           if (el.category === vm.product.category && el.id !== vm.product.id) {
-            ary.push(el)
+            if (ary.length < 3) {
+              ary.push(el)
+            }
           }
         })
       }
