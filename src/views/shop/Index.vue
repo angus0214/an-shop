@@ -44,18 +44,34 @@
       <v-col
         cols="12"
         md="6"
-        class="banner-left d-flex justify-center align-center cursor-pointer bg"
-        @click="goProducts"
+        style="overflow:hidden"
       >
-        <div class="text-h2 font-weight-bold banner-text">
+      <div
+        class="banner-left d-flex justify-center align-center cursor-pointer bg"
+        :class="{ bgScale: hover.isHover && hover.index === 1 }"
+        @mouseover="
+          hover.isHover = true;
+          hover.index = 1;
+        "
+        @mouseleave="hover.isHover = false"
+        @click="goProducts"
+        >
+        <div
+        class="text-h2 font-weight-bold banner-text"
+        :class="{ hover: hover.isHover && hover.index === 1 }">
           Bracelet
           <div class="banner-text-underline"></div>
         </div>
+      </div>
+
       </v-col>
       <v-col cols="12" md="6">
-        <v-row no-gutters style="overflow:hidden">
+        <v-row no-gutters>
           <v-col
             cols="12"
+            style="overflow:hidden"
+          >
+          <div
             class="banner-right-top d-flex justify-center align-center cursor-pointer"
             :class="{ bgScale: hover.isHover && hover.index === 2 }"
             @mouseover="
@@ -63,8 +79,7 @@
               hover.index = 2;
             "
             @mouseleave="hover.isHover = false"
-            @click="goProducts"
-          >
+            @click="goProducts">
             <div
               class="text-h3 font-weight-bold banner-text"
               :class="{ hover: hover.isHover && hover.index === 2 }"
@@ -72,10 +87,14 @@
               Glasses
               <div class="banner-text-underline"></div>
             </div>
+          </div>
           </v-col>
           <v-col
             cols="12"
             md="6"
+            style="overflow:hidden"
+          >
+          <div
             class="banner-sm-1 bg d-flex justify-center align-center cursor-pointer position-relative"
             :class="{ bgScale: hover.isHover && hover.index === 3 }"
             @mouseover="
@@ -83,8 +102,7 @@
               hover.index = 3;
             "
             @mouseleave="hover.isHover = false"
-            @click="goProducts"
-          >
+            @click="goProducts">
             <div
               class="banner-overlay"
               :class="{ hover: hover.isHover && hover.index === 3 }"
@@ -96,19 +114,34 @@
               Earring
               <div class="banner-text-underline"></div>
             </div>
+          </div>
           </v-col>
           <v-col
             cols="12"
             md="6"
-            class="banner-sm-2 bg d-flex justify-center align-center cursor-pointer"
-            @click="goProducts"
+            style="overflow:hidden"
           >
+          <div
+            class="banner-sm-2 bg d-flex justify-center align-center cursor-pointer"
+            :class="{ bgScale: hover.isHover && hover.index === 4 }"
+            @mouseover="
+              hover.isHover = true;
+              hover.index = 4;
+            "
+            @mouseleave="hover.isHover = false"
+            @click="goProducts"
+            >
             <div
-              class="text-h3 font-weight-bold banner-text deep-orange--text text--lighten-1"
+              class="text-h3 font-weight-bold banner-text"
+              :class="{ hover: hover.isHover && hover.index === 4 }"
             >
               Necklace
-              <div class="banner-text-underline blue-grey"></div>
+              <div
+                class="banner-text-underline"
+                :class="{ hover: hover.isHover && hover.index === 4 }">
+              </div>
             </div>
+          </div>
           </v-col>
         </v-row>
       </v-col>
@@ -177,6 +210,7 @@ export default {
   background-position: center;
   background-image: url(../../assets/banner-left.jpg);
   height: 100vh;
+  transition: all ease 1s;
   .banner-text {
     color: #5d4037;
     .banner-text-underline {
@@ -184,11 +218,11 @@ export default {
     }
   }
   .banner-text.hover {
-    color: #eceff1;
+    color: #607d8b;
     transition: all ease 1s;
     .banner-text-underline {
       width: 100%;
-      background: #eceff1;
+      background: #5d4037;
       transition: all ease 1s;
     }
   }
@@ -240,6 +274,22 @@ export default {
   background-position: center;
   background-image: url(../../assets/banner-sm-2.jpg);
   height: 50vh;
+  transition: all ease 1s;
+   .banner-text {
+    color: #FB8C00;
+    .banner-text-underline {
+      background: #607D8B;
+    }
+  }
+  .banner-text.hover {
+    color: #607D8B;
+    transition: all ease 1s;
+    .banner-text-underline {
+      width: 100%;
+      background: #FB8C00;
+      transition: all ease 1s;
+    }
+  }
 }
 .banner-go-shop {
   background-attachment: fixed;
@@ -261,7 +311,7 @@ export default {
   cursor: pointer;
 }
 .bgScale {
-  transform: scaleX(1.1);
+  transform: scale(1.1);
   transition: all ease 1s;
 }
 .banner-overlay {
