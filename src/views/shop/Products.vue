@@ -57,7 +57,13 @@
                 :key="index"
                 class="pt-0"
               >
-                <v-card :disabled="loading.isLoading && index == loading.index">
+                <v-card
+                  :disabled="loading.isLoading && index == loading.index"
+                  :class="{cardHover:cardHover.hover && cardHover.index === index}"
+                  @mouseover="cardHover.hover = true;cardHover.index = index"
+                  @mouseout="cardHover.hover = false;cardHover.index = -1"
+                  style="transition:all ease .5s"
+                >
                   <v-img class="cursor-pointer" height="250" :src="item.imageUrl" @click="$router.push({ name: 'product', params: { id: item.id } })"></v-img>
                   <div class="d-flex justify-space-between align-center">
                     <v-card-title>{{ item.title }}</v-card-title>
@@ -169,6 +175,10 @@ export default {
       loading: {
         index: -1,
         isLoading: false
+      },
+      cardHover: {
+        hover: false,
+        index: -1
       }
     }
   },
@@ -306,5 +316,8 @@ export default {
 }
 .cursor-pointer{
   cursor: pointer;
+}
+.cardHover{
+  transform: scale(1.03);
 }
 </style>
