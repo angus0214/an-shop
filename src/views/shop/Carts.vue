@@ -117,9 +117,12 @@
                             append-outer-icon="mdi-send"
                             placeholder="輸入優惠碼"
                             v-model="couponCode"
+                            hide-details
                             @click:append-outer="useCoupon"
+                            class="mb-2"
                           >
                           </v-text-field>
+                          <span :class="couponHint.color" class="text-caption">{{couponHint.text}}</span>
                         </div>
                       </v-col>
                       <v-col cols="12" sm="12" md="6">
@@ -481,7 +484,11 @@ export default {
         title: '完成訂購',
         message: '感謝您訂購 An-Shop 產品'
       },
-      loading: false
+      loading: false,
+      couponHint: {
+        color: '',
+        text: ''
+      }
     }
   },
   methods: {
@@ -526,10 +533,19 @@ export default {
     useCoupon () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/coupon`
+      vm.loading = true
       vm.$http
         .post(api, { data: { code: vm.couponCode } })
         .then((response) => {
-          vm.final_total_price = response.data.data.final_total
+          if (response.data.success) {
+            vm.final_total_price = response.data.data.final_total
+            vm.couponHint.text = '優惠券已成功套用'
+            vm.couponHint.color = 'green--text'
+          } else {
+            vm.couponHint.text = '找不到此優惠券'
+            vm.couponHint.color = 'red--text'
+          }
+          vm.loading = false
         })
     },
     createOrder () {
