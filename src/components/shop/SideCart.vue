@@ -68,10 +68,10 @@
         </div>
       </div>
       <div v-else class="d-flex flex-column px-6 justify-center h-100">
-        <div class="text-h6 font-weight-bold mb-5">
+        <div class="text-h6 text-center font-weight-bold mb-5">
           目前沒有任何商品唷
         </div>
-        <v-btn dark depressed color="blue-grey lighten-1" @click="hide"
+        <v-btn dark depressed color="blue-grey lighten-1" to="/products" @click="hide"
           >前往購物</v-btn
         >
       </div>
