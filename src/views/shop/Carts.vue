@@ -202,11 +202,12 @@
                       <v-form @submit.prevent="submit">
                         <v-row>
                           <v-col cols="12" sm="6">
-                            <div
-                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            <label
+                              for="name"
+                              class="font-weight-bold blue-grey--text text-subtitle-1"
                             >
-                              收件人姓名
-                            </div>
+                              收件人姓名 *
+                            </label>
                             <validation-provider
                               v-slot="{ errors }"
                               name="姓名欄位"
@@ -215,6 +216,7 @@
                               <v-text-field
                                 solo
                                 dense
+                                id="name"
                                 :error-messages="errors"
                                 append-icon="mdi-account"
                                 color="blue-grey lighten-2"
@@ -225,11 +227,12 @@
                             ></validation-provider>
                           </v-col>
                           <v-col cols="12" sm="6">
-                            <div
-                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            <label
+                              for="tel"
+                              class="font-weight-bold blue-grey--text text-subtitle-1"
                             >
-                              收件人電話
-                            </div>
+                              收件人電話 *
+                            </label>
                             <validation-provider
                               v-slot="{ errors }"
                               name="電話號碼"
@@ -238,6 +241,7 @@
                               <v-text-field
                                 solo
                                 dense
+                                id="tel"
                                 :error-messages="errors"
                                 append-icon="mdi-phone"
                                 color="blue-grey lighten-2"
@@ -247,11 +251,12 @@
                             ></validation-provider>
                           </v-col>
                           <v-col cols="12" sm="6">
-                            <div
-                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            <label
+                              for="email"
+                              class="font-weight-bold blue-grey--text text-subtitle-1"
                             >
-                              Email
-                            </div>
+                              Email *
+                            </label>
                             <validation-provider
                               v-slot="{ errors }"
                               name="Email"
@@ -260,6 +265,7 @@
                               <v-text-field
                                 solo
                                 dense
+                                id="email"
                                 append-icon="mdi-email"
                                 :error-messages="errors"
                                 color="blue-grey lighten-2"
@@ -268,11 +274,12 @@
                             ></validation-provider>
                           </v-col>
                           <v-col cols="12" sm="6"
-                            ><div
-                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            ><label
+                              for="address"
+                              class="font-weight-bold blue-grey--text text-subtitle-1"
                             >
-                              收件地址
-                            </div>
+                              收件地址 *
+                            </label>
                             <validation-provider
                               v-slot="{ errors }"
                               name="地址"
@@ -281,6 +288,7 @@
                               <v-text-field
                                 solo
                                 dense
+                                id="address"
                                 append-icon="mdi-map-marker"
                                 :error-messages="errors"
                                 color="blue-grey lighten-2"
@@ -289,13 +297,15 @@
                             ></validation-provider>
                           </v-col>
                           <v-col cols="12">
-                            <div
-                              class="font-weight-bold blue-grey--text text-subtitle-1 mb-1"
+                            <label
+                              for="feedback"
+                              class="font-weight-bold blue-grey--text text-subtitle-1"
                             >
-                              備註
-                            </div>
+                              備註 (選填)
+                            </label>
                             <v-textarea
                               solo
+                              id="feedback"
                               color="blue-grey lighten-2"
                               name="input-7-4"
                               v-model="message"
