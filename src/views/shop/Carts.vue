@@ -38,7 +38,7 @@
             <v-stepper-items>
               <v-stepper-content step="1">
                 <div class="d-flex justify-center">
-                  <v-card flat class="my-6" width="80%" v-if="carts.length > 0">
+                  <v-card flat class="my-6" width="80%" v-if="carts.length > 0" :disabled="loading">
                     <v-divider></v-divider>
                     <v-simple-table>
                       <template v-slot:default>
@@ -74,7 +74,19 @@
                             </td>
                             <td>{{ product.product.title }}</td>
                             <td>{{ product.product.price }}</td>
-                            <td>{{ product.qty }}</td>
+                            <td>
+                              <v-text-field
+                                readonly
+                                color="blue-grey"
+                                style="max-width:100px;text-align:center"
+                                v-model="product.qty"
+                                prepend-icon="mdi-minus"
+                                append-outer-icon="mdi-plus"
+                                @click:prepend="updateCart(product,'minus')"
+                                @click:append-outer="updateCart(product,'plus')"
+                                class="text-center cart-input"
+                              ></v-text-field>
+                            </td>
                             <td>
                               <v-btn
                                 icon
@@ -468,7 +480,8 @@ export default {
       orderMsg: {
         title: '完成訂購',
         message: '感謝您訂購 An-Shop 產品'
-      }
+      },
+      loading: false
     }
   },
   methods: {
@@ -478,12 +491,37 @@ export default {
     getCarts () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      vm.loading = true
       vm.$http.get(api).then((response) => {
-        vm.carts = response.data.data.carts
+        vm.carts = response.data.data.carts.sort((a, b) => {
+          return a.product.price - b.product.price
+        })
+        vm.loading = false
       })
     },
-    countQty (item) {
-      item = item + 1
+    updateCart (item, type) {
+      const vm = this
+      let newQty = 0
+      console.log(item.qty)
+      if (type === 'plus') {
+        newQty = item.qty + 1
+      } else {
+        if (item.qty === 1) {
+          return
+        } else {
+          newQty = item.qty - 1
+        }
+      }
+      vm.loading = true
+      vm.delCart(item.id)
+      const newID = item.product.id
+      console.log(newQty, newID)
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      vm.$http
+        .post(api, { data: { product_id: newID, qty: newQty } })
+        .then((response) => {
+          vm.getCarts()
+        })
     },
     useCoupon () {
       const vm = this
@@ -539,6 +577,14 @@ export default {
       vm.$http.delete(api).then((response) => {
         vm.getCarts()
       })
+    },
+    countQty (id) {
+      const vm = this
+      vm.carts.forEach((el) => {
+        if (el.id === id) {
+          el.qty += 1
+        }
+      })
     }
   },
   computed: {
@@ -582,6 +628,9 @@ export default {
   left: 1px;
   top: 0;
   background-color: #78909c;
+}
+.cart-input input[type="text"]{
+  text-align: center!important;
 }
 @media screen and (max-width: 600px) {
   .v-data-table__wrapper table {
