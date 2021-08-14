@@ -448,7 +448,8 @@
                       {{ orderMsg.title }}
                     </div>
                     <div class="text-center mb-3">{{ orderMsg.message }}</div>
-                    <div class="d-flex justify-center">
+                    <div class="text-center mb-3">親愛的顧客你好，所有任何商品上的問題，歡迎致電 <span class="font-weight-bold">(02) 28282828</span>，將由專人為您服務 </div>
+                    <div class="d-flex justify-center mb-5">
                       <v-btn
                         depresse
                         dark
@@ -457,6 +458,40 @@
                         >繼續選購</v-btn
                       >
                     </div>
+                    <v-divider></v-divider>
+                    <div class="text-center text-h5 font-weight-bold blue-grey--text my-3">常見商品 FAQ</div>
+                    <v-expansion-panels accordion>
+                      <v-expansion-panel>
+                        <v-expansion-panel-header
+                          color="blue-grey lighten-4"
+                          class="font-weight-bold blue-grey--text text--darken-4">
+                            我應該如何下訂單 ?
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content class="pt-3">
+                            請將商品加入購物車之後，點擊上方購物車圖示確認商品即可前往結帳
+                        </v-expansion-panel-content>
+                      </v-expansion-panel>
+                      <v-expansion-panel>
+                        <v-expansion-panel-header
+                          color="blue-grey lighten-4"
+                          class="font-weight-bold blue-grey--text text--darken-4">
+                          請問該如何退貨 ?
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content class="pt-3">
+                          請致電店面連絡電話，會有專人為您服務
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                      <v-expansion-panel>
+                        <v-expansion-panel-header
+                          color="blue-grey lighten-4"
+                          class="font-weight-bold blue-grey--text text--darken-4">
+                          請問商品該如何保養 ?
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content class="pt-3">
+                          建議每星期清潔一次，配戴後以拭銀布清潔，沾上人體汗水或油脂便會失去光澤，避免外力磨損或碰觸化學品、運動配戴、接觸溫泉或海水
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    </v-expansion-panels>
                   </v-card>
                 </div>
               </v-stepper-content>
