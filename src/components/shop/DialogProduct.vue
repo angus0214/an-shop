@@ -80,7 +80,10 @@
 <script>
 export default {
   props: {
-    product: {}
+    product: {},
+    carts: {
+      type: Array
+    }
   },
   data () {
     return {
@@ -93,10 +96,17 @@ export default {
   methods: {
     addToCart () {
       const vm = this
+      let totalQty = vm.tempQty
+      vm.carts.forEach((el) => {
+        if (el.product.id === vm.product.id) {
+          totalQty = totalQty + el.qty
+          vm.delCart(el.id)
+        }
+      })
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.loading = true
       vm.$http
-        .post(api, { data: { product_id: vm.product.id, qty: vm.tempQty } })
+        .post(api, { data: { product_id: vm.product.id, qty: totalQty } })
         .then((response) => {
           if (response.data.success) {
             vm.$bus.$emit(
@@ -105,6 +115,7 @@ export default {
               'success',
               'mdi-check-circle'
             )
+            vm.refetchCarts()
             vm.loading = false
           } else {
             vm.$bus.$emit(
@@ -116,6 +127,15 @@ export default {
             vm.loading = false
           }
         })
+    },
+    refetchCarts () {
+      this.$emit('refetchCarts')
+    },
+    delCart (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      vm.$http.delete(api).then((response) => {
+      })
     }
   }
 }

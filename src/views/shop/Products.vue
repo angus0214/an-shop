@@ -83,7 +83,7 @@
                   </div>
                   <v-card-text>$ {{ item.price }}</v-card-text>
                   <v-card-actions>
-                    <DialogProduct :product="item"></DialogProduct>
+                    <DialogProduct :product="item" :carts="carts" @refetchCarts="getCarts"></DialogProduct>
                     <v-btn
                       :loading="loading.isLoading && index == loading.index"
                       color="deep-purple lighten-2"
@@ -149,6 +149,7 @@ export default {
         type: 'products',
         category: 'all'
       },
+      carts: [],
       menuItems: [
         {
           active: true,
@@ -223,8 +224,27 @@ export default {
         })
       })
     },
+    getCarts () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      vm.$http.get(api).then((response) => {
+        vm.carts = response.data.data.carts
+      })
+    },
+    delCart (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      vm.$http.delete(api).then((response) => {
+      })
+    },
     addToCart (id, itemQty, index) {
       const vm = this
+      vm.carts.forEach((el) => {
+        if (el.product.id === id) {
+          vm.delCart(el.id)
+          itemQty = itemQty + el.qty
+        }
+      })
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
       vm.loading.isLoading = true
       vm.loading.index = index
@@ -239,6 +259,7 @@ export default {
               'success',
               'mdi-check-circle'
             )
+            vm.getCarts()
             vm.loading.isLoading = false
           } else {
             vm.$bus.$emit(
@@ -301,6 +322,7 @@ export default {
   },
   created () {
     this.getProducts()
+    this.getCarts()
   }
 }
 </script>
