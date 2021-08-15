@@ -306,14 +306,17 @@ export default {
       this.getProducts()
     },
     getInLocalStorage (item) {
-      const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
-      let status = false
-      storageAry.forEach((el) => {
-        if (el.id === item.id) {
-          status = true
-        }
-      })
-      return status
+      const vm = this
+      vm.time = setInterval(() => {
+        const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
+        let status = false
+        storageAry.forEach((el) => {
+          if (el.id === item.id) {
+            status = true
+          }
+        })
+        return status
+      }, 2000)
     },
     goTop () {
       const el = document.getElementById('menu-start')
