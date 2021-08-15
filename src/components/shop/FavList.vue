@@ -25,6 +25,9 @@
                   售價
                 </th>
                 <th class="text-left">
+                  加入購物車
+                </th>
+                <th class="text-left">
                   刪除
                 </th>
               </tr>
@@ -41,7 +44,12 @@
                 <td>{{ product.title }}</td>
                 <td>{{ product.price }}</td>
                 <td>
-                  <v-btn icon color="black" @click="delFav(product)">
+                  <v-btn color="blue-grey" depressed class="white--text" :disabled="isLoading !== -1" :loading="isLoading === product.id"  @click="addToCart(product.id,1)">
+                    加入購物車
+                  </v-btn>
+                </td>
+                <td>
+                  <v-btn icon color="black" :disabled="isLoading !== -1" @click="delFav(product)">
                     <v-icon size="16">mdi-close</v-icon>
                   </v-btn>
                 </td>
@@ -69,6 +77,12 @@ export default {
     isActive: Boolean,
     products: Array
   },
+  data () {
+    return {
+      carts: [],
+      isLoading: -1
+    }
+  },
   computed: {
     totalPrice () {
       let total = 0
@@ -95,7 +109,55 @@ export default {
       })
       localStorage.setItem('favProducts', JSON.stringify(storageAry))
       this.getProducts()
+    },
+    getCarts () {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      vm.$http.get(api).then((response) => {
+        vm.carts = response.data.data.carts
+      })
+    },
+    delCart (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
+      vm.$http.delete(api).then((response) => {
+      })
+    },
+    addToCart (id, itemQty) {
+      const vm = this
+      vm.carts.forEach((el) => {
+        if (el.product.id === id) {
+          vm.delCart(el.id)
+          itemQty = itemQty + el.qty
+        }
+      })
+      vm.isLoading = id
+      const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`
+      vm.$http
+        .post(api, { data: { product_id: id, qty: itemQty } })
+        .then((response) => {
+          if (response.data.success) {
+            vm.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增至購物車`,
+              'success',
+              'mdi-check-circle'
+            )
+            vm.getCarts()
+          } else {
+            vm.$bus.$emit(
+              'messsage:push',
+              `${response.data.data.product.title}新增失敗`,
+              'error',
+              'mdi-alert-outline'
+            )
+          }
+          vm.isLoading = -1
+        })
     }
+  },
+  created () {
+    this.getCarts()
   }
 }
 </script>
