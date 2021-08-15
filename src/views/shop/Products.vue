@@ -77,7 +77,7 @@
                     >
                       <v-icon color="red">mdi-heart</v-icon>
                     </v-btn>
-                    <v-btn v-else icon class="ma-2" @click="setFav(item)">
+                    <v-btn v-else icon class="ma-2" @click.stop="setFav(item)">
                       <v-icon color="red">mdi-heart-outline</v-icon>
                     </v-btn>
                   </div>

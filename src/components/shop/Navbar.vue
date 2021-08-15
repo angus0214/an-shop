@@ -21,7 +21,8 @@
         >
       </v-toolbar-items>
       <v-btn icon class="ml-10" @click="getFavList">
-        <v-icon color="red darken-1">mdi-heart</v-icon>
+        <v-icon color="red darken-1" v-if="isHadFav">mdi-heart</v-icon>
+        <v-icon color="red darken-1" v-else>mdi-heart-outline</v-icon>
       </v-btn>
       <v-btn icon @click="getCarts">
         <v-icon>mdi-cart</v-icon>
@@ -75,7 +76,8 @@ export default {
       favList: [],
       sideCartActive: false,
       sideBarActive: false,
-      favListActive: false
+      favListActive: false,
+      isHadFav: false
     }
   },
   methods: {
@@ -100,7 +102,21 @@ export default {
       const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
       this.favList = storageAry
       this.favListActive = true
+    },
+    checkFavList () {
+      const vm = this
+      vm.time = setInterval(() => {
+        const storageAry = JSON.parse(localStorage.getItem('favProducts')) || []
+        if (storageAry.length !== 0) {
+          vm.isHadFav = true
+        } else {
+          vm.isHadFav = false
+        }
+      }, 2000)
     }
+  },
+  created () {
+    this.checkFavList()
   }
 }
 </script>
