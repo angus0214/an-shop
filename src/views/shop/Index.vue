@@ -203,12 +203,12 @@ export default {
 }
 .banner-main {
   background-position: right;
-  background-image: url(../../assets/banner-main.jpg);
+  background-image: url(../../assets/img/banner-main.jpg);
   height: calc(100vh - 56px);
 }
 .banner-left {
   background-position: center;
-  background-image: url(../../assets/banner-left.jpg);
+  background-image: url(../../assets/img/banner-left.jpg);
   height: 100vh;
   transition: all ease 1s;
   .banner-text {
@@ -230,7 +230,7 @@ export default {
 .banner-right-top {
   background-position: center center;
   background-size: cover;
-  background-image: url(../../assets/banner-right.jpg);
+  background-image: url(../../assets/img/banner-right.jpg);
   height: 50vh;
   transition: all ease 1s;
   .banner-text {
@@ -250,7 +250,7 @@ export default {
   }
 }
 .banner-sm-1 {
-  background-image: url(../../assets/banner-sm-1.jpg);
+  background-image: url(../../assets/img/banner-sm-1.jpg);
   height: 50vh;
   transition: all ease 1s;
   overflow: hidden;
@@ -272,7 +272,7 @@ export default {
 }
 .banner-sm-2 {
   background-position: center;
-  background-image: url(../../assets/banner-sm-2.jpg);
+  background-image: url(../../assets/img/banner-sm-2.jpg);
   height: 50vh;
   transition: all ease 1s;
    .banner-text {
@@ -294,7 +294,7 @@ export default {
 .banner-go-shop {
   background-attachment: fixed;
   background-position: center;
-  background-image: url(../../assets/banner-go-shop.jpg);
+  background-image: url(../../assets/img/banner-go-shop.jpg);
   padding: 80px 0;
   will-change : transform;
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img
-      src="../../assets/banner-about.jpg"
+      src="../../assets/img/banner-about.jpg"
       max-height="460"
       position="center 20%"
     >

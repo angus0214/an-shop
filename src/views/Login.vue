@@ -101,7 +101,7 @@ export default {
   transition: all 0.5s ease-out;
 }
 .bg .v-application--wrap {
-  background-image: url(../assets/login_bg.jpg);
+  background-image: url(../assets/img/login_bg.jpg);
   background-position: center center;
   background-size: cover;
 }
