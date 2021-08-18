@@ -139,9 +139,10 @@ export default {
           })
         )
       }
-      await Promise.all(promiseAry)
-      vm.fillData()
-      vm.loaded = true
+      await Promise.all(promiseAry).then(() => {
+        vm.fillData()
+        vm.loaded = true
+      })
     },
     fillData () {
       const vm = this
