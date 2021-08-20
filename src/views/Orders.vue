@@ -69,10 +69,10 @@
             </v-card>
           </v-dialog>
         </template>
-        <template v-slot:item.create_at="{ item }">
+        <template v-slot:[`item.create_at`]="{ item }">
           {{ item.create_at | date }}
         </template>
-        <template v-slot:item.user.email="{ item }">
+        <template v-slot:[`item.user.email`]="{ item }">
           <div class="d-flex align-center">
             <v-btn color="primary" icon @click="openUserInfoDialog(item)">
               <v-icon>mdi-account-box</v-icon>
@@ -80,7 +80,7 @@
             <div v-if="item.user">{{ item.user.email }}</div>
           </div>
         </template>
-        <template v-slot:item.products="{ item }">
+        <template v-slot:[`item.products`]="{ item }">
           <div style="max-height:100px;overflow-y: hidden;">
             <div
               class="my-1"
@@ -92,11 +92,11 @@
           </div>
           <div v-if="getObjLength(item) > 3" class="font-weight-bold">...</div>
         </template>
-        <template v-slot:item.is_paid="{ item }">
+        <template v-slot:[`item.is_paid`]="{ item }">
           <p v-if="item.is_paid == 1" class="mb-0 success--text">Yes</p>
           <p v-else class="mb-0 danger--text">No</p>
         </template>
-        <template v-slot:item.edit="{ item }">
+        <template v-slot:[`item.edit`]="{ item }">
           <v-btn icon color="success" @click="openEditDialog(item)">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>

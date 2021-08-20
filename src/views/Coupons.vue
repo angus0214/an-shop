@@ -171,13 +171,13 @@
             </v-card>
           </v-dialog>
         </template>
-        <template v-slot:item.percent="{ item }">
+        <template v-slot:[`item.percent`]="{ item }">
           {{ item.percent }}%
         </template>
-        <template v-slot:item.due_date="{ item }">
+        <template v-slot:[`item.due_date`]="{ item }">
           {{ item.due_date | date }}
         </template>
-        <template v-slot:item.edit="{ item }">
+        <template v-slot:[`item.edit`]="{ item }">
           <v-icon
             color="success"
             @click="

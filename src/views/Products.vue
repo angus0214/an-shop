@@ -207,7 +207,7 @@
             </v-card>
           </v-dialog>
         </template>
-        <template v-slot:item.edit="{ item }">
+        <template v-slot:[`item.edit`]="{ item }">
           <v-icon
             color="success"
             @click="
@@ -221,7 +221,7 @@
             mdi-delete
           </v-icon>
         </template>
-        <template v-slot:item.is_enabled="{ item }">
+        <template v-slot:[`item.is_enabled`]="{ item }">
           <p v-if="item.is_enabled == 1" class="mb-0 success--text">Yes</p>
           <p v-else class="mb-0 danger--text">No</p>
         </template>
