@@ -9,7 +9,7 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-stepper v-model="stepEl">
+          <v-stepper v-model="stepEl" style="box-shadow:none">
             <v-stepper-header class="px-9">
               <v-stepper-step
                 step="1"
