@@ -199,7 +199,7 @@
                 <div class="d-flex justify-center">
                   <v-card flat width="80%">
                     <ValidationObserver v-slot="{ valid }">
-                      <v-form @submit.prevent="submit">
+                      <v-form>
                         <v-row>
                           <v-col cols="12" sm="6">
                             <label
@@ -538,9 +538,6 @@ export default {
     }
   },
   methods: {
-    submit (status) {
-      console.log(status)
-    },
     getCarts () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart`

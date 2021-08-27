@@ -233,7 +233,6 @@ export default {
   },
   mounted () {
     this.getChartData()
-  },
-  created () {}
+  }
 }
 </script>
