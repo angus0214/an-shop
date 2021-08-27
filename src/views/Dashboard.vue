@@ -140,7 +140,7 @@ export default {
           })
         )
       }
-      await Promise.all(promiseAry).then(() => {
+      Promise.all(promiseAry).then(() => {
         vm.fillData()
         vm.loaded = true
       })
@@ -231,7 +231,7 @@ export default {
       vm.ordersChartData = { ...orderschart }
     }
   },
-  async mounted () {
+  mounted () {
     this.getChartData()
   },
   created () {}

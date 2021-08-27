@@ -22,7 +22,7 @@ export default {
       products: []
     }
   },
-  async mounted () {
+  mounted () {
     this.getProducts()
     this.renderChart(this.chartdata, this.options)
   },
