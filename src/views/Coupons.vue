@@ -28,6 +28,7 @@
                   color="primary"
                   dark
                   v-bind="attrs"
+                  v-on="on"
                   @click="openEditDialog({}, true)"
                 >
                   新增優惠券
@@ -326,7 +327,7 @@ export default {
         vm.coupons.due_date = new Date()
           .toLocaleDateString()
           .replace(/\//g, '-')
-        vm.coupons.tempCoupon = Object.assign({}, {})
+        vm.coupons.tempCoupon = {}
       } else {
         vm.coupons.tempCoupon = { ...item }
         const dateAndTime = new Date(vm.coupons.tempCoupon.due_date * 1000)
