@@ -93,7 +93,7 @@ export default {
     logout () {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/logout`
-      vm.$http.post(api).then((response) => {
+      vm.$http.post(api).then(() => {
         vm.$router.push('/login')
       })
     },

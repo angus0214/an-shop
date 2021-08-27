@@ -135,7 +135,7 @@ export default {
     delCart (id) {
       const vm = this
       const api = `${process.env.VUE_APP_API_PATH}/api/${process.env.VUE_APP_CUSTOM_PATH}/cart/${id}`
-      vm.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then(() => {
       })
     }
   }
