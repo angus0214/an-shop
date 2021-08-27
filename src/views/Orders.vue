@@ -187,6 +187,7 @@
     </v-dialog>
   </div>
 </template>
+
 <script>
 export default {
   data () {
@@ -288,6 +289,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .v-data-table
   > .v-data-table__wrapper

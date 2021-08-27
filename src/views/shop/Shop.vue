@@ -8,6 +8,7 @@
     </v-main>
   </v-app>
 </template>
+
 <script>
 import Navbar from '@/components/shop/Navbar.vue'
 import Footer from '@/components/shop/Footer.vue'

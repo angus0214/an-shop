@@ -62,6 +62,7 @@
     </v-main>
   </v-app>
 </template>
+
 <script>
 import Alert from '@/components/AlertMessages'
 

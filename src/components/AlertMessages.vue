@@ -56,6 +56,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .alert-custom {
   position: fixed;

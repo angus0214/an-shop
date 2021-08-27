@@ -229,6 +229,7 @@
     </v-card>
   </div>
 </template>
+
 <script>
 export default {
   data () {
@@ -383,6 +384,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 @media screen and (max-width: 600px) {
   .v-data-footer__pagination {

@@ -71,6 +71,7 @@
     <div class="overlay" @click="hide"></div>
   </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -161,6 +162,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .side-cart-wrap {
   .side-cart {

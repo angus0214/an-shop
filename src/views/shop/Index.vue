@@ -149,6 +149,7 @@
     <v-row no-gutters> </v-row>
   </v-container>
 </template>
+
 <script>
 export default {
   data () {
@@ -193,6 +194,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .h-100 {
   height: 100%;

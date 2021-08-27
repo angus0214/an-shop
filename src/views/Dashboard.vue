@@ -99,6 +99,7 @@
     </v-row>
   </div>
 </template>
+
 <script>
 import LineChart from '@/components/LineChart.vue'
 import PieChart from '@/components/PieChart.vue'

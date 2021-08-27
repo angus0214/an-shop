@@ -130,6 +130,7 @@
     <div v-else>此產品頁面不存在</div>
   </v-container>
 </template>
+
 <script>
 export default {
   data () {

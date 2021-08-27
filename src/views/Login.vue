@@ -56,6 +56,7 @@
     </v-container>
   </v-app>
 </template>
+
 <script>
 export default {
   data () {
@@ -94,6 +95,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .v-tab-active {
   background-color: #1976d2;

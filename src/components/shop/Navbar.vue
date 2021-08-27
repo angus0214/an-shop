@@ -40,6 +40,7 @@
     <FavList :isActive="favListActive" @hideFavList="hideFavList" @getFavList="getFavList" :products="favList"></FavList>
   </v-card>
 </template>
+
 <script>
 import SideCart from './SideCart'
 import SideBar from './SideBar'

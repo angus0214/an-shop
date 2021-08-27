@@ -136,6 +136,7 @@
     </v-container>
   </div>
 </template>
+
 <script>
 import DialogProduct from '@/components/shop/DialogProduct.vue'
 export default {
@@ -329,7 +330,8 @@ export default {
   }
 }
 </script>
-<style lang="css">
+
+<style lang="scss">
 .menu_item:before {
   background-color: #b0bec5;
   bottom: 0;

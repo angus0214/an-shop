@@ -502,6 +502,7 @@
     </v-container>
   </div>
 </template>
+
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 
@@ -673,6 +674,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .v-stepper__header {
   box-shadow: none !important;
