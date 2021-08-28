@@ -86,12 +86,11 @@
                     <DialogProduct :product="item" :carts="carts" @refetchCarts="getCarts"></DialogProduct>
                     <v-btn
                       :loading="loading.isLoading && index == loading.index"
-                      color="deep-purple lighten-2"
-                      text
-                      class="font-weight-bold text-body-1"
+                      color="brown"
+                      class="font-weight-bold text-body-1 white--text rounded-lg"
+                      depressed
                       @click.stop="addToCart(item.id, 1, index)"
                     >
-                      <v-icon class="mr-1">mdi-cart-outline</v-icon>
                       加入購物車
                     </v-btn>
                   </v-card-actions>
@@ -350,6 +349,6 @@ export default {
   cursor: pointer;
 }
 .cardHover{
-  transform: scale(1.03);
+  box-shadow:0 3px 12px -2px rgb(0 0 0 / 66%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%) !important;
 }
 </style>

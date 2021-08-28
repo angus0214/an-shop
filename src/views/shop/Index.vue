@@ -1,5 +1,5 @@
 <template>
-  <v-container  class="pa-0">
+  <v-container fluid class="pa-0">
     <v-row no-gutters>
       <v-col cols="12">
         <div class="bg banner-main">
