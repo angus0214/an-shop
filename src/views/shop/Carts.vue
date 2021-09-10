@@ -113,7 +113,7 @@
                             type="text"
                             color="blue-grey"
                             dense
-                            solo
+                            outlined
                             append-outer-icon="mdi-send"
                             placeholder="輸入優惠碼"
                             v-model="couponCode"
@@ -214,7 +214,7 @@
                               rules="required"
                             >
                               <v-text-field
-                                solo
+                                outlined
                                 dense
                                 id="name"
                                 :error-messages="errors"
@@ -239,7 +239,7 @@
                               rules="required|numeric|min:10"
                             >
                               <v-text-field
-                                solo
+                                outlined
                                 dense
                                 id="tel"
                                 :error-messages="errors"
@@ -263,7 +263,7 @@
                               rules="required|email"
                             >
                               <v-text-field
-                                solo
+                                outlined
                                 dense
                                 id="email"
                                 append-icon="mdi-email"
@@ -286,7 +286,7 @@
                               rules="required"
                             >
                               <v-text-field
-                                solo
+                                outlined
                                 dense
                                 id="address"
                                 append-icon="mdi-map-marker"
@@ -304,7 +304,7 @@
                               備註 (選填)
                             </label>
                             <v-textarea
-                              solo
+                              outlined
                               id="feedback"
                               color="blue-grey lighten-2"
                               name="input-7-4"
