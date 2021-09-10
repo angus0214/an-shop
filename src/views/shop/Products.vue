@@ -6,7 +6,7 @@
       position="center 20%"
     >
     </v-img>
-    <v-container id="menu-start">
+    <v-container id="menu-start" style="background-color:white">
       <v-row>
         <v-col cols="12" sm="12" md="3" style="position: relative;">
           <v-card class="mx-auto" style="position: sticky;top:15px;">
