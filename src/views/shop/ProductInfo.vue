@@ -91,7 +91,7 @@
             <v-card-actions>
               <v-btn
                 text
-                color="primary"
+                color="teal darken-2"
                 @click.stop="
                   $router.push({ name: 'product', params: { id: item.id } })
                 "
@@ -101,7 +101,7 @@
               </v-btn>
               <v-btn
                 :loading="loading.isLoading && index == loading.index"
-                color="deep-purple lighten-2"
+                color="brown"
                 text
                 class="font-weight-bold"
                 @click.stop="addToCart(item.id, 1, index)"
