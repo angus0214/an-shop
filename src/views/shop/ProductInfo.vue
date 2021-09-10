@@ -2,8 +2,8 @@
   <v-container>
     <div v-if="dataLoaded" id="menu-start">
       <v-row>
-        <v-col cols="12" sm="6">
-          <v-img contain :src="product.imageUrl" max-height="400"></v-img>
+        <v-col cols="12" sm="6" class="d-flex justify-center">
+          <img :src="product.imageUrl" style="width:400px;height:450px;object-fit:cover">
         </v-col>
         <v-col cols="12" sm="6" class="pa-4">
           <div class="text-h4 font-weight-bold mb-2">{{ product.title }}</div>
