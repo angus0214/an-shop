@@ -83,7 +83,7 @@
                   </div>
                   <v-card-text>$ {{ item.price }}</v-card-text>
                   <v-card-actions>
-                    <DialogProduct :product="item" :carts="carts" @refetchCarts="getCarts"></DialogProduct>
+                    <DialogProduct :product="item" :carts="carts" @refetchCarts="getCarts" />
                     <v-btn
                       :loading="loading.isLoading && index == loading.index"
                       color="brown"
